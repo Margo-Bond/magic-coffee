@@ -1,0 +1,26 @@
+{
+  "name": "magic-coffee_project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "deploy": "firebase deploy",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Margo-Bond/magic-coffee.git"
+  },
+  "devDependencies": {
+    "sass": "^1.77.6",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "firebase": "^10.12.2",
+    "glob": "^10.4.2",
+    "lru-cache": "^10.2.2",
+    "rimraf": "^5.0.7"
+  }
+}
