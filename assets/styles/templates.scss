@@ -1,0 +1,21 @@
+@mixin font-face($family, $weight) {
+  font-family: $family, sans-serif;
+  font-weight: $weight;
+  font-style: normal;
+}
+
+@mixin reenie-beanie($weight) {
+  @include font-face("Reenie Beanie", $weight);
+}
+
+@mixin poppins($weight) {
+  @include font-face("Poppins", $weight);
+}
+
+@mixin dm-sans($weight) {
+  @include font-face("DM Sans", $weight);
+}
+
+@mixin segoe-print($weight) {
+  @include font-face("Segoe Print", $weight);
+}

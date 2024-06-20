@@ -1,0 +1,59 @@
+@import "./variables.scss";
+@import "./templates.scss";
+
+@font-face {
+  font-family: "Reenie Beanie";
+  src: url(../fonts/reenie_beanie/ReenieBeanie-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(../fonts/reenie_beanie/ReenieBeanie-Regular.ttf);
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url(../fonts/reenie_beanie/ReenieBeanie-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Segoe Print";
+  src: url(../fonts/reenie_beanie/ReenieBeanie-Regular.ttf);
+}
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--white-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @include poppins(400);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1800px;
+  min-width: 360px;
+  margin: 0 auto;
+  padding: 0 20px;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .header {
+    width: 100%;
+    height: var(--space-l);
+  }
+
+  .main {
+    width: 100%;
+    flex-grow: 1;
+  }
+}
