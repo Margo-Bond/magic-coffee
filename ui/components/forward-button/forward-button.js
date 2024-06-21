@@ -1,4 +1,3 @@
-import styles from "./style.module.scss";
 import { arrowIcon } from "../../assets/images/forward.svg";
 
 export function createForwardButton(link) {

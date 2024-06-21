@@ -1,5 +1,22 @@
 @import "./variables.scss";
 @import "./templates.scss";
+@import "../../ui/components/additives/additives.module.scss";
+@import "../../ui/components/authorization/authorization.module.scss";
+@import "../../ui/components/cafe/cafe.module.scss";
+@import "../../ui/components/coffee-card/coffee-card.module.scss";
+@import "../../ui/components/coffee-country/coffee-country.module.scss";
+@import "../../ui/components/coffee-type/coffee-type.module.scss";
+@import "../../ui/components/designer/designer.module.scss";
+@import "../../ui/components/forward-button/forward-button.module.scss";
+@import "../../ui/components/header/header.module.scss";
+@import "../../ui/components/menu/menu.module.scss";
+@import "../../ui/components/my-order/my-order.module.scss";
+@import "../../ui/components/order-confirmed/order-confirmed.module.scss";
+@import "../../ui/components/order-options/order-options.module.scss";
+@import "../../ui/components/password-remind/password-remind.module.scss";
+@import "../../ui/components/profile/profile.module.scss";
+@import "../../ui/components/registration/registration.module.scss";
+@import "../../ui/components/startup-screen/startup-screen.module.scss";
 
 @font-face {
   font-family: "Reenie Beanie";
