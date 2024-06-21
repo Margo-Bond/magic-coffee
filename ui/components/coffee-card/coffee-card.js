@@ -1,1 +1,3 @@
-import { createHeader } from "../header/header.js";
+export default function createCoffeecard(element) {
+  element.innerHtml = ``;
+}
