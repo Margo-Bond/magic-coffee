@@ -1,7 +1,13 @@
 import { defineConfig } from "vite";
-import svg from "vite-plugin-svg";
+import path from "path";
 
 export default defineConfig({
-  plugins: [svg()],
-  assetsInclude: ["**/*.+(jpg|jpeg|png|svg)"],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
+  optimizeDeps: {
+    include: ["**/*.+(jpg|jpeg|png|svg)"],
+  },
 });
