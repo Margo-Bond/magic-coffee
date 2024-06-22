@@ -1,4 +1,3 @@
-@import "/src/assets/fonts";
 @import "./variables.scss";
 @import "./templates.scss";
 @import "../../ui/pages/welcome/welcome.module.scss";
@@ -9,7 +8,7 @@
 @import "../../ui/pages/coffee-type/coffee-type.module.scss";
 @import "../../ui/pages/designer/designer.module.scss";
 @import "../../ui/pages/menu/menu.module.scss";
-@import "../../ui/pages/my-order/my-orders.module.scss";
+@import "../../ui/pages/my-orders/my-orders.module.scss";
 @import "../../ui/pages/order-confirmed/order-confirmed.module.scss";
 @import "../../ui/pages/order-options/order-options.module.scss";
 @import "../../ui/pages/password-remind/password-remind.module.scss";
@@ -87,33 +86,28 @@ body {
 }
 
 .container {
-  width: 100%;
+  display: grid;
+  grid-auto-rows: var(--space-xxl) 1fr;
+  width: 100vw;
+  height: 100vh;
+  min-width: 340px;
   max-width: 480px;
-  margin: 0 auto;
-  padding: 0 20px;
-  background-color: var();
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: var(--white-color);
   #header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-xm) var(--space-xl);
+    padding: 0 var(--space-s);
     width: 100%;
-    height: var(--space-xxl);
     img {
       margin: 0;
       max-height: 100%;
       width: auto;
     }
   }
-
   #main {
     display: flex;
     flex-direction: column;
-    gap: 20px;
     width: 100%;
-    flex-grow: 1;
   }
 }
