@@ -9,7 +9,7 @@
           "description": "Espresso with added hot water, making for a slightly diluted taste.",
           "origin": "United States",
           "best_served_as": "Long shot",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/americano_img.jpg",
           "price": 10
         },
         "cappuccino": {
@@ -17,7 +17,7 @@
           "description": "Espresso coffee topped with frothed hot milk or cream.",
           "origin": "Italy",
           "best_served_as": "With cocoa powder on top",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/cappuccino_img.jpg",
           "price": 20
         },
         "latte": {
@@ -25,7 +25,7 @@
           "description": "Coffee drink made with espresso and steamed milk.",
           "origin": "Italy",
           "best_served_as": "In a large cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/latte_img.jpg",
           "price": 30
         },
         "flat_white": {
@@ -33,7 +33,7 @@
           "description": "Espresso coffee with a small amount of steamed milk and a thin layer of microfoam.",
           "origin": "Australia",
           "best_served_as": "In a ceramic cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/flat_white_img.jpg",
           "price": 40
         },
         "raf": {
@@ -41,7 +41,7 @@
           "description": "Espresso with cream, vanilla sugar, and steamed milk, creating a velvety texture.",
           "origin": "Russia",
           "best_served_as": "In a glass cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/raf_img.jpg",
           "price": 50
         },
         "espresso": {
@@ -49,7 +49,7 @@
           "description": "Strong coffee brewed by forcing hot water under pressure through finely ground coffee beans.",
           "origin": "Italy",
           "best_served_as": "Short shot",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/espresso_img.jpg",
           "price": 60
         }
       },
@@ -187,7 +187,7 @@
           "description": "Espresso with added hot water, making for a slightly diluted taste.",
           "origin": "United States",
           "best_served_as": "Long shot",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/americano_img.jpg",
           "price": 10
         },
         "cappuccino": {
@@ -195,7 +195,7 @@
           "description": "Espresso coffee topped with frothed hot milk or cream.",
           "origin": "Italy",
           "best_served_as": "With cocoa powder on top",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/cappuccino_img.jpg",
           "price": 20
         },
         "latte": {
@@ -203,7 +203,7 @@
           "description": "Coffee drink made with espresso and steamed milk.",
           "origin": "Italy",
           "best_served_as": "In a large cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/latte_img.jpg",
           "price": 30
         },
         "flat_white": {
@@ -211,7 +211,7 @@
           "description": "Espresso coffee with a small amount of steamed milk and a thin layer of microfoam.",
           "origin": "Australia/New Zealand",
           "best_served_as": "In a ceramic cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/flat_white_img.jpg",
           "price": 40
         },
         "raf": {
@@ -219,7 +219,7 @@
           "description": "Espresso with cream, vanilla sugar, and steamed milk, creating a velvety texture.",
           "origin": "Russia",
           "best_served_as": "In a glass cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/raf_img.jpg",
           "price": 50
         },
         "espresso": {
@@ -227,7 +227,7 @@
           "description": "Strong coffee brewed by forcing hot water under pressure through finely ground coffee beans.",
           "origin": "Italy",
           "best_served_as": "Short shot",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/espresso_img.jpg",
           "price": 60
         }
       },
@@ -365,7 +365,7 @@
           "description": "Espresso with added hot water, making for a slightly diluted taste.",
           "origin": "United States",
           "best_served_as": "Long shot",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/americano_img.jpg",
           "price": 10
         },
         "cappuccino": {
@@ -373,7 +373,7 @@
           "description": "Espresso coffee topped with frothed hot milk or cream.",
           "origin": "Italy",
           "best_served_as": "With cocoa powder on top",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/cappuccino_img.jpg",
           "price": 20
         },
         "latte": {
@@ -381,7 +381,7 @@
           "description": "Coffee drink made with espresso and steamed milk.",
           "origin": "Italy",
           "best_served_as": "In a large cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/latte_img.jpg",
           "price": 30
         },
         "flat_white": {
@@ -389,7 +389,7 @@
           "description": "Espresso coffee with a small amount of steamed milk and a thin layer of microfoam.",
           "origin": "New Zealand",
           "best_served_as": "In a ceramic cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/flat_white_img.jpg",
           "price": 40
         },
         "raf": {
@@ -397,7 +397,7 @@
           "description": "Espresso with cream, vanilla sugar, and steamed milk, creating a velvety texture.",
           "origin": "Russia",
           "best_served_as": "In a glass cup",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/raf_img.jpg",
           "price": 50
         },
         "espresso": {
@@ -405,7 +405,7 @@
           "description": "Strong coffee brewed by forcing hot water under pressure through finely ground coffee beans.",
           "origin": "Italy",
           "best_served_as": "Short shot",
-          "image_url": "#",
+          "image_url": "gs://magic-coffee-878ad.appspot.com/espresso_img.jpg",
           "price": 60
         }
       },

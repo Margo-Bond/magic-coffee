@@ -1,20 +1,20 @@
 import page from "page";
-import renderWelcomePage from "./pages/welcome.js";
-import renderAuthorizationPage from "./pages/authorization.js";
-import renderRegistrationPage from "./pages/registration.js";
-import renderPasswordRemindPage from "./pages/password-remind.js";
-import renderStartupScreenPage from "./pages/startup-screen.js";
-import renderCafePage from "./pages/cafe.js";
-import renderMenuPage from "./pages/menu.js";
-import renderOrderOptionsPage from "./pages/order-options.js";
-import renderDesignerPage from "./pages/designer.js";
-import renderCoffeeCountryPage from "./pages/coffee-country.js";
-import renderCoffeeTypePage from "./pages/coffee-type.js";
-import renderAdditivesPage from "./pages/additives.js";
-import renderCurrentOrderPage from "./pages/current-order.js";
-import renderOrderConfirmedPage from "./pages/order-confirmed.js";
-import renderProfilePage from "./pages/profile.js";
-import renderMyOrdersPage from "./pages/my-orders.js";
+import renderWelcomePage from "../ui/pages/welcome/welcome.js";
+import renderAuthorizationPage from "../ui/pages/authorization/authorization.js";
+import renderRegistrationPage from "../ui/pages/registration/registration.js";
+import renderPasswordRemindPage from "../ui/pages/password-remind/password-remind.js";
+import renderStartupScreenPage from "../ui/pages/startup-screen/startup-screen.js";
+import renderCafePage from "../ui/pages/cafe/cafe.js";
+import renderMenuPage from "../ui/pages/menu/menu.js";
+import renderOrderOptionsPage from "../ui/pages/order-options/order-options.js";
+import renderDesignerPage from "../ui/pages/designer/designer.js";
+import renderCoffeeCountryPage from "../ui/pages/coffee-country/coffee-country.js";
+import renderCoffeeTypePage from "../ui/pages/coffee-type/coffee-type.js";
+import renderAdditivesPage from "../ui/pages/additives/additives.js";
+import renderCurrentOrderPage from "../ui/pages/current-order/current-order.js";
+import renderOrderConfirmedPage from "../ui/pages/order-confirmed/order-confirmed.js";
+import renderProfilePage from "../ui/pages/profile/profile.js";
+import renderMyOrdersPage from "../ui/pages/my-orders/my-orders.js";
 
 import {
   createHeaderBlack,
