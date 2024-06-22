@@ -12,7 +12,7 @@ export default function renderWelcomePage(main) {
     <p class="welcome__muted-text">Magic coffee on order.</p>
   </div>
     <div class="welcome__buttons">
-      <button class="welcome__btn welcome__btn_signin">Sigh in</button>
+      <button class="welcome__btn welcome__btn_signin">Sign in</button>
       <button class="welcome__btn welcome__btn_signup">Sign up</button>
     </div>
   `;
