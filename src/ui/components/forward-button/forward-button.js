@@ -1,4 +1,4 @@
-import { arrowIcon } from "@/assets/images/geometric-icons/forward.svg";
+import arrowIcon from "@/assets/images/geometric-icons/forward.svg";
 
 export default function createForwardButton(link) {
   const button = document.createElement("button");
