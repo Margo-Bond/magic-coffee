@@ -30,12 +30,15 @@ document.addEventListener("DOMContentLoaded", () => {
     renderWelcomePage(mainContainer);
   });
   page("/authorization", () => {
+    createHeaderBlack(headerContainer);
     renderAuthorizationPage(mainContainer);
   });
   page("/registration", () => {
+    createHeaderBlack(headerContainer);
     renderRegistrationPage(mainContainer);
   });
   page("/password-remind", () => {
+    createHeaderBlack(headerContainer);
     renderPasswordRemindPage(mainContainer);
   });
   page("/startup-screen", () => {
@@ -43,36 +46,47 @@ document.addEventListener("DOMContentLoaded", () => {
     renderStartupScreenPage(mainContainer);
   });
   page("/cafe", () => {
+    createHeaderBlack(headerContainer);
     renderCafePage(mainContainer);
   });
   page("/menu", () => {
+    createHeaderBlack(headerContainer);
     renderMenuPage(mainContainer);
   });
   page("/order-options", () => {
+    createHeaderBlack(headerContainer);
     renderOrderOptionsPage(mainContainer);
   });
   page("/designer", () => {
+    createHeaderBlack(headerContainer);
     renderDesignerPage(mainContainer);
   });
   page("/coffee-country", () => {
+    createHeaderBlack(headerContainer);
     renderCoffeeCountryPage(mainContainer);
   });
   page("/coffee-type", () => {
+    createHeaderBlack(headerContainer);
     renderCoffeeTypePage(mainContainer);
   });
   page("/additives", () => {
+    createHeaderBlack(headerContainer);
     renderAdditivesPage(mainContainer);
   });
   page("/current-order", () => {
+    createHeaderBlack(headerContainer);
     renderCurrentOrderPage(mainContainer);
   });
   page("/order-confirmed", () => {
+    createHeaderBlack(headerContainer);
     renderOrderConfirmedPage(mainContainer);
   });
   page("/profile", () => {
+    createHeaderBlack(headerContainer);
     renderProfilePage(mainContainer);
   });
   page("/my-orders", () => {
+    createHeaderBlack(headerContainer);
     renderMyOrdersPage(mainContainer);
   });
 
