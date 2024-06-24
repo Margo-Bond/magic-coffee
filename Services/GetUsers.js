@@ -16,18 +16,3 @@ export function getUsers() {
       console.error("Error getting users:", error);
     });
 }
-
-/*export default class Users {
-  static async getUsers() {
-    try {
-      const data = await fetch(
-        "https://magic-coffee-878ad-default-rtdb.firebaseio.com/users.json"
-      );
-      const users = await data.json();
-      return users;
-    } catch (err) {
-      console.error("Error fetching cafes:", err);
-      return err;
-    }
-  }
-}*/

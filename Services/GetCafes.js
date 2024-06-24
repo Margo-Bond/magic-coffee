@@ -16,18 +16,3 @@ export function getCafes() {
       console.error("Error getting cafes:", error);
     });
 }
-
-/*export default class Cafes {
-  static async getCafes() {
-    try {
-      const data = await fetch(
-        "https://magic-coffee-878ad-default-rtdb.firebaseio.com/cafes.json"
-      );
-      const cafes = await data.json();
-      return cafes;
-    } catch (err) {
-      console.error("Error fetching cafes:", err);
-      return err;
-    }
-  }
-}*/
