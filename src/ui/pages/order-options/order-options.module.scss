@@ -1,0 +1,152 @@
+@import "/src/assets/styles/variables.scss";
+@import "/src/assets/styles/templates.scss";
+
+/* .container {
+    display: grid;
+    grid-auto-rows: var(--space-xxl) 1fr;
+    max-width: 375px;
+    max-height: 812px;
+    background-color: var(--white-color);
+
+    #header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 var(--space-s);
+        width: 100%;
+
+        img {
+            margin: 0;
+            max-height: 100%;
+            width: auto;
+        }
+    }
+} */
+
+.container-order__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-xm);
+    max-height: 24px;
+    padding: 20px;
+
+    img {
+        margin: 0;
+        max-height: 100%;
+        width: auto;
+    }
+
+}
+
+.container-order__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "DM Sans";
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.container-order__item_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #F7F8FB;
+    border-radius: 20px;
+}
+
+.container-order__image {
+    width: 152px;
+    height: 121px;
+    margin: 12.5px;
+}
+
+.container-order__item-quantity {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 29px;
+    width: 73px;
+    border: 1.2px solid #D8D8D8;
+    border-radius: 50px;
+}
+
+.container-order__item-select_num {
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+    height: 29px;
+    width: 73px;
+    border: 1.2px solid #D8D8D8;
+    border-radius: 50px;
+}
+
+.container-order__item_switch {
+    display: inline-block;
+    position: relative;
+    width: 51px;
+    height: 31px;
+    border-radius: 31px;
+    background-color: #34C759;
+}
+
+.switch__input {
+    height: 0;
+    width: 0;
+    opacity: 0;
+}
+
+.switch__slider {
+    content: "";
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    ;
+}
+
+.switch__slider::before {
+    content: "";
+    position: absolute;
+    cursor: pointer;
+    left: 2px;
+    bottom: 2px;
+    height: 27px;
+    width: 27px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+}
+
+.switch__input:focus+.switch__slider {
+    box-shadow: 0 0 1px gray;
+}
+
+.switch__input:checked+.switch__slider {
+    background-color: #34C759;
+}
+
+.switch__input:checked+.switch__slider::before {
+    transform: translateX(27px);
+    -webkit-transform: translateX(27px);
+    -ms-transform: translateX(27px);
+}
+
+.footer__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

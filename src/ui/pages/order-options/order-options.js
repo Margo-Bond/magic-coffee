@@ -1,13 +1,9 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
 
-export default function renderOrderOptionsPage(main) {
-  main.innerHTML = ``;
-}
 import { createHeaderBlack } from "@/ui/components/header/header.js";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
 import arrowBack from "@/assets/images/geometric-icons/back.svg";
 import cartBuy from "@/assets/images/cart.svg";
-import imageCoffee from "";
+//import imageCoffee from "";
 import coldBeverage from "@/assets/images/coffee-icons/cold-beverage.svg";
 import hotBeverage from "@/assets/images/coffee-icons/hot-beverage.svg";
 import cupSmall from "@/assets/images/coffee-icons/cup-250.svg";
@@ -15,31 +11,38 @@ import cupMedium from "@/assets/images/coffee-icons/cup-350.svg";
 import cupBig from "@/assets/images/coffee-icons/cup-450.svg";
 
 
+const imageCoffee = "https://img.freepik.com/free-photo/fresh-coffee-steams-wooden-table-close-up-generative-ai_188544-8923.jpg";
 
 export default function renderOrderOptionPage(main) {
   main.innerHTML = `
-    <div class="container-order">
-      <div class="container-order__header">
-        <button class="container-order__button"></button>
-        <h2 class="сontainer-order__title">Order</h2>
-        <button class="container-order__button"></button>
-      </div>
+        <div class="container-order">
+          <div class="container-order__main">
+            <a class="container-order__btn">
+              <img src='${arrowBack}'  alt='Back btn' />
+            </a>
+            <p class="сontainer-order__title">Order</p>
+            <a class="container-order__btn">
+              <img src='${cartBuy}' alt='Cart btn' />
+            </a>
+          </div>
 
       <div class="container-order__item">
-        <img
-          class="container-order__item-image"
-          src="${imageCoffee}"
-        />
+        <div class="container-order__item_wrap">
+          <img
+            class="container-order__image"
+            src="${imageCoffee}"
+          />
+        </div>
       </div>
 
       <div class="container-order__item">
         <div class="container-order__item-text">
           <p class="container-order__text">Cuppucino</p>
         </div>
-        <div class="container-order__item-select">
-          <span class="container-order__item-select_minus">-</span>
-          <span class="container-order__item-select_number>1</span>
-          <span class="container-order__item-select_plus>-+</span>
+        <div class="container-order__item-quantity">
+          <span class="container-order__item-quantity_minus">-</span>
+          <span class="container-order__item-quantity_number">1</span>
+          <span class="container-order__item-quantity_plus">+</span>
         </div>
       </div>
 
@@ -48,8 +51,8 @@ export default function renderOrderOptionPage(main) {
           <p class="container-order__text">Ristretto</p>
         </div>
         <div class="container-order__item-select">
-          <span class="container-order__item-select_one">One</span>
-          <span class="container-order__item-select_two">Two</span>
+          <span class="container-order__item-select_num">One</span>
+          <span class="container-order__item-select_num">Two</span>
         </div>
       </div>
 
@@ -91,6 +94,9 @@ export default function renderOrderOptionPage(main) {
           <input type="checkbox" class="switch__input" />
           <span class-"switch__slider"></span>
         </div>
+      </div>
+      <div class="container-order__item">
+        <div class="container-order__item-empty"></div>
         <div class="container-order__item-watch">
           <span class="container-order__item-watch_hour">00</span>
           <span class="container-order__item-watch_point">:</span>
@@ -104,7 +110,9 @@ export default function renderOrderOptionPage(main) {
         <p class="footer__text"> Total Amount </p>
         <a class="footer__sum" id="link">BYN 3.00</a>
       </div>
-      <button type="submit" class="footer__button" id="button">Next</button>
+      <div class="footer__button">
+        <button type="submit" id="button">Next</button>
+      </div>
     </footer>`;
 
   const back = document.querySelector(".container-order__button");
