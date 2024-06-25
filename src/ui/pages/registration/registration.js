@@ -1,10 +1,10 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
 import Profile from "@/assets/images/user-icons/name.svg";
 import Smartphone from "@/assets/images/user-icons/phone-number.svg";
 import Message from "@/assets/images/user-icons/mail.svg";
 import Lock from "@/assets/images/user-icons/password.svg";
 import Eye from "@/assets/images/user-icons/visible.svg";
+import setNewUser from "Services/setNewUser";
 
 export default function renderRegistrationPage(main) {
   main.innerHTML = `<div class="registration">
@@ -81,16 +81,15 @@ export default function renderRegistrationPage(main) {
           Already a member?
           <a class="registration-footer__text-link">Sign in</a>
         </p>
-        <button
-          type="submit"
-          class="registration-footer__button"
-        ></button>
+        <div class="registration-footer__button-container"></div>
       </footer>
     </div>`;
 
   const back = document.querySelector(".registration__button");
   const signInLink = document.querySelector(".registration-footer__text-link");
-  const next = document.querySelector(".registration-footer__button");
+  const buttonContainer = document.querySelector(
+    ".registration-footer__button-container"
+  );
 
   back.addEventListener("click", () => {
     window.location.href = "/";
@@ -100,7 +99,17 @@ export default function renderRegistrationPage(main) {
     window.location.href = "/authorization";
   });
 
-  next.addEventListener("click", () => {
-    window.location.href = "/startup-screen";
+  const nextButton = createForwardButton("/startup-screen");
+  buttonContainer.append(nextButton);
+
+  nextButton.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    const nameValue = document.querySelector("#username").value;
+    const phoneValue = document.querySelector("#phoneNumber").value;
+    const emailValue = document.querySelector("#email").value;
+    const passwordValue = document.querySelector("#password").value;
+
+    setNewUser(nameValue, phoneValue, emailValue, passwordValue);
   });
 }
