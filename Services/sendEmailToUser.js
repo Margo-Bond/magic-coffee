@@ -1,6 +1,7 @@
 import authenticateUser from "Services/authenticateUser.js";
 
 function sendEmail(email, password) {
+  //для проверки:
   console.log(`Отправка email на ${email} с паролем ${password}`);
   return Promise.resolve();
 }

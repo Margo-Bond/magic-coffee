@@ -1,12 +1,12 @@
-import { db } from "../main.js";
-import { ref, get, child } from "firebase/database";
+import { database, ref, get, child } from "../main.js";
 
 export function getUsers() {
-  const dbRef = ref(db);
+  const dbRef = ref(database);
   return get(child(dbRef, `users`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        return snapshot.val();
+        let users = snapshot.val();
+        return users;
       } else {
         console.log("No data available");
         return null;
