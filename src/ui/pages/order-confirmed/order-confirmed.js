@@ -30,5 +30,10 @@ export default function renderOrderConfirmedPage(main) {
     </div>
   </div>`
 
+  //Если пользователь не указывает время, то меняем текст на 
+  //The order will be ready today in 30 minutes at the address ${adressUser}
+
+  //const div = document.querySelector('.container-order-confirmed__result');
+
 
 }
