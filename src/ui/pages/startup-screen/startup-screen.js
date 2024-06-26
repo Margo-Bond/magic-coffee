@@ -11,5 +11,5 @@ export default function renderStartupScreenPage(main) {
 
   setTimeout(function () {
     window.location.href = "/cafe";
-  }, 10000);
+  }, 2000);
 }
