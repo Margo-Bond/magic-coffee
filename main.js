@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
-import authenticateUser from "./Services/authenticateUser";
 import { firebaseConfig } from "./firebase.js";
+initializeApp(firebaseConfig);
+
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import {
   getDatabase,
@@ -23,8 +24,8 @@ export {
   database,
   auth,
   get,
-  child,
   update,
+  child,
   ref,
   runTransaction,
   set,

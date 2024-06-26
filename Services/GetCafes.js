@@ -1,3 +1,5 @@
+//для страниц: #6-15
+
 import { database, ref, get, child } from "../main.js";
 
 export default function getCafes() {

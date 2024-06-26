@@ -1,3 +1,5 @@
+//для страниц: #3
+
 import { ref, runTransaction, set, database } from "../main.js";
 
 export default function setNewUser(

@@ -75,7 +75,6 @@ export default function renderRegistrationPage(main) {
             By signing up you agree with our Terms of Use
           </p>
         </div>
-      </main>
       <footer class="registration__footer">
         <p class="registration-footer__text">
           Already a member?

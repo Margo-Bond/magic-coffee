@@ -1,4 +1,4 @@
-import authenticateUser from "../../../../Services/authenticateUser.js";
+import authenticateUser from "../../../../Services/authenticateUser";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
 import Message from "@/assets/images/user-icons/mail.svg";
 import Lock from "@/assets/images/user-icons/password.svg";
