@@ -8,6 +8,7 @@ export default function setNewUser(
 ) {
   const countRef = ref(database, "userCount");
 
+  //дополнительно прописать, чтобы счетчик срабатывал только на регистрацию
   runTransaction(countRef, (currentCount) => {
     if (currentCount === null) {
       return 1;
@@ -25,7 +26,7 @@ export default function setNewUser(
           name: nameValue,
           phone: phoneValue,
           email: emailValue,
-          passwordValue,
+          password: passwordValue,
         })
           .then(() => {
             console.log("user's data were created");

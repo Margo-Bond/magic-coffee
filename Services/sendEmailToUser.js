@@ -1,4 +1,4 @@
-import authenticateUser from "Services/authenticateUser.js";
+import authenticateUser from "./authenticateUser.js";
 
 function sendEmail(email, password) {
   //для проверки:

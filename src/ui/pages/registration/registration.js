@@ -4,7 +4,7 @@ import Smartphone from "@/assets/images/user-icons/phone-number.svg";
 import Message from "@/assets/images/user-icons/mail.svg";
 import Lock from "@/assets/images/user-icons/password.svg";
 import Eye from "@/assets/images/user-icons/visible.svg";
-import setNewUser from "Services/setNewUser";
+import setNewUser from "../../../../Services/setNewUser";
 
 export default function renderRegistrationPage(main) {
   main.innerHTML = `<div class="registration">

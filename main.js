@@ -1,13 +1,18 @@
-import "@/ui/routes.js";
-
 import { initializeApp } from "firebase/app";
+import authenticateUser from "./Services/authenticateUser";
 import { firebaseConfig } from "./firebase.js";
-import { getDatabase, ref, runTransaction, set } from "firebase/database";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  getDatabase,
+  get,
+  child,
+  update,
+  ref,
+  runTransaction,
+  set,
+} from "firebase/database";
 
-import { getUsers } from "./Services/GetUsers.js";
-import { getCafes } from "./Services/GetCafes.js";
-import { getCart } from "./Services/GetCart.js";
+import "@/ui/routes.js";
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
@@ -17,8 +22,12 @@ export {
   app,
   database,
   auth,
+  get,
+  child,
+  update,
   ref,
   runTransaction,
   set,
   signInWithEmailAndPassword,
+  signOut,
 };
