@@ -7,11 +7,10 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  width: 80%;
-  height: var(--magic-coffee);
+  padding: 17px 50px;
+  width: 330px;
   background-color: var(--white-color);
   border-radius: calc(2 * var(--space-xs));
   box-shadow: 0 0 14px var(--svg-color-muted);

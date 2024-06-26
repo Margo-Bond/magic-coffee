@@ -51,10 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
     createHeaderBlack(headerContainer);
     renderCafePage(mainContainer);
   });
-  page("/menu", () => {
+  page("/menu", async () => {
     createHeaderBlack(headerContainer);
     renderMenuPage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
   page("/order-options", () => {
     createHeaderBlack(headerContainer);
@@ -64,40 +64,40 @@ document.addEventListener("DOMContentLoaded", () => {
     createHeaderBlack(headerContainer);
     renderDesignerPage(mainContainer);
   });
-  page("/coffee-country", () => {
+  page("/coffee-country", async () => {
     createHeaderBlack(headerContainer);
     renderCoffeeCountryPage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
-  page("/coffee-type", () => {
+  page("/coffee-type", async () => {
     createHeaderBlack(headerContainer);
     renderCoffeeTypePage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
-  page("/additives", () => {
+  page("/additives", async () => {
     createHeaderBlack(headerContainer);
     renderAdditivesPage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
-  page("/current-order", () => {
+  page("/current-order", async () => {
     createHeaderBlack(headerContainer);
     renderCurrentOrderPage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
-  page("/order-confirmed", () => {
+  page("/order-confirmed", async () => {
     createHeaderBlack(headerContainer);
     renderOrderConfirmedPage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
-  page("/profile", () => {
+  page("/profile", async () => {
     createHeaderBlack(headerContainer);
     renderProfilePage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
-  page("/my-orders", () => {
+  page("/my-orders", async () => {
     createHeaderBlack(headerContainer);
     renderMyOrdersPage(mainContainer);
-    createFooter(footerContainer);
+    await createFooter(footerContainer);
   });
 
   page();

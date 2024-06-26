@@ -2,24 +2,14 @@ import Cafe from "@/assets/images/footer/footer-shopping.svg";
 import Profile from "@/assets/images/footer/footer-profile.svg";
 import Orders from "@/assets/images/footer/footer-orders.svg";
 
-async function loadSvg(url) {
-  const response = await fetch(url);
-  const svgText = await response.text();
-  return svgText;
-}
-
 export default async function createFooter() {
   const footer = document.createElement("footer");
   footer.className = "footer";
 
-  const cafeSvg = await loadSvg(Cafe);
-  const profileSvg = await loadSvg(Profile);
-  const ordersSvg = await loadSvg(Orders);
-
   footer.innerHTML = `
-    <div class="footer__icon footer__icon_cafe">${cafeSvg}</div>
-    <div class="footer__icon footer__icon_profile">${profileSvg}</div>
-    <div class="footer__icon footer__icon_orders">${ordersSvg}</div>
+    <div class="footer__icon footer__icon_cafe">${Cafe}</div>
+    <div class="footer__icon footer__icon_profile">${Profile}</div>
+    <div class="footer__icon footer__icon_orders">${Orders}</div>
   `;
 
   document.body.appendChild(footer);

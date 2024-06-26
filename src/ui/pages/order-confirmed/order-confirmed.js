@@ -1,4 +1,3 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
 import OrderedSvg from "@/assets/images/ordered.svg";
 
 const nameUser = "Dasha";
@@ -28,7 +27,7 @@ export default function renderOrderConfirmedPage(main) {
   const imageContainer = main.querySelector(".order-confirmed__image");
   imageContainer.insertAdjacentHTML("afterbegin", OrderedSvg);
 
-  const resultDiv = document.querySelector('.order-confirmed__result');
+  const resultDiv = document.querySelector(".order-confirmed__result");
   if (!timeOrder) {
     resultDiv.innerHTML = `The order will be ready today in 30 minutes at the address ${adressUser}`;
   }
