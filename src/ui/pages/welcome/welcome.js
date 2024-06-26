@@ -4,7 +4,7 @@ import Logo from "@/assets/images/logo.svg";
 export default function renderWelcomePage(main) {
   main.innerHTML = `
   <div class="welcome__logo">
-      <img src='${Logo}' alt='Logo' />
+      <div>${Logo}</div>
       <h1 class="welcome__title">Magic coffee</h1>
   </div>
   <div class="welcome__texts">
