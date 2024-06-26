@@ -1,16 +1,33 @@
 import { initializeApp } from "firebase/app";
+import authenticateUser from "./Services/authenticateUser";
 import { firebaseConfig } from "./firebase.js";
-
-initializeApp(firebaseConfig);
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  getDatabase,
+  get,
+  child,
+  update,
+  ref,
+  runTransaction,
+  set,
+} from "firebase/database";
 
 import "@/ui/routes.js";
-//Далее используем ниже код где он нужен
-import Cafes from "./Services/Get.js";
 
-Cafes.getCafes()
-  .then((cafes) => {
-    console.log("Result:", cafes);
-  })
-  .catch((err) => {
-    console.error("Error in getCafes call:", err);
-  });
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth(app);
+
+export {
+  app,
+  database,
+  auth,
+  get,
+  child,
+  update,
+  ref,
+  runTransaction,
+  set,
+  signInWithEmailAndPassword,
+  signOut,
+};
