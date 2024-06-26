@@ -15,7 +15,8 @@
   },
   "devDependencies": {
     "sass": "^1.77.6",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vite-plugin-svgstring": "^1.0.0"
   },
   "dependencies": {
     "firebase": "^10.12.2",
