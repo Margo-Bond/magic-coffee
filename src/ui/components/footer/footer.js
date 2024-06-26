@@ -9,7 +9,6 @@ async function loadSvg(url) {
 }
 
 export default async function createFooter() {
-  console.log("Creating footer...");
   const footer = document.createElement("footer");
   footer.className = "footer";
 
@@ -29,42 +28,42 @@ export default async function createFooter() {
   const profileBtn = footer.querySelector(".footer__icon_profile");
   const ordersBtn = footer.querySelector(".footer__icon_orders");
 
-  console.log("Buttons found:");
-  console.log("Cafe button:", cafeBtn);
-  console.log("Profile button:", profileBtn);
-  console.log("Orders button:", ordersBtn);
-
   function setActiveIcon(activeBtn) {
     const allIcons = footer.querySelectorAll(".footer__icon svg path");
     allIcons.forEach((icon) => {
       icon.style.fill = "var(--svg-color-muted)";
-      console.log(`Set muted color for icon: ${icon}`);
     });
 
     const activePaths = activeBtn.querySelectorAll("svg path");
     activePaths.forEach((path) => {
       path.style.fill = "var(--accent-color)";
-      console.log(`Set active color for path: ${path}`);
     });
   }
 
-  cafeBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    console.log("Cafe button clicked");
-    setActiveIcon(cafeBtn);
+  function setInitialActiveIcon() {
+    const currentPath = window.location.pathname;
+    if (currentPath.includes("/menu")) {
+      setActiveIcon(cafeBtn);
+    } else if (currentPath.includes("/profile")) {
+      setActiveIcon(profileBtn);
+    } else if (currentPath.includes("/my-orders")) {
+      setActiveIcon(ordersBtn);
+    }
+  }
+
+  cafeBtn.addEventListener("click", () => {
+    window.location.href = "/menu";
   });
 
-  profileBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    console.log("Profile button clicked");
-    setActiveIcon(profileBtn);
+  profileBtn.addEventListener("click", () => {
+    window.location.href = "/profile";
   });
 
-  ordersBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    console.log("Orders button clicked");
-    setActiveIcon(ordersBtn);
+  ordersBtn.addEventListener("click", () => {
+    window.location.href = "/my-orders";
   });
+
+  setInitialActiveIcon();
 
   return footer;
 }
