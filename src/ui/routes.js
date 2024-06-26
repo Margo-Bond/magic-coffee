@@ -20,10 +20,12 @@ import {
   createHeaderBlack,
   createHeaderWhite,
 } from "./components/header/header.js";
+import createFooter from "./components/footer/footer.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const mainContainer = document.getElementById("main");
   const headerContainer = document.getElementById("header");
+  const footerContainer = document.getElementById("footer");
 
   page("/", () => {
     createHeaderBlack(headerContainer);
@@ -52,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   page("/menu", () => {
     createHeaderBlack(headerContainer);
     renderMenuPage(mainContainer);
+    createFooter(footerContainer);
   });
   page("/order-options", () => {
     createHeaderBlack(headerContainer);
@@ -64,30 +67,37 @@ document.addEventListener("DOMContentLoaded", () => {
   page("/coffee-country", () => {
     createHeaderBlack(headerContainer);
     renderCoffeeCountryPage(mainContainer);
+    createFooter(footerContainer);
   });
   page("/coffee-type", () => {
     createHeaderBlack(headerContainer);
     renderCoffeeTypePage(mainContainer);
+    createFooter(footerContainer);
   });
   page("/additives", () => {
     createHeaderBlack(headerContainer);
     renderAdditivesPage(mainContainer);
+    createFooter(footerContainer);
   });
   page("/current-order", () => {
     createHeaderBlack(headerContainer);
     renderCurrentOrderPage(mainContainer);
+    createFooter(footerContainer);
   });
   page("/order-confirmed", () => {
     createHeaderBlack(headerContainer);
     renderOrderConfirmedPage(mainContainer);
+    createFooter(footerContainer);
   });
   page("/profile", () => {
     createHeaderBlack(headerContainer);
     renderProfilePage(mainContainer);
+    createFooter(footerContainer);
   });
   page("/my-orders", () => {
     createHeaderBlack(headerContainer);
     renderMyOrdersPage(mainContainer);
+    createFooter(footerContainer);
   });
 
   page();

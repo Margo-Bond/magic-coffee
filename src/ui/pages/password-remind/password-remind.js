@@ -49,7 +49,7 @@ export default function renderPasswordRemindPage(main) {
     sendEmailToUser(email)
       .then(() => {
         alert("Password sent to your email address.");
-        window.location.href = "/";
+        window.location.href = "/authorization";
       })
       .catch((err) => {
         console.log("Error: ", err);

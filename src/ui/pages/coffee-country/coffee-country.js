@@ -1,5 +1,6 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
-
-export default function renderCoffeeCountryPage(main) {
-  main.innerHTML = ``;
+export default async function renderCoffeeCountryPage(main) {
+  main.innerHTML = `
+    <div>Тут какой-то текст</div>
+    <div class=""></div>
+  `;
 }
