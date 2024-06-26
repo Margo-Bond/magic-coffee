@@ -1,59 +1,59 @@
-@import "/src/assets/styles/variables.scss";
-@import "/src/assets/styles/templates.scss";
+@import "../../../assets/styles/variables.scss";
+@import "../../../assets/styles/templates.scss";
 
-.container-order-confirmed {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    animation: fadeIn .5s forwards;
+.order-confirmed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: fadeIn 0.5s forwards;
 }
 
-.container-order-confirmed__image {
-    margin-top: 69px;
+.order-confirmed__image {
+  margin-top: 69px;
 
-    img {
-        padding: 5.53px, 13.83px;
-        width: 177px;
-        height: 177px;
-    }
+  img {
+    padding: 5.53px, 13.83px;
+    width: 177px;
+    height: 177px;
+  }
 }
 
-.container-order-confirmed__title {
-    margin: 19px 0 0;
-    width: 280px;
+.order-confirmed__title {
+  margin: 19px 0 0;
+  width: 280px;
 
-    h2 {
-        margin: 0;
-        height: 24px;
-        color: #181D2D;
-        @include poppins(500);
-    }
+  h2 {
+    margin: 0;
+    height: 24px;
+    color: #181d2d;
+    @include poppins(500);
+  }
 }
 
+.order-confirmed__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 19px;
+  width: 321px;
+  height: 216px;
+  font-size: 13px;
+  color: #aaaaaa;
+  @include poppins(400);
+  gap: 40px;
 
-.container-order-confirmed__item {
+  .order-confirmed__result {
+    width: 220px;
+    font-size: var(--spase-m);
+    color: var(--black-color);
+  }
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-top: 19px;
-    width: 321px;
-    height: 216px;
-    font-size: 13px;
-    color: #AAAAAA;
-    @include poppins(400);
-    gap: 40px;
-
-    .container-order-confirmed__result {
-        color: #000000;
-    }
-
-    a {
-        color: #767680;
-        text-decoration: none;
-    }
+  a {
+    color: #767680;
+    text-decoration: none;
+  }
 }
