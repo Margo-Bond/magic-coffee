@@ -3,7 +3,8 @@ import createForwardButton from "@/ui/components/forward-button/forward-button.j
 import Message from "@/assets/images/user-icons/mail.svg";
 
 export default function renderPasswordRemindPage(main) {
-  main.innerHTML = `<div class="password">
+  main.innerHTML = `
+  <div class="password">
     <button class="password__button"></button>
     <div class="password__header">
       <h1 class="password__header-title">Forgot Password?</h1>
@@ -24,11 +25,10 @@ export default function renderPasswordRemindPage(main) {
     </div>  
 
     <footer class="password__footer">
-      <div class="password-footer__button-container">
-        <!-- Добавляем кнопку -->
-      </div>
+      <div class="password-footer__button-container"></div>
     </footer>
-  </div>`;
+  </div>
+  `;
 
   const back = document.querySelector(".password__button");
   const buttonContainer = document.querySelector(
