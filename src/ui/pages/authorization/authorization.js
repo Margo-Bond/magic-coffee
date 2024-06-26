@@ -4,7 +4,7 @@ import Message from "@/assets/images/user-icons/mail.svg";
 import Lock from "@/assets/images/user-icons/password.svg";
 import Eye from "@/assets/images/user-icons/visible.svg";
 
-export default function renderAutorizationPage(main) {
+export default function renderAuthorizationPage(main) {
   main.innerHTML = `<div class="authorization">
         <div class="authorization__header">
           <h1 class="authorization__header-title">Sign in</h1>
@@ -33,8 +33,8 @@ export default function renderAutorizationPage(main) {
               id="password"
               placeholder="Password"
             />
-            <span class="authorization-form__item-button"
-              ><img class="item-button__img" src="${Eye}" />
+            <span class="authorization-form__item-button">
+              <img class="item-button__img" src="${Eye}" />
             </span>
           </div>
 
@@ -70,8 +70,8 @@ export default function renderAutorizationPage(main) {
 
   nextButton.addEventListener("click", (e) => {
     e.preventDefault();
-    const email = document.querySelector("#email");
-    const password = document.querySelector("#password");
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
 
     authenticateUser(email, password)
       .then(() => {
@@ -83,3 +83,4 @@ export default function renderAutorizationPage(main) {
       });
   });
 }
+//Ошибка, при непройденной авторизации переходит на следующую страницу из-ща ошибки 400  CONFIGURATION_NOT_FOUND

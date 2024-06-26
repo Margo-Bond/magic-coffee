@@ -1,6 +1,5 @@
-import "@/ui/routes.js";
-
 import { initializeApp } from "firebase/app";
+import authenticateUser from "./Services/authenticateUser";
 import { firebaseConfig } from "./firebase.js";
 initializeApp(firebaseConfig);
 
@@ -32,5 +31,6 @@ export {
   runTransaction,
   set,
   signInWithEmailAndPassword,
+  signOut,
   signOut,
 };

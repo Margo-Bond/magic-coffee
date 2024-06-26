@@ -2,7 +2,6 @@
 
 import {
   auth,
-  child,
   database,
   get,
   ref,
@@ -11,8 +10,10 @@ import {
 
 export default function authenticateUser(email, password = null) {
   return new Promise((resolve, reject) => {
-    const dbRef = ref(database);
-    get(child(dbRef, `users`))
+    const dbRef = ref(database, `users`);
+    console.log("Fetching user data from database...");
+
+    get(dbRef)
       .then((snapshot) => {
         if (snapshot.exists()) {
           const users = snapshot.val();
