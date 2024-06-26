@@ -1,3 +1,5 @@
+//для страниц: #2-4, 6-19
+
 import { database, ref, get, child } from "../main.js";
 
 export function getUsers() {

@@ -1,3 +1,5 @@
+//для страниц: #17
+
 import { database, update, ref } from "../main";
 
 export default function updateUserData(

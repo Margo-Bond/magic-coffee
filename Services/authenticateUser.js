@@ -1,3 +1,5 @@
+//для страниц: #2, 4
+
 import {
   auth,
   database,
