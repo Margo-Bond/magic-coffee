@@ -1,23 +1,10 @@
 @import "/src/assets/styles/variables.scss";
 @import "/src/assets/styles/templates.scss";
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .container {
-    display: inline-block;
+    display: flex;
     background-image: url(/src/assets/images/startup-backgr.png);
     background-size: cover;
-    animation: fadeIn 1s forwards;
 }
 
 .startup__logo {
@@ -27,6 +14,7 @@
     justify-content: center;
     padding-top: 153px;
     height: 323px;
+    animation: fadeIn .5s forwards;
 
     img {
         margin: 0 auto;
