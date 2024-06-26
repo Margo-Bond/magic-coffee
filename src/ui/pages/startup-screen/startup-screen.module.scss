@@ -1,0 +1,44 @@
+@import "/src/assets/styles/variables.scss";
+@import "/src/assets/styles/templates.scss";
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    display: inline-block;
+    background-image: url(/src/assets/images/startup-backgr.png);
+    background-size: cover;
+    animation: fadeIn 1s forwards;
+}
+
+.startup__logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 153px;
+    height: 323px;
+
+    img {
+        margin: 0 auto;
+        max-width: 100px;
+        height: auto;
+    }
+
+    .startup__title {
+        margin: 0;
+        padding-top: 10px;
+        font-size: var(--magic-coffee);
+        color: var(--white-color);
+        @include reenie-beanie(500);
+    }
+}
