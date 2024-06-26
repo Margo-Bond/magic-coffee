@@ -1,10 +1,10 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
+import authenticateUser from "../../../../Services/authenticateUser.js";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
 import Message from "@/assets/images/user-icons/mail.svg";
 import Lock from "@/assets/images/user-icons/password.svg";
 import Eye from "@/assets/images/user-icons/visible.svg";
 
-export default function renderRegistrationPage(main) {
+export default function renderAuthorizationPage(main) {
   main.innerHTML = `<div class="authorization">
         <div class="authorization__header">
           <h1 class="authorization__header-title">Sign in</h1>
@@ -33,8 +33,8 @@ export default function renderRegistrationPage(main) {
               id="password"
               placeholder="Password"
             />
-            <span class="authorization-form__item-button"
-              ><img class="item-button__img" src="${Eye}" />
+            <span class="authorization-form__item-button">
+              <img class="item-button__img" src="${Eye}" />
             </span>
           </div>
 
@@ -47,13 +47,15 @@ export default function renderRegistrationPage(main) {
           <p class="authorization-footer__text">
           New member? <a class="authorization-footer__text-link" id="link">Sign up</a>
           </p>
-          <button type="submit" class="authorization-footer__button"></button>
+          <div class="authorization-footer__button-container"></div>
         </footer>
         </div>`;
 
   const forgottenPassword = document.querySelector(".authorization__text-link");
   const signInLink = document.querySelector(".authorization-footer__text-link");
-  const next = document.querySelector(".authorization-footer__button");
+  const buttonContainer = document.querySelector(
+    ".authorization-footer__button-container"
+  );
 
   forgottenPassword.addEventListener("click", () => {
     window.location.href = "/password-remind";
@@ -63,7 +65,22 @@ export default function renderRegistrationPage(main) {
     window.location.href = "/registration";
   });
 
-  next.addEventListener("click", () => {
-    window.location.href = "/startup-screen";
+  const nextButton = createForwardButton("/startup-screen");
+  buttonContainer.append(nextButton);
+
+  nextButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+
+    authenticateUser(email, password)
+      .then(() => {
+        window.location.href = "/startup-screen";
+      })
+      .catch((err) => {
+        console.error("Authentication failed: ", err);
+        alert("Invalid email or password. Please try again.");
+      });
   });
 }
+//Ошибка, при непройденной авторизации переходит на следующую страницу из-ща ошибки 400  CONFIGURATION_NOT_FOUND

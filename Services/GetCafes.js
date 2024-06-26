@@ -1,8 +1,7 @@
-import { db } from "../main.js";
-import { ref, get, child } from "firebase/database";
+import { database, ref, get, child } from "../main.js";
 
-export function getCafes() {
-  const dbRef = ref(db);
+export default function getCafes() {
+  const dbRef = ref(database);
   return get(child(dbRef, `cafes`))
     .then((snapshot) => {
       if (snapshot.exists()) {

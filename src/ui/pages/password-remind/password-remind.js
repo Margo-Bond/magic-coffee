@@ -1,4 +1,4 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
+import sendEmailToUser from "../../../../Services/sendEmailToUser.js";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
 import Message from "@/assets/images/user-icons/mail.svg";
 
@@ -27,12 +27,15 @@ export default function renderPasswordRemindPage(main) {
         </div>  
   
         <footer class="password__footer">
-          <button type="submit" class="password-footer__button"></button>
+          <div class="password-footer__button-container">
         </footer>
         </div>`;
 
   const back = document.querySelector(".password__button");
   const next = document.querySelector(".password-footer__button");
+  const buttonContainer = document.querySelector(
+    ".password-footer__button-container"
+  );
 
   back.addEventListener("click", () => {
     window.location.href = "/authorization";
@@ -40,5 +43,23 @@ export default function renderPasswordRemindPage(main) {
 
   next.addEventListener("click", () => {
     window.location.href = "/startup-screen";
+  });
+
+  const nextButton = createForwardButton("/");
+  buttonContainer.append(nextButton);
+
+  nextButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    const email = document.querySelector("#email");
+
+    sendEmailToUser(email)
+      .then(() => {
+        alert("Password sent to your email address.");
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.log("Error: ", err);
+        alert("This email doesn't exist");
+      });
   });
 }
