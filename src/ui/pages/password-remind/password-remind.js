@@ -1,4 +1,4 @@
-import sendEmailToUser from "Services/sendEmailToUser.js";
+import sendEmailToUser from "../../../../Services/sendEmailToUser";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
 import Message from "@/assets/images/user-icons/mail.svg";
 

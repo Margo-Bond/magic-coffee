@@ -1,3 +1,5 @@
+//для страниц: #7-16, 18
+
 import { database, ref, get, child } from "../main.js";
 
 export default function getCart(userId) {
