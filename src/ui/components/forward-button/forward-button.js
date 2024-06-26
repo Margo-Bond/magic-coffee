@@ -4,9 +4,10 @@ export default function createForwardButton(link) {
   const button = document.createElement("button");
   button.classList.add("forwardButton");
 
-  const icon = document.createElement("img");
-  icon.src = arrowIcon;
-  icon.alt = "Forward";
+  const icon = document.createElement("div");
+  icon.innerHTML = `
+  ${arrowIcon}
+  `;
 
   button.append(icon);
 

@@ -12,7 +12,7 @@ export default function renderPasswordRemindPage(main) {
 
     <div class="password__form">
       <div class="password-form__item">
-        <img class="password-form__item-image" src="${Message}" />
+        <div class="password-form__item-image">${Message}</div>
         <span class="password-form__item-element"></span>
         <input
           type="email"
