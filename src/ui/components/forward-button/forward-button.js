@@ -12,7 +12,7 @@ export default function createForwardButton(link) {
   button.append(icon);
 
   button.addEventListener("click", () => {
-    window.location.href = link;
+    //window.location.href = link;
   });
 
   return button;
