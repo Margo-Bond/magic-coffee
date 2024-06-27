@@ -14,7 +14,7 @@ export default function renderAuthorizationPage(main) {
         <div class="authorization__form">
 
           <div class="authorization-form__item">
-            <img class="authorization-form__item-image" src="${Message}" />
+            <div class="authorization-form__item-image">${Message}</div>
             <span class="authorization-form__item-element"></span>
             <input
               type="email"
@@ -25,7 +25,7 @@ export default function renderAuthorizationPage(main) {
           </div>
 
           <div class="authorization-form__item" id="eye">
-            <img class="authorization-form__item-image" src="${Lock}" />
+            <div class="authorization-form__item-image">${Lock}</div>
             <span class="authorization-form__item-element"></span>
             <input
               type="password"
@@ -34,7 +34,7 @@ export default function renderAuthorizationPage(main) {
               placeholder="Password"
             />
             <span class="authorization-form__item-button">
-              <img class="item-button__img" src="${Eye}" />
+              <div class="item-button__img">${Eye}</div>
             </span>
           </div>
 

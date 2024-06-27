@@ -3,7 +3,8 @@ import createForwardButton from "@/ui/components/forward-button/forward-button.j
 import Message from "@/assets/images/user-icons/mail.svg";
 
 export default function renderPasswordRemindPage(main) {
-  main.innerHTML = `<div class="password">
+  main.innerHTML = `
+  <div class="password">
     <button class="password__button"></button>
     <div class="password__header">
       <h1 class="password__header-title">Forgot Password?</h1>
@@ -12,7 +13,7 @@ export default function renderPasswordRemindPage(main) {
 
     <div class="password__form">
       <div class="password-form__item">
-        <img class="password-form__item-image" src="${Message}" />
+        <div class="password-form__item-image">${Message}</div>
         <span class="password-form__item-element"></span>
         <input
           type="email"
@@ -24,11 +25,10 @@ export default function renderPasswordRemindPage(main) {
     </div>  
 
     <footer class="password__footer">
-      <div class="password-footer__button-container">
-        <!-- Добавляем кнопку -->
-      </div>
+      <div class="password-footer__button-container"></div>
     </footer>
-  </div>`;
+  </div>
+  `;
 
   const back = document.querySelector(".password__button");
   const buttonContainer = document.querySelector(
@@ -49,7 +49,7 @@ export default function renderPasswordRemindPage(main) {
     sendEmailToUser(email)
       .then(() => {
         alert("Password sent to your email address.");
-        window.location.href = "/";
+        window.location.href = "/authorization";
       })
       .catch((err) => {
         console.log("Error: ", err);

@@ -1,9 +1,9 @@
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
-import Profile from "@/assets/images/user-icons/name.svg";
-import Smartphone from "@/assets/images/user-icons/phone-number.svg";
-import Message from "@/assets/images/user-icons/mail.svg";
-import Lock from "@/assets/images/user-icons/password.svg";
-import Eye from "@/assets/images/user-icons/visible.svg";
+import ProfileSvg from "@/assets/images/user-icons/name.svg";
+import SmartphoneSvg from "@/assets/images/user-icons/phone-number.svg";
+import MessageSvg from "@/assets/images/user-icons/mail.svg";
+import LockSvg from "@/assets/images/user-icons/password.svg";
+import EyeSvg from "@/assets/images/user-icons/visible.svg";
 import setNewUser from "../../../../Services/setNewUser";
 
 export default function renderRegistrationPage(main) {
@@ -16,10 +16,7 @@ export default function renderRegistrationPage(main) {
 
         <div class="registration__form">
           <div class="registration-form__item">
-            <img
-              class="registration-form__item-image"
-              src="${Profile}"
-            />
+            <div class="registration-form__item-image">${ProfileSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="text"
@@ -28,12 +25,8 @@ export default function renderRegistrationPage(main) {
               placeholder="Create an account here"
             />
           </div>
-
           <div class="registration-form__item">
-            <img
-              class="registration-form__item-image"
-              src="${Smartphone}"
-            />
+            <div class="registration-form__item-image">${SmartphoneSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="number"
@@ -44,10 +37,7 @@ export default function renderRegistrationPage(main) {
           </div>
 
           <div class="registration-form__item">
-            <img
-              class="registration-form__item-image"
-              src="${Message}"
-            />
+            <div class="registration-form__item-image">${MessageSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="email"
@@ -58,7 +48,7 @@ export default function renderRegistrationPage(main) {
           </div>
 
           <div class="registration-form__item" id="eye">
-            <img class="registration-form__item-image" src="${Lock}" />
+            <div class="registration-form__item-image">${LockSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="password"
@@ -66,8 +56,7 @@ export default function renderRegistrationPage(main) {
               id="password"
               placeholder="Password"
             />
-            <span class="registration-form__item-button"
-              ><img class="item-button__img" src="${Eye}" />
+            <span class="registration-form__item-button"><div class="item-button__img">${EyeSvg}</div>
             </span>
           </div>
 
