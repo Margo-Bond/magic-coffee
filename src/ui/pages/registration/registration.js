@@ -73,31 +73,107 @@ export default function renderRegistrationPage(main) {
       </footer>
     </div>`;
 
+  const visible = document.querySelector(".item-button__img");
+
+  visible.addEventListener("click", () => {
+    const password = document.getElementById("password");
+    if (password.getAttribute("type") === "password") {
+      password.setAttribute("type", "text");
+    } else if (password.getAttribute("type") === "text") {
+      password.setAttribute("type", "password");
+    }
+  });
+
+  const profileName = document.getElementById("username");
+  const number = document.getElementById("phoneNumber");
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+
+  function validateName() {
+    const nameRegex = /^[a-zA-Z]{2,30}(?: [a-zA-Z]{2,30})?$/;
+    if (nameRegex.test(profileName.value)) {
+      profileName.style.border = "none";
+      return true;
+    } else {
+      profileName.style.border = "1px solid red";
+      return false;
+    }
+  }
+
+  function validateNumber() {
+    const numberRegex =
+      /^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\д{2,3}) ?)){5,12}\д$/;
+    if (numberRegex.test(number.value)) {
+      number.style.border = "none";
+      return true;
+    } else {
+      number.style.border = "1px solid red";
+      return false;
+    }
+  }
+
+  function validateEmail() {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (emailRegex.test(email.value)) {
+      email.style.border = "none";
+      return true;
+    } else {
+      email.style.border = "1px solid red";
+      return false;
+    }
+  }
+
+  function validatePassword() {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z0-9\W_]{5,25}$/;
+    if (passwordRegex.test(password.value)) {
+      password.style.border = "none";
+      return true;
+    } else {
+      password.style.border = "1px solid red";
+      return false;
+    }
+  }
+
   const back = document.querySelector(".registration__button");
-  const signInLink = document.querySelector(".registration-footer__text-link");
-  const buttonContainer = document.querySelector(
-    ".registration-footer__button-container"
-  );
 
   back.addEventListener("click", () => {
     window.location.href = "/";
   });
 
+  const signInLink = document.querySelector(".registration-footer__text-link");
   signInLink.addEventListener("click", () => {
     window.location.href = "/authorization";
   });
 
+  const buttonContainer = document.querySelector(
+    ".registration-footer__button-container"
+  );
   const nextButton = createForwardButton("/startup-screen");
   buttonContainer.append(nextButton);
 
   nextButton.addEventListener("click", (e) => {
     e.preventDefault();
 
-    const nameValue = document.querySelector("#username").value;
-    const phoneValue = document.querySelector("#phoneNumber").value;
-    const emailValue = document.querySelector("#email").value;
-    const passwordValue = document.querySelector("#password").value;
+    if (
+      validateName() === true &&
+      validateNumber() === true &&
+      validateEmail() === true &&
+      validatePassword() === true
+    ) {
+      const nameValue = profileName.value;
+      const phoneValue = number.value;
+      const emailValue = email.value;
+      const passwordValue = password.value;
 
-    setNewUser(nameValue, phoneValue, emailValue, passwordValue);
+      console.log(nameValue);
+      console.log(phoneValue);
+      console.log(emailValue);
+      console.log(passwordValue);
+
+      setNewUser(nameValue, phoneValue, emailValue, passwordValue);
+    } else {
+      console.log("Validation failed");
+    }
   });
 }
