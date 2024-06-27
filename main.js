@@ -2,7 +2,12 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./firebase.js";
 initializeApp(firebaseConfig);
 
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import {
   getDatabase,
   get,
@@ -20,6 +25,7 @@ const database = getDatabase(app);
 const auth = getAuth(app);
 
 export {
+  getAuth,
   app,
   database,
   auth,
@@ -30,5 +36,6 @@ export {
   runTransaction,
   set,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut,
 };

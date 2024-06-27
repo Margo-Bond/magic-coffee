@@ -1,6 +1,13 @@
 //для страниц: #3
-
-import { ref, runTransaction, set, database } from "../main.js";
+import {
+  auth,
+  ref,
+  runTransaction,
+  set,
+  database,
+  getAuth,
+  createUserWithEmailAndPassword,
+} from "../main.js";
 
 export default function setNewUser(
   nameValue,
@@ -8,10 +15,15 @@ export default function setNewUser(
   emailValue,
   passwordValue
 ) {
-  const countRef = ref(database, "userCount");
+  createUserWithEmailAndPassword(auth, emailValue, passwordValue).then(
+    (snapshot) => {
+      console.log(snapshot);
+    }
+  );
+  //const countRef = ref(database, "userCount");
 
   //дополнительно прописать, чтобы счетчик срабатывал только на регистрацию
-  runTransaction(countRef, (currentCount) => {
+  /*runTransaction(countRef, (currentCount) => {
     if (currentCount === null) {
       return 1;
     } else {
@@ -42,5 +54,5 @@ export default function setNewUser(
     })
     .catch((err) => {
       console.error("Error: ", err);
-    });
+    });*/
 }
