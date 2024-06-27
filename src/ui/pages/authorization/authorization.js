@@ -74,7 +74,7 @@ export default function renderAuthorizationPage(main) {
     const password = document.querySelector("#password").value;
 
     authenticateUser(email, password)
-      .then(() => {
+      .then((result) => {
         window.location.href = "/startup-screen";
       })
       .catch((err) => {
@@ -82,5 +82,14 @@ export default function renderAuthorizationPage(main) {
         alert("Invalid email or password. Please try again.");
       });
   });
+  const visible = document.querySelector(".item-button__img");
+
+  visible.addEventListener("click", () => {
+    const passwordField = document.getElementById("password");
+    if (passwordField.getAttribute("type") === "password") {
+      passwordField.setAttribute("type", "text");
+    } else if (passwordField.getAttribute("type") === "text") {
+      passwordField.setAttribute("type", "password");
+    }
+  });
 }
-//Ошибка, при непройденной авторизации переходит на следующую страницу из-ща ошибки 400  CONFIGURATION_NOT_FOUND

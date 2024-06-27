@@ -1,46 +1,34 @@
+//Функция на авторизацию
 //для страниц: #2, 4
 
-import {
-  auth,
-  database,
-  get,
-  ref,
-  signInWithEmailAndPassword,
-} from "../main.js";
+import { auth, signInWithEmailAndPassword } from "../main.js";
 
-export default function authenticateUser(email, password = null) {
-  return new Promise((resolve, reject) => {
-    const dbRef = ref(database, `users`);
-    console.log("Fetching user data from database...");
+export default async function authenticateUser(email, password = null) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
 
-    get(dbRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const users = snapshot.val();
-          const user = Object.values(users).find(
-            (user) => user.email === email
-          );
-          if (user) {
-            if (password) {
-              signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                  resolve(user);
-                })
-                .catch((error) => {
-                  reject(new Error("Authentication failed"));
-                });
-            } else {
-              resolve(user);
-            }
-          } else {
-            reject(new Error("User not found"));
-          }
-        } else {
-          reject(new Error("No users available"));
-        }
+    // Сохраняем данные пользователя в Local Storage
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        uid: user.uid,
+        name: user.name,
+        phoneNumber: user.userNumber,
+        email: user.email,
+        password: user.password,
+        cart: user.cart,
+        currentOrders: user.currentOrders,
+        orderHistory: user.orderHistory,
+        // другие данные, если нужно
       })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+    );
+    return user;
+  } catch (error) {
+    throw new Error("Authentication failed: " + error.message);
+  }
 }
