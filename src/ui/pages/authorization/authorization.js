@@ -51,6 +51,17 @@ export default function renderRegistrationPage(main) {
         </footer>
         </div>`;
 
+  const visible = document.querySelector(".item-button__img");
+
+  visible.addEventListener("click", () => {
+    const password = document.getElementById("password");
+    if (password.getAttribute("type") === "password") {
+      password.setAttribute("type", "text");
+    } else if (password.getAttribute("type") === "text") {
+      password.setAttribute("type", "password");
+    }
+  });
+
   const forgottenPassword = document.querySelector(".authorization__text-link");
   const signInLink = document.querySelector(".authorization-footer__text-link");
   const next = document.querySelector(".authorization-footer__button");
@@ -63,7 +74,56 @@ export default function renderRegistrationPage(main) {
     window.location.href = "/registration";
   });
 
+  //next.addEventListener("click", () => {
+  //  window.location.href = "/startup-screen";
+  //});
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+
+  function validateEmail() {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (emailRegex.test(email.value)) {
+      email.style.border = "none";
+      return true;
+    } else {
+      email.style.border = "1px solid red";
+      return false;
+    }
+  }
+
+  function validatePassword() {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z0-9\W_]{5,25}$/;
+    if (passwordRegex.test(password.value)) {
+      password.style.border = "none";
+      return true;
+    } else {
+      password.style.border = "1px solid red";
+      return false;
+    }
+  }
+
   next.addEventListener("click", () => {
-    window.location.href = "/startup-screen";
+    if (validateEmail() === true && validatePassword() === true) {
+      const body = {
+        userEmail: email.value,
+        userPassword: password.value,
+      };
+
+      fetch("https://magic-coffee-878ad-default-rtdb.firebaseio.com/users")
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          const body2 = JSON.stringify(data);
+          console.log(`This is body1: ${body1}`);
+        })
+        .catch((err) => {
+          console.log(`Ooops! There seems to be an error: ${err}`);
+        });
+      //window.location.href = "/startup-screen";
+    } else {
+      return;
+    }
   });
 }

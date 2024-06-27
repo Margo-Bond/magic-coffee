@@ -30,12 +30,15 @@ document.addEventListener("DOMContentLoaded", () => {
     renderWelcomePage(mainContainer);
   });
   page("/authorization", () => {
+    createHeaderBlack(headerContainer);
     renderAuthorizationPage(mainContainer);
   });
   page("/registration", () => {
+    createHeaderBlack(headerContainer);
     renderRegistrationPage(mainContainer);
   });
   page("/password-remind", () => {
+    createHeaderBlack(headerContainer);
     renderPasswordRemindPage(mainContainer);
   });
   page("/startup-screen", () => {
@@ -70,9 +73,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderOrderConfirmedPage(mainContainer);
   });
   page("/profile", () => {
+    createHeaderBlack(headerContainer);
     renderProfilePage(mainContainer);
   });
   page("/my-orders", () => {
+    createHeaderBlack(headerContainer);
     renderMyOrdersPage(mainContainer);
   });
 

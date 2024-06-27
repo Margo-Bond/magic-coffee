@@ -1,5 +1,5 @@
 .registration {
-  margin: 21px 41px 48px 26px;
+  margin: 15px 41px 0 26px;
   @include poppins(400);
 
   .registration__button {
@@ -16,7 +16,7 @@
   }
 
   .registration__header {
-    margin-top: 46px;
+    margin-top: 20px;
 
     .registration__header-title {
       font-size: 22px;
@@ -75,7 +75,7 @@
 }
 
 .registration__footer {
-  margin: 218px 0 53px 14px;
+  margin: 57px 0 0 7px;
   display: grid;
   grid-template: 1fr / repeat(2, auto);
   justify-content: space-between;
