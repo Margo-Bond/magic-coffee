@@ -7,6 +7,7 @@ import "firebase/compat/database";
 import {
   getAuth,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
@@ -39,6 +40,7 @@ export {
   ref,
   runTransaction,
   set,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,

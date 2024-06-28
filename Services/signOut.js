@@ -1,10 +1,13 @@
-import { getAuth, signOut } from "firebase/auth";
+//страница #17
+
+import { getAuth, signOut } from "../main.js";
 
 const auth = getAuth();
 signOut(auth)
   .then(() => {
-    // Sign-out successful.
+    window.location.href = "/";
   })
   .catch((error) => {
-    // An error happened.
+    console.error("Error: ", error);
+    alert("Try sign out later.");
   });
