@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./firebase.js";
 initializeApp(firebaseConfig);
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
 
 import {
   getAuth,
@@ -20,11 +22,12 @@ import {
 
 import "@/ui/routes.js";
 
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const auth = getAuth(app);
+const app = firebase.initializeApp(firebaseConfig);
+const database = app.database();
+const auth = getAuth();
 
 export {
+  getDatabase,
   getAuth,
   app,
   database,
