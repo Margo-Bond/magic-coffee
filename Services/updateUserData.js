@@ -3,13 +3,13 @@
 import { database, update, ref } from "../main";
 
 export default function updateUserData(
-  userId,
+  userUid,
   nameValue,
   phoneValue,
   emailValue,
   passwordValue
 ) {
-  const userRef = ref(database, `users/${userId}`);
+  const userRef = ref(database, `users/${userUid}`);
 
   const newData = {
     name: nameValue,

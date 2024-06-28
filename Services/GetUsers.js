@@ -1,20 +1,17 @@
 //для страниц: #2-4, 6-19
 
-import { database, ref, get, child } from "../main.js";
+// Функция для получения данных пользователя из Local Storage
+export default function getUserData() {
+  // Получение данных пользователя из Local Storage
+  const userData = localStorage.getItem("user");
 
-export function getUsers() {
-  const dbRef = ref(database);
-  return get(child(dbRef, `users`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        let users = snapshot.val();
-        return users;
-      } else {
-        console.log("No data available");
-        return null;
-      }
-    })
-    .catch((error) => {
-      console.error("Error getting users:", error);
-    });
+  // Проверка наличия данных
+  if (userData) {
+    // Парсинг данных из JSON и возврат
+    return JSON.parse(userData);
+  } else {
+    // Если данных нет, возвращаем null и выводим сообщение
+    console.log("No user data available in Local Storage");
+    return null;
+  }
 }
