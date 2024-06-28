@@ -46,17 +46,6 @@ export default function renderPasswordRemindPage(main) {
     e.preventDefault();
     const email = document.querySelector("#email").value;
 
-    function validateEmail() {
-      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      if (emailRegex.test(email.value)) {
-        email.style.border = "none";
-        return true;
-      } else {
-        email.style.border = "1px solid red";
-        return false;
-      }
-    }
-
     sendEmailToUser(email)
       .then(() => {
         alert("Password sent to your email address.");
