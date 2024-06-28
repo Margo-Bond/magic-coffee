@@ -72,8 +72,15 @@
   margin: 203px 0 53px 14px;
   display: grid;
   grid-template: 1fr / repeat(2, auto);
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 320px;
+  gap: 70px;
   font-size: var(--spase-m);
 
   .authorization-footer__text {

@@ -1,10 +1,10 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
-import Profile from "@/assets/images/user-icons/name.svg";
-import Smartphone from "@/assets/images/user-icons/phone-number.svg";
-import Message from "@/assets/images/user-icons/mail.svg";
-import Lock from "@/assets/images/user-icons/password.svg";
-import Eye from "@/assets/images/user-icons/visible.svg";
+import ProfileSvg from "@/assets/images/user-icons/name.svg";
+import SmartphoneSvg from "@/assets/images/user-icons/phone-number.svg";
+import MessageSvg from "@/assets/images/user-icons/mail.svg";
+import LockSvg from "@/assets/images/user-icons/password.svg";
+import EyeSvg from "@/assets/images/user-icons/visible.svg";
+import registerUser from "../../../../Services/registerUser.js";
 
 export default function renderRegistrationPage(main) {
   main.innerHTML = `<div class="registration">
@@ -16,10 +16,7 @@ export default function renderRegistrationPage(main) {
 
         <div class="registration__form">
           <div class="registration-form__item">
-            <img
-              class="registration-form__item-image"
-              src="${Profile}"
-            />
+            <div class="registration-form__item-image">${ProfileSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="text"
@@ -28,12 +25,8 @@ export default function renderRegistrationPage(main) {
               placeholder="Create an account here"
             />
           </div>
-
           <div class="registration-form__item">
-            <img
-              class="registration-form__item-image"
-              src="${Smartphone}"
-            />
+            <div class="registration-form__item-image">${SmartphoneSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="number"
@@ -44,10 +37,7 @@ export default function renderRegistrationPage(main) {
           </div>
 
           <div class="registration-form__item">
-            <img
-              class="registration-form__item-image"
-              src="${Message}"
-            />
+            <div class="registration-form__item-image">${MessageSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="email"
@@ -58,7 +48,7 @@ export default function renderRegistrationPage(main) {
           </div>
 
           <div class="registration-form__item" id="eye">
-            <img class="registration-form__item-image" src="${Lock}" />
+            <div class="registration-form__item-image">${LockSvg}</div>
             <span class="registration-form__item-element"></span>
             <input
               type="password"
@@ -66,8 +56,7 @@ export default function renderRegistrationPage(main) {
               id="password"
               placeholder="Password"
             />
-            <span class="registration-form__item-button"
-              ><img class="item-button__img" src="${Eye}" />
+            <span class="registration-form__item-button"><div class="item-button__img">${EyeSvg}</div>
             </span>
           </div>
 
@@ -75,16 +64,12 @@ export default function renderRegistrationPage(main) {
             By signing up you agree with our Terms of Use
           </p>
         </div>
-      </main>
       <footer class="registration__footer">
         <p class="registration-footer__text">
           Already a member?
           <a class="registration-footer__text-link">Sign in</a>
         </p>
-        <button
-          type="submit"
-          class="registration-footer__button"
-        ></button>
+        <div class="registration-footer__button-container"></div>
       </footer>
     </div>`;
 
@@ -99,13 +84,6 @@ export default function renderRegistrationPage(main) {
     }
   });
 
-  let user = {
-    userName: "",
-    userNumber: "",
-    userEmail: "",
-    userPassword: "",
-  };
-
   const profileName = document.getElementById("username");
   const number = document.getElementById("phoneNumber");
   const email = document.getElementById("email");
@@ -114,7 +92,6 @@ export default function renderRegistrationPage(main) {
   function validateName() {
     const nameRegex = /^[a-zA-Z]{2,30}(?: [a-zA-Z]{2,30})?$/;
     if (nameRegex.test(profileName.value)) {
-      user.userName = profileName.value;
       profileName.style.border = "none";
       return true;
     } else {
@@ -125,9 +102,9 @@ export default function renderRegistrationPage(main) {
 
   function validateNumber() {
     const numberRegex =
-      /^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\d{2,3}) ?)){5,12}\d$/;
+      /^(\+?\d{1,3}[- ]?)?(\(?\d{1,4}\)?[- ]?)?\d{1,4}([- ]?\d{1,4}){1,3}$/;
+
     if (numberRegex.test(number.value)) {
-      user.userNumber = number.value;
       number.style.border = "none";
       return true;
     } else {
@@ -139,7 +116,6 @@ export default function renderRegistrationPage(main) {
   function validateEmail() {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (emailRegex.test(email.value)) {
-      user.userEmail = email.value;
       email.style.border = "none";
       return true;
     } else {
@@ -152,7 +128,6 @@ export default function renderRegistrationPage(main) {
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z0-9\W_]{5,25}$/;
     if (passwordRegex.test(password.value)) {
-      user.userPassword = password.value;
       password.style.border = "none";
       return true;
     } else {
@@ -162,6 +137,7 @@ export default function renderRegistrationPage(main) {
   }
 
   const back = document.querySelector(".registration__button");
+
   back.addEventListener("click", () => {
     window.location.href = "/";
   });
@@ -171,48 +147,47 @@ export default function renderRegistrationPage(main) {
     window.location.href = "/authorization";
   });
 
-  const next = document.querySelector(".registration-footer__button");
-  next.addEventListener("click", () => {
+  const buttonContainer = document.querySelector(
+    ".registration-footer__button-container"
+  );
+
+  const nextButton = createForwardButton("/startup-screen");
+  buttonContainer.append(nextButton);
+
+  nextButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+
     if (
       validateName() === true &&
       validateNumber() === true &&
       validateEmail() === true &&
       validatePassword() === true
     ) {
-      console.log(user);
+      const nameValue = profileName.value;
+      const phoneValue = number.value;
+      const emailValue = email.value;
+      const passwordValue = password.value;
 
-      fetch("https://magic-coffee-878ad-default-rtdb.firebaseio.com/users", {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: {
-          "Content-Type": "charset=UTF-8",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        },
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          console.log(
-            data.userName,
-            data.userNumber,
-            data.userEmail,
-            data.userPassword
-          );
-        })
-        .catch((err) => {
-          console.log(`Ooops! There seems to be an error: ${err}`);
-        });
+      console.log(nameValue);
+      console.log(phoneValue);
+      console.log(emailValue);
+      console.log(passwordValue);
 
-      //window.location.href = "/startup-screen";
+      try {
+        const user = await registerUser(
+          nameValue,
+          phoneValue,
+          emailValue,
+          passwordValue
+        );
+        console.log("User registered successfully:", user);
+        window.location.href = "/startup-screen";
+      } catch (err) {
+        console.error("Registration failed: ", err);
+        alert("Registration failed: " + err.message);
+      }
     } else {
-      return;
+      console.log("Validation failed");
     }
-
-    username.value = "";
-    number.value = "";
-    email.value = "";
-    password.value = "";
   });
 }
