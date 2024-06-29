@@ -1,46 +1,42 @@
-//для страниц: #2, 4
+import { auth, signInWithEmailAndPassword } from "../main.js";
+import { ref, get, child } from "firebase/database";
+import { database } from "../main.js";
 
-import {
-  auth,
-  database,
-  get,
-  ref,
-  signInWithEmailAndPassword,
-} from "../main.js";
+export default async function authenticateUser(email, password) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
 
-export default function authenticateUser(email, password = null) {
-  return new Promise((resolve, reject) => {
-    const dbRef = ref(database, `users`);
-    console.log("Fetching user data from database...");
+    // Получение дополнительных данных пользователя из базы данных
+    const userRef = ref(database, `users/${user.uid}`);
+    const snapshot = await get(userRef);
 
-    get(dbRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const users = snapshot.val();
-          const user = Object.values(users).find(
-            (user) => user.email === email
-          );
-          if (user) {
-            if (password) {
-              signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                  resolve(user);
-                })
-                .catch((error) => {
-                  reject(new Error("Authentication failed"));
-                });
-            } else {
-              resolve(user);
-            }
-          } else {
-            reject(new Error("User not found"));
-          }
-        } else {
-          reject(new Error("No users available"));
-        }
+    if (!snapshot.exists()) {
+      throw new Error("User data not found in database.");
+    }
+
+    const userData = snapshot.val();
+
+    // Сохраняем данные пользователя в Local Storage
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        uid: user.uid,
+        name: userData.name,
+        phoneNumber: userData.phoneNumber,
+        email: user.email,
+        cart: userData.cart,
+        currentOrders: userData.currentOrders,
+        orderHistory: userData.orderHistory,
+        // другие данные, если нужно
       })
-      .catch((error) => {
-        reject(error);
-      });
-  });
+    );
+    return user;
+  } catch (error) {
+    throw new Error("Authentication failed: " + error.message);
+  }
 }
