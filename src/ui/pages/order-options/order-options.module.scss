@@ -1,7 +1,7 @@
 @import "/src/assets/styles/variables.scss";
 @import "/src/assets/styles/templates.scss";
 
-.container-order__main {
+.order-option__main {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -9,7 +9,8 @@
     max-height: 24px;
     padding: 20px;
 
-    img {
+    .order-option__arrowBack,
+    .order-option__cartBuy {
         margin: 0;
         max-height: 100%;
         width: auto;
@@ -17,26 +18,25 @@
 
 }
 
-.highlight {
-    border: 1.2px solid #000000;
-}
-
-
-.container-order__coffee {
+.order-option__coffee-img {
     padding: 0 10px;
-}
-
-.container-order__wrap {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
     background-color: #F7F8FB;
     border-radius: 20px;
+
+    .coffeeCard {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 177px;
+        height: 177px;
+    }
 }
 
-.container-order__item {
+.order-option__item {
     padding: 10px 5px;
     margin: 0 10px;
     display: flex;
@@ -48,7 +48,7 @@
     border-bottom: 1px solid #F4F5F7;
 }
 
-.container-order__text {
+.order-option__text {
     font-family: "DM Sans";
     font-weight: 500;
     font-size: 14px;
@@ -56,13 +56,13 @@
     margin-left: 5px;
 }
 
-.container-order__image {
+.order-option__image {
     width: 152px;
     height: 121px;
     margin: 12.5px;
 }
 
-.container-order__item-quantity {
+.order-option__item-quantity {
     cursor: pointer;
     display: flex;
     justify-content: space-evenly;
@@ -74,7 +74,7 @@
     margin-right: 20px;
 }
 
-.container-order__item-strength {
+.order-option__item-strength {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -83,7 +83,7 @@
 
 }
 
-.container-order__btn {
+.order-option__btn {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,7 +95,7 @@
     border-radius: 50px;
 }
 
-.container-order__item-temperature {
+.order-option__item-temperature {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,27 +103,27 @@
     gap: 27px;
 }
 
-.container-order__temperature {
+.order-option__temperature {
     cursor: pointer;
 }
 
-.container-order__temperature_hot {
+.order-option__temperature_hot {
     width: 28px;
     height: 27px;
 }
 
-.container-order__temperature_cold {
+.order-option__temperature_cold {
     width: 20px;
     height: 34px;
 
 }
 
-.container-order__cup-size {
+.order-option__cup-size {
     cursor: pointer;
     margin-right: 20px;
 }
 
-.container-order__item_switch {
+.order-option__item_switch {
     display: inline-block;
     position: relative;
     width: 51px;

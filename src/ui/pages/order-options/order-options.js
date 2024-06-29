@@ -1,84 +1,76 @@
 
-import { createHeaderBlack } from "@/ui/components/header/header.js";
-import createForwardButton from "@/ui/components/forward-button/forward-button.js";
-import arrowBack from "@/assets/images/geometric-icons/back.svg";
-import cartBuy from "@/assets/images/cart.svg";
-//import imageCoffee from "";
+import ArrowBack from "@/assets/images/geometric-icons/back.svg";
+import CartBuy from "@/assets/images/cart.svg";
+import CoffeeCard from "@/assets/images/coffee-cup.svg";
 import coldBeverage from "@/assets/images/coffee-icons/cold-beverage.svg";
 import hotBeverage from "@/assets/images/coffee-icons/hot-beverage.svg";
 import cupSmall from "@/assets/images/coffee-icons/cup-250.svg";
 import cupMedium from "@/assets/images/coffee-icons/cup-350.svg";
 import cupBig from "@/assets/images/coffee-icons/cup-450.svg";
 
-
-const imageCoffee = "https://imgproxy.sbermarket.ru/imgproxy/width-auto/czM6Ly9jb250ZW50LWltYWdlcy1wcm9kL3Byb2R1Y3RzLzMyNDQxNTEyL29yaWdpbmFsLzEvMjAyNC0wMy0xOFQxMSUzQTA1JTNBNDQuMjkwODczJTJCMDAlM0EwMC8zMjQ0MTUxMl8xLmpwZw==.jpg";
-
 export default function renderOrderOptionPage(main) {
   main.innerHTML = `
-        <div class="container-order">
-          <div class="container-order__main">
-            <a class="back">
-              <img src='${arrowBack}'  alt='Back btn' />
-            </a>
-            <p class="сontainer-order__title">Order</p>
-            <a class="card">
-              <img src='${cartBuy}' alt='Card btn' />
-            </a>
+        <div class="order-option">
+          <div class="order-option__main">
+            <div class="order-option__arrowBack">${ArrowBack}</div>
+            <p class="order-option__title">Order</p>
+            <div class="order-option__cartBuy">${CartBuy}</div>
           </div>
 
-      <div class="container-order__coffee">
-        <div class="container-order__wrap">
-          <img
-            class="container-order__image"
-            src="${imageCoffee}"
-          />
+      <div class="order-option__coffee-img">
+        <div class="coffeeCard"></div>
+      </div>
+
+      <div class="order-option__item">
+        <div class="order-option__item-text">
+          <p class="order-option__text">Cuppucino</p>
+        </div>
+        <div class="order-optionr__item-quantity">
+          <div class="order-option__quantity order-option__quantity_minus">-</div>
+          <div class="order-option__quantity order-option__quantity_number">0</div>
+          <div class="order-option__quantity order-option__quantity_plus">+</div>
         </div>
       </div>
 
-      <div class="container-order__item">
-        <div class="container-order__item-text">
-          <p class="container-order__text">Cuppucino</p>
+      <div class="order-option__item">
+        <div class="order-option__item-text">
+          <p class="order-option__text">Ristretto</p>
         </div>
-        <div class="container-order__item-quantity">
-          <span class="container-order__item-quantity_minus">-</span>
-          <span class="container-order__item-quantity_number">1</span>
-          <span class="container-order__item-quantity_plus">+</span>
-        </div>
-      </div>
-
-      <div class="container-order__item">
-        <div class="container-order__item-text">
-          <p class="container-order__text">Ristretto</p>
-        </div>
-        <div class="container-order__item-strength">
-          <button id="strength1" class="container-order__btn">One</button>
-          <button id="strength2"class="container-order__btn">Two</button>
+        <div class="order-option__item-strength">
+          <button id="strength1" class="order-option__strength">One</button>
+          <button id="strength2"class="order-optionм__strength">Two</button>
         </div>
       </div>
 
-      <div class="container-order__item">
-        <div class="container-order__item-text">
-          <p class="container-order__text">Onsite / Takeaway</p>
+      <div class="order-option__item">
+        <div class="order-option__item-text">
+          <p class="order-option__text">Onsite / Takeaway</p>
         </div>
-        <div class="container-order__item-temperature">
+        <div class="order-optionr__item-temperature">
           <img
           id="hot"
-            class="container-order__temperature"
+            class="order-option__temperature"
             src="${hotBeverage}"/>
           <img
            id="cold"
-            class="container-order__temperature"
+            class="order-option__temperature"
             src="${coldBeverage}"/>
         </div>
       </div>
 
-      <div class="container-order__item">
-        <div class="container-order__item-text">
-          <p class="container-order__text"> Volume, ml </p>
+      <div class="order-option__item">
+        <div class="order-option__item-text">
+          <p class="order-option__text"> Volume, ml </p>
         </div>
-        <div class="container-order__item-cup-size">
-          <img
-            class="container-order__cup-size container-order__cup-size_small"
+        <div class="order-option__item-cup">
+           <div order-option__cup-size" 
+           <div order-option__cup-size" 
+           <div order-option__cup-size" 
+         </div>   
+         
+        /* <div class="order-option__item-cup">
+          <img id="cold"
+            class="order-option__cup-size "
             src="${cupSmall}"/>
           <img
             class="container-order__cup-size container-order__cup-size_medium"
@@ -86,7 +78,7 @@ export default function renderOrderOptionPage(main) {
           <img
             class="container-order__cup-size ccontainer-order__cup-size-big"
             src="${cupBig}"/>  
-        </div>
+        </div> */
       </div>
 
       <div class="container-order__item">
@@ -118,29 +110,48 @@ export default function renderOrderOptionPage(main) {
       </div>
     </footer>`;
 
-  const back = document.querySelector(".back");
-  const card = document.querySelector(".card");
+  const back = document.querySelector(".order-option__arrowBack");
+  const cart = document.querySelector(".order-option__cartBuy");
 
   back.addEventListener("click", () => {
     window.location.href = "/menu";
   })
 
-  card.addEventListener("click", () => {
+  cart.addEventListener("click", () => {
     window.location.href = "/my-oders";
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const one = document.getElementById("strength1");
-    const two = document.getElementById("strength2");
+  const coffeeCard = main.querySelector(".coffeeCard");
+  coffeeCard.insertAdjacentHTML("afterbegin", CoffeeCard);
 
-    function highlightElement(strength) {
-      one.classList.remove('highlight');
-      two.classList.remove('highlight');
-      strength.classList.add('highlight');
-    }
+  const minusBtn = main.querySelector(".order-option__quantity_minus");
+  const numberBtn = main.querySelector(".order-option__quantity_number");
+  const plusBtn = main.querySelector(".order-option__quantity_plus");
 
-    one.addEventListener('click', () => highlightElement(one));
-    two.addEventListener('click', () => highlightElement(two));
-  });
+  function setActiveIcon(activeBtn) {
+    const allIcons = footer.querySelectorAll(".footer__icon svg path");
+    allIcons.forEach((icon) => {
+      icon.style.fill = "var(--svg-color-muted)";
+    });
+
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const one = document.getElementById("strength1");
+      const two = document.getElementById("strength2");
+
+      function highlightElement(strength) {
+        one.classList.remove('highlight');
+        two.classList.remove('highlight');
+        strength.classList.add('highlight');
+      }
+
+      one.addEventListener('click', () => highlightElement(one));
+      two.addEventListener('click', () => highlightElement(two));
+    });
+  }
 }
 
