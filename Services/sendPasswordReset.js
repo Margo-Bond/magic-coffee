@@ -9,6 +9,7 @@ export default async function sendPasswordReset(email) {
     alert("Password reset email sent!");
   } catch (error) {
     console.error("Error sending password reset email:", error);
+    alert("Error sending password reset email: " + error.message);
   }
 }
 
