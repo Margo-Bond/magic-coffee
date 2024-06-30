@@ -4,7 +4,7 @@ import SmartphoneSvg from "@/assets/images/user-icons/phone-number.svg";
 import MessageSvg from "@/assets/images/user-icons/mail.svg";
 import LockSvg from "@/assets/images/user-icons/password.svg";
 import EyeSvg from "@/assets/images/user-icons/visible.svg";
-import setNewUser from "../../../../Services/setNewUser";
+import registerUser from "../../../../Services/registerUser.js";
 
 export default function renderRegistrationPage(main) {
   main.innerHTML = `<div class="registration">
@@ -102,7 +102,8 @@ export default function renderRegistrationPage(main) {
 
   function validateNumber() {
     const numberRegex =
-      /^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\д{2,3}) ?)){5,12}\д$/;
+      /^(\+?\d{1,3}[- ]?)?(\(?\d{1,4}\)?[- ]?)?\d{1,4}([- ]?\d{1,4}){1,3}$/;
+
     if (numberRegex.test(number.value)) {
       number.style.border = "none";
       return true;
@@ -149,10 +150,11 @@ export default function renderRegistrationPage(main) {
   const buttonContainer = document.querySelector(
     ".registration-footer__button-container"
   );
+
   const nextButton = createForwardButton("/startup-screen");
   buttonContainer.append(nextButton);
 
-  nextButton.addEventListener("click", (e) => {
+  nextButton.addEventListener("click", async (e) => {
     e.preventDefault();
 
     if (
@@ -171,7 +173,19 @@ export default function renderRegistrationPage(main) {
       console.log(emailValue);
       console.log(passwordValue);
 
-      setNewUser(nameValue, phoneValue, emailValue, passwordValue);
+      try {
+        const user = await registerUser(
+          nameValue,
+          phoneValue,
+          emailValue,
+          passwordValue
+        );
+        console.log("User registered successfully:", user);
+        window.location.href = "/startup-screen";
+      } catch (err) {
+        console.error("Registration failed: ", err);
+        alert("Registration failed: " + err.message);
+      }
     } else {
       console.log("Validation failed");
     }
