@@ -3,6 +3,7 @@ import createForwardButton from "@/ui/components/forward-button/forward-button.j
 import Message from "@/assets/images/user-icons/mail.svg";
 import Lock from "@/assets/images/user-icons/password.svg";
 import Eye from "@/assets/images/user-icons/visible.svg";
+import sendPasswordReset from "../../../../Services/sendPasswordReset";
 
 export default function renderAuthorizationPage(main) {
   main.innerHTML = `<div class="authorization">
@@ -41,7 +42,7 @@ export default function renderAuthorizationPage(main) {
         </div>  
 
           <p class="authorization__text">
-            <a class="authorization__text-link">Forgot Password?</a>
+            <a class="authorization__text-link" id="forgot-password-link">Forgot Password?</a>
           </p>
         <footer class="authorization__footer">
           <p class="authorization-footer__text">
@@ -68,8 +69,13 @@ export default function renderAuthorizationPage(main) {
     ".authorization-footer__button-container"
   );
 
-  forgottenPassword.addEventListener("click", () => {
-    window.location.href = "/password-remind";
+  forgottenPasswordLink.addEventListener("click", () => {
+    const email = document.querySelector("#email").value;
+    if (!email) {
+      alert("Please enter your email address to reset password.");
+      return;
+    }
+    sendPasswordReset(email);
   });
 
   signInLink.addEventListener("click", () => {
@@ -115,8 +121,10 @@ export default function renderAuthorizationPage(main) {
         window.location.href = "/startup-screen";
       })
       .catch((err) => {
-        console.error("Authentication failed: ", err);
-        alert("Invalid email or password. Please try again.");
+        console.error("Authentication failed:", err);
+        alert(
+          `Invalid email or password. Please try again. Error: ${err.message}`
+        );
       });
   });
 }

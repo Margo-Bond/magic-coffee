@@ -1,4 +1,4 @@
-import sendEmailToUser from "../../../../Services/sendResetEmail";
+import sendPasswordReset from "../../../../Services/sendPasswordReset.js";
 import createForwardButton from "@/ui/components/forward-button/forward-button.js";
 import Message from "@/assets/images/user-icons/mail.svg";
 
@@ -46,7 +46,7 @@ export default function renderPasswordRemindPage(main) {
     e.preventDefault();
     const email = document.querySelector("#email").value;
 
-    sendEmailToUser(email)
+    sendPasswordReset(email)
       .then(() => {
         alert("Password sent to your email address.");
         window.location.href = "/authorization";
