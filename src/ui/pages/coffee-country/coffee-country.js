@@ -81,14 +81,16 @@ export default async function renderCoffeeCountryPage(main) {
     btn.addEventListener('click', () => {
       resetButtons();
       btn.classList.add('selected');
-      const CountryBtnText = btn.querySelector('.country-content__text');
-      const btnTextValue = CountryBtnText.textContent;
+      const countryBtnText = btn.querySelector('.country-content__text');
+      const btnTextValue = countryBtnText.textContent;
       const storedCountry = localStorage.getItem('country');
       if (storedCountry === btnTextValue) {
         localStorage.removeItem('country');
-        btn.classList.remove('selected'); // Удаление класса при повторном нажатии
+        btn.classList.remove('selected');
+        countryBtnText.style.color = 'rgb(0, 24, 51)';
       } else {
         localStorage.setItem('country', btnTextValue);
+        countryBtnText.style.color = 'rgb(10, 132, 255)';
       }
       window.location.href = "/coffee-type";
     });
@@ -97,6 +99,8 @@ export default async function renderCoffeeCountryPage(main) {
   function resetButtons() {
     countryBtns.forEach(btn => {
       btn.classList.remove('selected');
+      const countryBtnText = btn.querySelector('.country-content__text');
+      countryBtnText.style.color = 'rgb(0, 24, 51)';
     })
   }
 }
