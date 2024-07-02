@@ -1,5 +1,5 @@
 import { createHeaderBlack } from "@/ui/components/header/header.js";
-import { signOut } from "Services/signOut.js";
+import { signOut } from "../../../../Services/signOut.js";
 import ProfileName from "@/assets/images/user-icons/profile-name.svg";
 import ProfilePhone from "@/assets/images/user-icons/profile-phone.svg";
 import ProfileEmail from "@/assets/images/user-icons/profile-email.svg";

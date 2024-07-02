@@ -1,3 +1,4 @@
+import getCafes from '../../../../Services/GetCafes.js';
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
 import More from "@/assets/images/geometric-icons/icon-more-grey.svg";
@@ -22,7 +23,7 @@ export default async function renderCoffeeCountryPage(main) {
             </div>
 
             <div class="country-content__wrapper">
-              <p class="country-content__text">Brazil</p>
+              <p class="country-content__text">Colombia</p>
               <div class="country-content__icon">${More}</div>
             </div>
 
@@ -73,6 +74,7 @@ export default async function renderCoffeeCountryPage(main) {
           </div>
         </div>
   `;
+
 
   const countryBtns = document.querySelectorAll('.country-content__wrapper');
 
