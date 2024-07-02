@@ -13,3 +13,4 @@ export default function renderStartupScreenPage(main) {
     window.location.href = "/cafe";
   }, 2000);
 }
+

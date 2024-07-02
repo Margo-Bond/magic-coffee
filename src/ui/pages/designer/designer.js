@@ -10,9 +10,9 @@ import { auth, database, onAuthStateChanged } from "../../../../main.js";
 export default function renderDesignerPage(main) {
   main.innerHTML = `
     <div class="designer-header">
-      <div class="designer-content__svg designer-content__svg-back">${Back}</div>
+      <div class="designer-header__svg designer-header__svg-back">${Back}</div>
       <p class="designer-header__title">Coffee lover assemblage</p>
-      <div class="designer-content__svg designer-content__svg-cart">${Cart}</div>
+      <div class="designer-header__svg designer-header__svg-cart">${Cart}</div>
     </div>
     <div class="designer-content">
       <div class="designer-content__wrapper type">
@@ -103,6 +103,8 @@ export default function renderDesignerPage(main) {
     </footer>
   `;
 
+  const cartSvg = document.querySelector(".designer-header__svg-cart");
+  const backSvg = document.querySelector(".designer-header__svg-back");
   const selectMilk = document.querySelector(".designer-content__select_milk");
   const selectSyrup = document.querySelector(".designer-content__select_syrup");
   const overlay = document.querySelector(".overlay");
@@ -114,8 +116,6 @@ export default function renderDesignerPage(main) {
   const additivesSvg = document.querySelector(
     ".designer-content__svg-additives"
   );
-  const cartSvg = document.querySelector(".designer-content__svg-cart");
-  const backSvg = document.querySelector(".designer-content__svg-back");
   const roastingLight = document.querySelector(
     ".designer-content__svg-roasting_light"
   );
