@@ -104,5 +104,3 @@ export default async function renderCoffeeCountryPage(main) {
     })
   }
 }
-
-renderCoffeeCountryPage(main);
