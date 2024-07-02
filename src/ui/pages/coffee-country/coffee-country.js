@@ -89,6 +89,7 @@ export default async function renderCoffeeCountryPage(main) {
       } else {
         localStorage.setItem('country', btnTextValue);
       }
+      window.location.href = "/coffee-type";
     });
   });
 
