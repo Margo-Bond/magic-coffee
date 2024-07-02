@@ -37,16 +37,19 @@
   font-weight: 400;
   src: url(../fonts/poppins/Poppins-Regular.ttf);
 }
+
 @font-face {
   font-family: "Poppins";
   font-weight: 500;
   src: url(../fonts/poppins/Poppins-Medium.ttf);
 }
+
 @font-face {
   font-family: "Poppins";
   font-weight: 600;
   src: url(../fonts/poppins/Poppins-SemiBold.ttf);
 }
+
 @font-face {
   font-family: "Poppins";
   font-weight: 700;
@@ -58,6 +61,7 @@
   font-weight: 400;
   src: url(../fonts/dm_sans/DMSans_18pt-Regular.ttf);
 }
+
 @font-face {
   font-family: "DM Sans";
   font-weight: 500;
@@ -95,22 +99,26 @@ body {
   max-width: 480px;
   background-color: var(--white-color);
   overflow: hidden;
+
   #header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 var(--space-s);
     width: 100%;
+
     .header__wrapper {
       display: flex;
       gap: 10px;
     }
+
     img {
       margin: 0;
       max-height: 100%;
       width: auto;
     }
   }
+
   #main {
     display: flex;
     flex-direction: column;
