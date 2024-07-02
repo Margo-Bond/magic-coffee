@@ -6,7 +6,7 @@ import ColdBeverage from "@/assets/images/coffee-icons/cold-beverage.svg";
 import HotBeverage from "@/assets/images/coffee-icons/hot-beverage.svg";
 import CupSmall from "@/assets/images/coffee-icons/cup-250.svg";
 import CupMedium from "@/assets/images/coffee-icons/cup-350.svg";
-import CupLardge from "@/assets/images/coffee-icons/cup-450.svg";
+import CupLarge from "@/assets/images/coffee-icons/cup-450.svg";
 
 export default function renderOrderOptionPage(main) {
   main.innerHTML = `
@@ -60,7 +60,7 @@ export default function renderOrderOptionPage(main) {
           <div class="order-option__cup">
             <div id="small" class="order-option__cup-size" >${CupSmall}</div>
             <div id="medium" class="order-option__cup-size" >${CupMedium}</div>
-            <div id="lardge" class="order-option__cup-size" >${CupLardge}</div>
+            <div id="lardge" class="order-option__cup-size" >${CupLarge}</div>
           </div>
           <div class="order-option__cup">
             <div class="order-option__size" >250</div>
@@ -93,7 +93,7 @@ export default function renderOrderOptionPage(main) {
     <footer class="footer">
       <div class="footer__content"
         <div class="footer__text"> Total Amount </div>
-        <div id="calculation">150</div> 
+        <div id="calculation"></div> 
       </div>
       <div class="footer__button">
         <button type="submit" id="button">Next</button>
