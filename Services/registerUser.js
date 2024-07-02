@@ -1,3 +1,5 @@
+//для страницы 3
+
 import {
   getDatabase,
   ref,

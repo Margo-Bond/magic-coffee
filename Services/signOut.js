@@ -1,10 +1,16 @@
-import { getAuth, signOut } from "firebase/auth";
+//страница #17
 
-const auth = getAuth();
-signOut(auth)
-  .then(() => {
-    // Sign-out successful.
-  })
-  .catch((error) => {
-    // An error happened.
-  });
+import { getAuth, signOut } from "../main.js";
+
+export default function handleSignOut() {
+  const auth = getAuth();
+
+  signOut(auth)
+    .then(() => {
+      window.location.href = "/";
+    })
+    .catch((error) => {
+      console.error("Error: ", error);
+      alert("Try signing out later.");
+    });
+}
