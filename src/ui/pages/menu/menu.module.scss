@@ -52,7 +52,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    //width: 375px; //Temporarily
+    height: 100%;
     background-color: var(--accent-color);
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
@@ -110,10 +110,4 @@
             }
         }
     }
-
-    //.footer {
-    // width: 324px;
-    //height: 70px;
-    //background-color: white;
-    // }
 }
