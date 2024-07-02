@@ -1,0 +1,206 @@
+@import "/src/assets/styles/variables.scss";
+@import "/src/assets/styles/templates.scss";
+
+.order-option__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-xm);
+    max-height: 24px;
+    padding: 20px;
+
+    .order-option__arrowBack,
+    .order-option__cartBuy {
+        margin: 0;
+        max-height: 100%;
+        width: auto;
+    }
+
+}
+
+.order-option__coffee-img {
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #F7F8FB;
+    border-radius: 20px;
+
+    .coffeeCard {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 177px;
+        height: 177px;
+    }
+}
+
+.order-option__item {
+    padding: 10px 5px;
+    margin: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    font-family: "DM Sans";
+    font-weight: 500;
+    font-size: 14px;
+    border-bottom: 1px solid #F4F5F7;
+}
+
+.order-option__text {
+    font-family: "DM Sans";
+    font-weight: 500;
+    font-size: 14px;
+    color: #001833;
+    margin-left: 5px;
+}
+
+.order-option__image {
+    width: 152px;
+    height: 121px;
+    margin: 12.5px;
+}
+
+.order-optionr__item-quantity {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    height: 29px;
+    width: 73px;
+    border: 1.2px solid #D8D8D8;
+    border-radius: 50px;
+    margin-right: 20px;
+
+    input {
+        display: flex;
+        text-align: center;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+}
+
+.order-option__item-strength {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    gap: 10px;
+
+}
+
+.order-option__strength {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 29px;
+    width: 73px;
+    background-color: white;
+    cursor: pointer;
+    border: 1.2px solid #D8D8D8;
+    border-radius: 50px;
+}
+
+.order-optionr__item-temperature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 19px;
+    gap: 31px;
+}
+
+.order-option__temperature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    #hot {
+        width: 28px;
+        height: 27px;
+    }
+
+    #cold {
+        width: 20px;
+        height: 34px;
+
+    }
+}
+
+.order-option__item-cup {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-right: 8px;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.order-option__cup {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px;
+    align-items: flex-end;
+    gap: 21px 27px;
+    font-family: "Poppins";
+    font-weight: 500;
+    font-size: 14px;
+
+}
+
+.order-option__item_switch {
+    display: inline-block;
+    position: relative;
+    width: 51px;
+    height: 31px;
+    border-radius: 31px;
+    background-color: #34C759;
+}
+
+.switch__input {
+    height: 0;
+    width: 0;
+    opacity: 0;
+}
+
+.switch__slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background-color: #ccc;
+    transition: 0.4s;
+}
+
+.order-option__item-watch {
+    display: inline-block;
+    position: relative;
+    width: 86px;
+    height: 36px;
+    border-radius: 31px;
+    background-color: #767680;
+    opacity: 0.12;
+}
+
+.order-option__item-watch {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 22px;
+    padding: 5px;
+    gap: 5px;
+}
+
+.footer__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+
+}
