@@ -1,5 +1,5 @@
 .authorization {
-  margin: 21px 41px 48px 26px;
+  margin: 21px 41px 0 26px;
   @include poppins(400);
 
   .authorization__header,
@@ -8,7 +8,7 @@
   }
 
   .authorization__header {
-    margin-top: 71px;
+    margin-top: 43px;
 
     .authorization__header-title {
       font-size: 22px;
@@ -69,6 +69,9 @@
 }
 
 .authorization__footer {
+  margin: 203px 0 53px 14px;
+  display: grid;
+  grid-template: 1fr / repeat(2, auto);
   position: absolute;
   bottom: 30px;
   left: 50%;

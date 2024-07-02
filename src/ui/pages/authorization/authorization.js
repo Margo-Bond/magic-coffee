@@ -52,7 +52,18 @@ export default function renderAuthorizationPage(main) {
         </footer>
         </div>`;
 
-  const forgottenPasswordLink = document.getElementById("forgot-password-link");
+  const visible = document.querySelector(".item-button__img");
+
+  visible.addEventListener("click", () => {
+    const password = document.getElementById("password");
+    if (password.getAttribute("type") === "password") {
+      password.setAttribute("type", "text");
+    } else if (password.getAttribute("type") === "text") {
+      password.setAttribute("type", "password");
+    }
+  });
+
+  const forgottenPassword = document.querySelector(".authorization__text-link");
   const signInLink = document.querySelector(".authorization-footer__text-link");
   const buttonContainer = document.querySelector(
     ".authorization-footer__button-container"
@@ -70,6 +81,32 @@ export default function renderAuthorizationPage(main) {
   signInLink.addEventListener("click", () => {
     window.location.href = "/registration";
   });
+
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+
+  function validateEmail() {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (emailRegex.test(email.value)) {
+      email.style.border = "none";
+      return true;
+    } else {
+      email.style.border = "1px solid red";
+      return false;
+    }
+  }
+
+  function validatePassword() {
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_])[A-Za-z0-9\W_]{5,25}$/;
+    if (passwordRegex.test(password.value)) {
+      password.style.border = "none";
+      return true;
+    } else {
+      password.style.border = "1px solid red";
+      return false;
+    }
+  }
 
   const nextButton = createForwardButton("/startup-screen");
   buttonContainer.append(nextButton);
@@ -89,16 +126,5 @@ export default function renderAuthorizationPage(main) {
           `Invalid email or password. Please try again. Error: ${err.message}`
         );
       });
-  });
-
-  const visible = document.querySelector(".item-button__img");
-
-  visible.addEventListener("click", () => {
-    const passwordField = document.getElementById("password");
-    if (passwordField.getAttribute("type") === "password") {
-      passwordField.setAttribute("type", "text");
-    } else if (passwordField.getAttribute("type") === "text") {
-      passwordField.setAttribute("type", "password");
-    }
   });
 }
