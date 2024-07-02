@@ -23,16 +23,14 @@
     font-size: var(--space-xm);
     color: var(--text-color-base);
   }
+  .designer-header__svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
 }
-.designer-content__svg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-}
-.designer__svg:active {
-  background-color: rgb(198, 197, 197);
-}
+
 .designer-content {
   * {
     margin: 0;
