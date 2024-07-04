@@ -1,6 +1,8 @@
 import Cafe from '@/assets/images/cafe.svg';
 import Forward from '@/assets/images/geometric-icons/icon-more-white.svg';
+import Pin from "../../../assets/images/cafe-pin.png"
 import getCafes from '../../../../Services/GetCafes.js';
+
 
 export default async function renderCafePage(main) {
   main.innerHTML = `
@@ -48,30 +50,73 @@ export default async function renderCafePage(main) {
     </div>
   `;
 
+  document.addEventListener('DOMContentLoaded', () => {
+
+    const container = document.querySelector('.container');
+    //container.setAttribute("id", "map");
 
 
-  // ymaps.ready(function () {
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.width = "100%";
+    container.style.height = "100%";
+    container.style.top = "0";
+    container.style.left = "0";
+    container.style.position = "absolute";
 
-  //   let myMap = new ymaps.Map('map', { center: [53.76276163364722, -1.7446288889196655], zoom: 13 });
+    const main = document.querySelector('main');
+    const mapElem = document.createElement('div');
+    mapElem.setAttribute("id", "map");
+    container.insertBefore(mapElem, main);
 
-  //   let createPlacemark = function (markerId, coord1, coord2, markerImage) {
-  //     let placemark = new ymaps.GeoObject({ geometry: { type: "Point", coordinates: [+coord1, +coord2] } }, {
-  //       iconLayout: 'default#image',
-  //       iconImageHref: markerImage,
-  //       iconImageSize: [35, 46],
-  //       iconImageOffset: [-5, -38]
-  //     });
+    mapElem.style.position = "absolute";
+    mapElem.style.width = "100%";
+    mapElem.style.height = "100%";
 
-  //     myMap.geoObjects.add(placemark);
-  //   }
-
-  //   // Вызов функции для создания метки
-  //   createPlacemark('marker1', 53.79418191555254, -1.7527547668503962, './style/Pin_Restaurant.png');
-  //   createPlacemark('marker2', 53.77187768361212, -1.7307664992830152, './style/Pin_Restaurant.png');
-  //   createPlacemark('marker3', 53.80100601337673, -1.755208439810188, './style/Pin_Restaurant.png');
-  // });
+    main.style.height = "100%";
+    main.style.position = "relative";
+    main.style.zIndex = "2";
 
 
+    const header = document.getElementById('header');
+    header.style.position = "relative";
+    header.style.zIndex = "2";
+    header.style.backgroundColor = "transparent";
+
+
+    console.log(container)
+
+    console.log("Yandex Maps API loading...");
+    ymaps.ready(() => {
+      try {
+        console.log("Yandex Maps API loaded successfully.");
+        const map = new ymaps.Map(document.getElementById('map'), {
+          center: [53.76276163364722, -1.7446288889196655],
+          zoom: 13
+        });
+        console.log("Map initialized:", map);
+        let createPlacemark = function (markerId, coord1, coord2, markerImage) {
+          let placemark = new ymaps.GeoObject({ geometry: { type: "Point", coordinates: [+coord1, +coord2] } }, {
+            iconLayout: 'default#image',
+            iconImageHref: markerImage,
+            iconImageSize: [35, 46],
+            iconImageOffset: [-5, -38]
+          });
+
+          console.log('OK', placemark)
+
+          map.geoObjects.add(placemark);
+        }
+
+        // Вызов функции для создания метки
+        createPlacemark('marker1', 53.79418191555254, -1.7527547668503962, `${Pin}`);
+        createPlacemark('marker2', 53.77187768361212, -1.7307664992830152, `${Pin}`);
+        createPlacemark('marker3', 53.80100601337673, -1.755208439810188, `${Pin}`);
+      } catch (error) {
+        console.error("Error initializing the map:", error);
+      }
+    });
+  });
 
   try {
     const data = await getCafes();
