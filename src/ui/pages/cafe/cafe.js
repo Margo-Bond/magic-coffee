@@ -49,6 +49,30 @@ export default async function renderCafePage(main) {
   `;
 
 
+
+  // ymaps.ready(function () {
+
+  //   let myMap = new ymaps.Map('map', { center: [53.76276163364722, -1.7446288889196655], zoom: 13 });
+
+  //   let createPlacemark = function (markerId, coord1, coord2, markerImage) {
+  //     let placemark = new ymaps.GeoObject({ geometry: { type: "Point", coordinates: [+coord1, +coord2] } }, {
+  //       iconLayout: 'default#image',
+  //       iconImageHref: markerImage,
+  //       iconImageSize: [35, 46],
+  //       iconImageOffset: [-5, -38]
+  //     });
+
+  //     myMap.geoObjects.add(placemark);
+  //   }
+
+  //   // Вызов функции для создания метки
+  //   createPlacemark('marker1', 53.79418191555254, -1.7527547668503962, './style/Pin_Restaurant.png');
+  //   createPlacemark('marker2', 53.77187768361212, -1.7307664992830152, './style/Pin_Restaurant.png');
+  //   createPlacemark('marker3', 53.80100601337673, -1.755208439810188, './style/Pin_Restaurant.png');
+  // });
+
+
+
   try {
     const data = await getCafes();
 
@@ -83,6 +107,8 @@ export default async function renderCafePage(main) {
     });
   });
 }
+
+renderCafePage(main);
 
 
 //Dependencies pt make GetCafes function work
