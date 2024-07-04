@@ -10,9 +10,9 @@ import { auth, database, onAuthStateChanged } from "../../../../main.js";
 export default function renderDesignerPage(main) {
   main.innerHTML = `
     <div class="designer-header">
-      <div class="designer-header__svg designer-header__svg-back">${Back}</div>
+      <div class="designer__svg designer-header__svg-back">${Back}</div>
       <p class="designer-header__title">Coffee lover assemblage</p>
-      <div class="designer-header__svg designer-header__svg-cart">${Cart}</div>
+      <div class="designer__svg designer-header__svg-cart">${Cart}</div>
     </div>
     <div class="designer-content">
       <div class="designer-content__wrapper type">
@@ -27,24 +27,24 @@ export default function renderDesignerPage(main) {
       </div>
       <div class="designer-content__wrapper">
         <p class="designer-content__text">Coffee sort</p>
-        <div class="designer-content__svg designer-content__svg-sort">${More}</div>
+        <div class="designer__svg designer-content__svg-sort">${More}</div>
       </div>
       <div class="designer-content__wrapper">
         <p class="designer-content__text">Roasting</p>
         <div class="roasting">
-          <div class="designer-content__svg designer-content__svg-roasting_light roasting_row ">${Roasting}</div>
-          <div class="designer-content__svg designer-content__svg-roasting_medium roasting_row">${Roasting}${Roasting}</div>
+          <div class="designer__svg designer-content__svg-roasting_light roasting_row ">${Roasting}</div>
+          <div class="designer__svg designer-content__svg-roasting_medium roasting_row">${Roasting}${Roasting}</div>
           <div class="roasting_column designer-content__svg-roasting_strong">
-            <div class="designer-content__svg roasting_below">${Roasting}</div>
-            <div class="designer-content__svg roasting_below">${Roasting}${Roasting}</div>
+            <div class="designer__svg roasting_below">${Roasting}</div>
+            <div class="designer__svg roasting_below">${Roasting}${Roasting}</div>
           </div>
         </div>
       </div>
       <div class="designer-content__wrapper">
         <p class="designer-content__text">Grinding</p>
         <div class="grinding">
-          <div class="designer-content__svg designer-content__svg-grinding_small">${SmallGrinding}</div>
-          <div class="designer-content__svg designer-content__svg-grinding_big">${BigGrinding}</div>
+          <div class="designer__svg designer-content__svg-grinding_small">${SmallGrinding}</div>
+          <div class="designer__svg designer-content__svg-grinding_big">${BigGrinding}</div>
         </div>
       </div>
       <div class="designer-content__wrapper">
@@ -57,16 +57,16 @@ export default function renderDesignerPage(main) {
       </div>
       <div class="designer-content__wrapper">
         <p class="designer-content__text">Additives</p>
-        <div class="designer-content__svg designer-content__svg-additives">${More}</div>
+        <div class="designer__svg designer-content__svg-additives">${More}</div>
       </div>
       <div class="designer-content__wrapper">
         <p class="designer-content__text-muted">Ice</p>
         <div class="ice">
-          <div class="designer-content__svg designer-content__svg-ice_one ice_row">${Ice}</div>
-          <div class="designer-content__svg designer-content__svg-ice_two ice_row">${Ice}${Ice}</div>
+          <div class="designer__svg designer-content__svg-ice_one ice_row">${Ice}</div>
+          <div class="designer__svg designer-content__svg-ice_two ice_row">${Ice}${Ice}</div>
           <div class="ice_column designer-content__svg-ice_three">
-            <div class="designer-content__svg ice_below">${Ice}</div>
-            <div class="designer-content__svg ice_below">${Ice}${Ice}</div>
+            <div class="designer__svg ice_below">${Ice}</div>
+            <div class="designer__svg ice_below">${Ice}${Ice}</div>
           </div>
         </div>
       </div>
@@ -97,7 +97,7 @@ export default function renderDesignerPage(main) {
     <footer class="designer-footer">
       <div class="designer-footer__count-container">
         <p class="designer-footer__count-text">Total Amount</p>
-        <p class="designer-footer__count-currency">BYN<span class="designer-footer__count">9.00</span></p>
+        <p class="designer-footer__count-currency">BYN<span class="designer-footer__count">${count}</span></p>
       </div>
       <button class="designer-footer__button">Next</button>
     </footer>
@@ -169,25 +169,81 @@ export default function renderDesignerPage(main) {
     if (user) {
       slider.addEventListener("input", (event) => {
         const value = event.target.value;
-        console.log("Slider value:", value);
-        sendSliderValue(user.uid, value);
+        localStorage.setItem("coffee_type", value);
       });
     } else {
+      alert("You should sign in.");
       console.log("No user is signed in.");
     }
   });
 
-  function sendSliderValue(userId, value) {
-    set(ref(database, "users/" + userId + "/cart" + "/"), {
-      coffeeType: value,
-    })
-      .then(() => {
-        console.log("Data saved successfully!");
-      })
-      .catch((error) => {
-        console.error("Error saving data:", error);
-      });
+  function setFillColor(element, color) {
+    element.querySelectorAll("svg path, svg rect").forEach((svg) => {
+      svg.setAttribute("fill", color);
+      svg.setAttribute("stroke", color);
+    });
   }
+
+  function checkBlack(element, type, category) {
+    const isBlack = Array.from(
+      element.querySelectorAll("svg path, svg rect")
+    ).some((svg) => svg.getAttribute("fill") === "black");
+
+    if (isBlack) {
+      selectCategory(type, category, "#D8D8D8");
+      localStorage.removeItem(category);
+    } else {
+      selectCategory(type, category, "black");
+    }
+  }
+
+  function selectCategory(type, category, color) {
+    const options = {
+      roasting: ["light", "medium", "strong"],
+      grinding: ["small", "big"],
+      ice: ["one", "two", "three"],
+    };
+
+    options[category].forEach((option) => {
+      const elements = document.querySelectorAll(
+        `.designer-content__svg-${category}_${option}`
+      );
+
+      elements.forEach((element) => {
+        if (option === type) {
+          setFillColor(element, color);
+          if (color === "black") {
+            localStorage.setItem(category, type);
+          }
+        } else {
+          setFillColor(element, "#D8D8D8");
+        }
+      });
+    });
+  }
+
+  roastingLight.addEventListener("click", () =>
+    checkBlack(roastingLight, "light", "roasting")
+  );
+  roastingMedium.addEventListener("click", () =>
+    checkBlack(roastingMedium, "medium", "roasting")
+  );
+  roastingStrong.addEventListener("click", () =>
+    checkBlack(roastingStrong, "strong", "roasting")
+  );
+
+  grindingSmall.addEventListener("click", () =>
+    checkBlack(grindingSmall, "small", "grinding")
+  );
+  grindingBig.addEventListener("click", () =>
+    checkBlack(grindingBig, "big", "grinding")
+  );
+
+  iceOne.addEventListener("click", () => checkBlack(iceOne, "one", "ice"));
+  iceTwo.addEventListener("click", () => checkBlack(iceTwo, "two", "ice"));
+  iceThree.addEventListener("click", () =>
+    checkBlack(iceThree, "three", "ice")
+  );
 
   sortSvg.addEventListener("click", function () {
     window.location.href = "/coffee-country";
@@ -204,55 +260,4 @@ export default function renderDesignerPage(main) {
   cartSvg.addEventListener("click", function () {
     window.location.href = "/current-order";
   });
-
-  const elements = [
-    { element: roastingLight, related: [roastingMedium, roastingStrong] },
-    { element: roastingMedium, related: [roastingLight, roastingStrong] },
-    { element: roastingStrong, related: [roastingLight, roastingMedium] },
-    { element: grindingSmall, related: [grindingBig] },
-    { element: grindingBig, related: [grindingSmall] },
-    { element: iceOne, related: [iceTwo, iceThree] },
-    { element: iceTwo, related: [iceOne, iceThree] },
-    { element: iceThree, related: [iceOne, iceTwo] },
-  ];
-
-  elements.forEach((item) => {
-    item.element.addEventListener("click", () => {
-      if (isElementFilled(item.element)) {
-        resetFillColor(item.element);
-      } else {
-        resetAllColors();
-        changeFillColor(item.element);
-      }
-    });
-  });
-
-  function isElementFilled(element) {
-    const svgElements = element.querySelectorAll("svg path, svg rect");
-    return Array.from(svgElements).some(
-      (svgElement) => svgElement.getAttribute("fill") === "black"
-    );
-  }
-
-  function changeFillColor(element) {
-    const svgElements = element.querySelectorAll("svg path, svg rect");
-    svgElements.forEach((svgElement) => {
-      svgElement.setAttribute("fill", "black");
-      svgElement.setAttribute("stroke", "black");
-    });
-  }
-
-  function resetFillColor(element) {
-    const svgElements = element.querySelectorAll("svg path, svg rect");
-    svgElements.forEach((svgElement) => {
-      svgElement.setAttribute("fill", "#D8D8D8");
-      svgElement.setAttribute("stroke", "#D8D8D8");
-    });
-  }
-
-  function resetAllColors() {
-    elements.forEach((item) => {
-      resetFillColor(item.element);
-    });
-  }
 }

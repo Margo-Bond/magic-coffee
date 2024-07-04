@@ -8,7 +8,7 @@ export default async function renderCoffeeTypePage(main) {
           <div class="coffeetype-header">
             <div class="coffeetype-header__icon back-button">${Back}</div>
             <p class="coffeetype-header__title">Coffee lover assemblage</p>
-            <div class="coffeetype-header__icon">${Cart}</div>
+            <div class="coffeetype-header__icon cart-button">${Cart}</div>
           </div>
 
           <div class="coffeetype-title">
@@ -43,37 +43,44 @@ export default async function renderCoffeeTypePage(main) {
         </div>
   `;
 
-  const backBtn = document.querySelector('.back-button');
+  const backBtn = document.querySelector(".back-button");
+  const cartBtn = document.querySelector(".cart-button");
   backBtn.addEventListener("click", () => {
     window.location.href = "/coffee-country";
   });
+  cartBtn.addEventListener(
+    "click",
+    () => (window.location.href = "/current-order")
+  );
 
-  const coffeeTypeBtns = document.querySelectorAll('.coffeetype-content__wrapper');
+  const coffeeTypeBtns = document.querySelectorAll(
+    ".coffeetype-content__wrapper"
+  );
 
-  coffeeTypeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+  coffeeTypeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
       resetButtons();
-      btn.classList.add('selected');
-      const coffeetypeBtnText = btn.querySelector('.coffeetype-content__text');
+      btn.classList.add("selected");
+      const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
       const btnTextValue = coffeetypeBtnText.textContent;
-      const storedCoffeeType = localStorage.getItem('coffee_type');
+      const storedCoffeeType = localStorage.getItem("coffee_type");
       if (storedCoffeeType === btnTextValue) {
-        localStorage.removeItem('coffee_type');
-        btn.classList.remove('selected');
-        coffeetypeBtnText.style.color = 'rgb(0, 24, 51)';
+        localStorage.removeItem("coffee_type");
+        btn.classList.remove("selected");
+        coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
       } else {
-        localStorage.setItem('coffee_type', btnTextValue);
-        coffeetypeBtnText.style.color = 'rgb(10, 132, 255)';
+        localStorage.setItem("coffee_type", btnTextValue);
+        coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
       }
     });
   });
 
   function resetButtons() {
-    coffeeTypeBtns.forEach(btn => {
-      btn.classList.remove('selected');
-      const coffeetypeBtnText = btn.querySelector('.coffeetype-content__text');
-      coffeetypeBtnText.style.color = 'rgb(0, 24, 51)';
-    })
+    coffeeTypeBtns.forEach((btn) => {
+      btn.classList.remove("selected");
+      const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
+      coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
+    });
   }
 }
 

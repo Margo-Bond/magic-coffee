@@ -6,9 +6,9 @@ export default async function renderCoffeeCountryPage(main) {
   main.innerHTML = `
     <div class="country">
           <div class="country-header">
-            <div class="country-header__icon">${Back}</div>
+            <div class="country-header__icon country-header__icon-back">${Back}</div>
             <p class="country-header__title">Coffee lover assemblage</p>
-            <div class="country-header__icon">${Cart}</div>
+            <div class="country-header__icon country-header__icon-cart">${Cart}</div>
           </div>
 
           <div class="country-title">
@@ -74,33 +74,40 @@ export default async function renderCoffeeCountryPage(main) {
         </div>
   `;
 
+  const countryBtns = document.querySelectorAll(".country-content__wrapper");
 
-  const countryBtns = document.querySelectorAll('.country-content__wrapper');
-
-  countryBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+  countryBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
       resetButtons();
-      btn.classList.add('selected');
-      const countryBtnText = btn.querySelector('.country-content__text');
+      btn.classList.add("selected");
+      const countryBtnText = btn.querySelector(".country-content__text");
       const btnTextValue = countryBtnText.textContent;
-      const storedCountry = localStorage.getItem('country');
+      const storedCountry = localStorage.getItem("country");
       if (storedCountry === btnTextValue) {
-        localStorage.removeItem('country');
-        btn.classList.remove('selected');
-        countryBtnText.style.color = 'rgb(0, 24, 51)';
+        localStorage.removeItem("country");
+        btn.classList.remove("selected");
+        countryBtnText.style.color = "rgb(0, 24, 51)";
       } else {
-        localStorage.setItem('country', btnTextValue);
-        countryBtnText.style.color = 'rgb(10, 132, 255)';
+        localStorage.setItem("country", btnTextValue);
+        countryBtnText.style.color = "rgb(10, 132, 255)";
       }
       window.location.href = "/coffee-type";
     });
   });
 
   function resetButtons() {
-    countryBtns.forEach(btn => {
-      btn.classList.remove('selected');
-      const countryBtnText = btn.querySelector('.country-content__text');
-      countryBtnText.style.color = 'rgb(0, 24, 51)';
-    })
+    countryBtns.forEach((btn) => {
+      btn.classList.remove("selected");
+      const countryBtnText = btn.querySelector(".country-content__text");
+      countryBtnText.style.color = "rgb(0, 24, 51)";
+    });
   }
+
+  const back = document.querySelector(".country-header__icon-back");
+  const cart = document.querySelector(".country-header__icon-cart");
+  back.addEventListener("click", () => (window.location.href = "/designer"));
+  cart.addEventListener(
+    "click",
+    () => (window.location.href = "/current-order")
+  );
 }
