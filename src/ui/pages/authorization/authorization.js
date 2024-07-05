@@ -69,7 +69,7 @@ export default function renderAuthorizationPage(main) {
     ".authorization-footer__button-container"
   );
 
-  forgottenPasswordLink.addEventListener("click", () => {
+  forgottenPassword.addEventListener("click", () => {
     const email = document.querySelector("#email").value;
     if (!email) {
       alert("Please enter your email address to reset password.");
