@@ -264,9 +264,7 @@ export default function renderOrderOptionPage(main) {
         }
       });
     }); 
-    
-    
-    
+  
       onAuthStateChanged(auth, (user) => {
     if (user) {
       slider.addEventListener("span", (event) => {
@@ -278,5 +276,4 @@ export default function renderOrderOptionPage(main) {
       console.log("No user is signed in.");
     }
   });*/
-
 }
