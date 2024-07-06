@@ -107,6 +107,12 @@ export default function renderOrderOptionPage(main) {
   });
 
   ///
+  /*   db.collection('coffee').get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        document.querySelector('.coffeeCard').innerHTML += `<div>${doc.data().name}</div>`;
+      });
+    }); */
+  ///
 
   document.addEventListener('DOMContentLoaded', function () {
     const counter = document.getElementById('buttonCountNumber');
@@ -151,6 +157,14 @@ export default function renderOrderOptionPage(main) {
       resetButtons();
       this.classList.add('active');
     });
+  });
+
+  document.getElementById('strength1').addEventListener('click', function () {
+    localStorage.setItem('mug_option', 'One');
+  });
+
+  document.getElementById('strength2').addEventListener('click', function () {
+    localStorage.setItem('mug_option', 'Two');
   });
 
   ///
