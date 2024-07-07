@@ -38,5 +38,6 @@ function changeSvgFill(header, color) {
   paths.forEach((path) => {
     path.setAttribute("fill", color);
     path.setAttribute("stroke", color);
+    path.setAttribute('stroke-width', '0.1');
   });
 }

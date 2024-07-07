@@ -1,4 +1,3 @@
-
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../../../firebase.js";
 import firebase from "firebase/compat/app";
@@ -16,7 +15,6 @@ import {
 
 const app = firebase.initializeApp(firebaseConfig);
 const database = app.database();
-
 
 export default function renderMenuPage(main) {
   main.innerHTML = `
@@ -100,47 +98,46 @@ export default function renderMenuPage(main) {
       });
   }
 
-  getcafe('cafes/cafe_one/coffees'); //Only error from catch returns!
+  getcafe("cafes/cafe_one/coffees"); //Only error from catch returns!
 
-  const username = document.querySelector('.menu__welcome-username');
-  const getUserName = localStorage.getItem('username');
+  const username = document.querySelector(".menu__welcome-username");
+  const getUserName = localStorage.getItem("username");
   if (getUserName) {
     username.textContent = getUserName;
   } else {
-    console.log('No username is available');
+    console.log("No username is available");
   }
 
-  const coffeeBtns = document.querySelectorAll('.menu__options-elem');
+  const coffeeBtns = document.querySelectorAll(".menu__options-elem");
 
-  coffeeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+  coffeeBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
       resetButtons();
-      btn.classList.add('selected');
-      const coffeeBtnText = btn.querySelector('.menu__options-type');
+      btn.classList.add("selected");
+      const coffeeBtnText = btn.querySelector(".menu__options-type");
       const btnTextValue = coffeeBtnText.textContent;
-      const storedCoffee = localStorage.getItem('coffee');
+      const storedCoffee = localStorage.getItem("coffee");
       if (storedCoffee === btnTextValue) {
-        localStorage.removeItem('coffee');
-        btn.classList.remove('selected'); // Удаление класса при повторном нажатии
+        localStorage.removeItem("coffee");
+        btn.classList.remove("selected"); // Удаление класса при повторном нажатии
       } else {
-        localStorage.setItem('coffee', btnTextValue);
+        localStorage.setItem("coffee", btnTextValue);
       }
     });
   });
 
   function resetButtons() {
-    coffeeBtns.forEach(btn => {
-      btn.classList.remove('selected');
-    })
+    coffeeBtns.forEach((btn) => {
+      btn.classList.remove("selected");
+    });
   }
 
-
-  const americano = document.querySelector('.elem1');
-  const cappuccino = document.querySelector('.elem2')
-  const latte = document.querySelector('.elem3');
-  const flatWhite = document.querySelector('.elem4');
-  const raf = document.querySelector('.elem5')
-  const espresso = document.querySelector('.elem6');
+  const americano = document.querySelector(".elem1");
+  const cappuccino = document.querySelector(".elem2");
+  const latte = document.querySelector(".elem3");
+  const flatWhite = document.querySelector(".elem4");
+  const raf = document.querySelector(".elem5");
+  const espresso = document.querySelector(".elem6");
 
   americano.addEventListener("click", () => {
     window.location.href = "/order-options";
