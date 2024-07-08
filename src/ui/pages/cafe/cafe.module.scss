@@ -1,3 +1,29 @@
+#map-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    .map-header {
+        position: relative;
+        z-index: 2;
+        background-color: transparent;
+    }
+
+    .map-main {
+        position: relative;
+        z-index: 2;
+    }
+
+    #map {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+
 .cafe {
     display: flex;
     height: 100%;
@@ -76,7 +102,7 @@
                     padding: 0 20px;
                     gap: 10px;
 
-                    .cafe_box__button__icon {
+                    .cafe-box__button__icon {
                         display: flex;
                         justify-content: center;
                         align-items: center;
