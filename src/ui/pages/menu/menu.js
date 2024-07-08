@@ -1,153 +1,135 @@
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../../../firebase.js";
-import firebase from "firebase/compat/app";
-import "firebase/compat/database";
+import getCafes from '../../../../Services/GetCafes.js';
 
-import {
-  getDatabase,
-  get,
-  child,
-  update,
-  ref,
-  runTransaction,
-  set,
-} from "firebase/database";
-
-const app = firebase.initializeApp(firebaseConfig);
-const database = app.database();
-
-export default function renderMenuPage(main) {
+export default async function renderMenuPage(main) {
   main.innerHTML = `
-    <div class="menu__welcome-wrap">
-      <div class="menu__welcome-container">
-        <div class="menu__welcome-title">Welcome!</div>
+    <div class="menu">
+      <div class="menu__header">
+        <div class="menu__header__title">
+          <div class="menu__header__title-text">Welcome!</div>
 
-        <div class="menu__welcome-username"></div>
+          <div class="menu__header__title-username"></div>
+        </div>
+
+        <div class="menu__header__button">
+          <div class="menu__header__button-icon"></div>
+        </div>
       </div>
 
-      <div class="menu__welcome-carticon_container">
-        <div class="menu__welcome-carticon_btn"></div>
-      </div>
-    </div>
+      <div class="menu__content__wrapper">
+        <span class="menu__content__title">Select your coffee</span>
 
-    <div class="menu__options-container">
-      <span class="menu__options-title">Select your coffee</span>
-
-      <div class="menu__options-selection">
-        <div class="menu__options-elem elem1">
-          <div class="menu__options-img img-wrap1">
-            <img class="img1" src="./src/assets/images/foto/americano_img.png" alt="Americano">
+        <div class="menu__content">
+          <div class="menu__content__item">
+            <div class="menu__content__item-image">
+              <img class="image" src="" alt="Americano">
+            </div>
+            <p class="menu__content__item-name"></p>
           </div>
-          <p class="menu__options-type cafetype1">Americano</p>
-        </div>
 
-        <div class="menu__options-elem elem2">
-          <div class="menu__options-img img-wrap2">
-            <img class="menu__options-img img2" src="./src/assets/images/foto/cappuccino_img.png" alt="Cappuccino" >
+          <div class="menu__content__item">
+            <div class="menu__content__item-image">
+              <img class="image" src="" alt="Cappuccino">
+            </div>
+            <p class="menu__content__item-name"></p>
           </div>
-          <p class="menu__options-type cafetype2">Cappuccino</p>
-        </div>
 
-        <div class="menu__options-elem elem3">
-          <div class="menu__options-img img-wrap3">
-            <img class="menu__options-img img3" src="./src/assets/images/foto/latte_img.png" alt="Latte">
+          <div class="menu__content__item">
+            <div class="menu__content__item-image">
+              <img class="image" src="" alt="Latte">
+            </div>
+            <p class="menu__content__item-name"></p>
           </div>
           
-          <p class="menu__options-type cafetype3">Latte</p>
-        </div>
-        
-        <div class="menu__options-elem elem4">
-          <div class="menu__options-img img-wrap4">
-            <img class="menu__options-img img4" src="./src/assets/images/foto/flat_white_img.png" alt="Flat White">
+          <div class="menu__content__item">
+            <div class="menu__content__item-image">
+              <img class="image" src="" alt="Flat White">
+            </div>
+            <p class="menu__content__item-name"></p>
           </div>
           
-          <p class="menu__options-type cafetype4">Flat White</p>
-        </div>
-        
-        <div class="menu__options-elem elem5">
-          <div class="menu__options-img img-wrap5">
-            <img class="menu__options-img img5" src="./src/assets/images/foto/raf_img.png" alt="Raf">
+          <div class="menu__content__item">
+            <div class="menu__content__item-image">
+              <img class="image" src="" alt="Raf">
+            </div>
+            <p class="menu__content__item-name"></p>
           </div>
-          
-          <p class="menu__options-type cafetype5">Raf</p>
-        </div>
 
-        <div class="menu__options-elem elem6">
-          <div class="menu__options-img img-wrap6">
-            <img class="menu__options-img img6" src="./src/assets/images/foto/espresso_img.png" alt="Espresso">
+          <div class="menu__content__item">
+            <div class="menu__content__item-image img-wrap6">
+              <img class="image" src="" alt="Espresso">
+            </div>
+            <p class="menu__content__item-name"></p>
           </div>
-          
-          <p class="menu__options-type cafetype6">Espresso</p>
         </div>
       </div>
     </div>
   `;
 
-  async function getcafe(path) {
-    const dbRef = ref(database, path);
-    get(dbRef)
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          console.log(snapshot.val());
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        console.error("Error", error);
-      });
-  }
-
-  getcafe("cafes/cafe_one/coffees"); //Only error from catch returns!
-
-  const username = document.querySelector(".menu__welcome-username");
-  const getUserName = localStorage.getItem("username");
+  const username = document.querySelector(".menu__header__title-username");
+  const getUserName = localStorage.getItem("username"); // Need to put here the right key
   if (getUserName) {
     username.textContent = getUserName;
   } else {
     console.log("No username is available");
   }
 
-  const coffeeBtns = document.querySelectorAll(".menu__options-elem");
+  try {
+    const data = await getCafes();
+    const cafeOne = "Bradford BD1 1PR";
+    const cafeTwo = "Bradford BD4 7SJ";
+    const cafeThree = "Bradford BD1 4RN";
+    const getAddress = localStorage.getItem('address');
+
+    //let selectedCafe = null; //variable for chosen cafe
+
+    // if (getAddress === cafeOne) {
+    //   selectedCafe = data.cafe_one.coffees;
+    // } else if (getAddress === cafeTwo) {
+    //   selectedCafe = data.cafe_two.coffees;
+    // } else if (getAddress === cafeThree) {
+    //   selectedCafe = data.cafe_three.coffees;
+    // }
+
+    const selectedCafe = data.cafe_one.coffees;
+
+    if (selectedCafe) {
+      const coffeeTypes = Object.keys(selectedCafe);
+      console.log(coffeeTypes)
+      const menuContentItems = document.querySelectorAll('.menu__content__item');
+
+      menuContentItems.forEach((menuItem, index) => {
+        if (coffeeTypes[index]) {
+          const coffeeType = coffeeTypes[index];
+          const coffeeData = selectedCafe[coffeeType];
+
+          const imageElement = menuItem.querySelector('.image');
+          const itemName = menuItem.querySelector('.menu__content__item-name');
+
+          if (imageElement) {
+            imageElement.src = coffeeData.image_url;
+            imageElement.alt = coffeeData.coffee_type;
+          }
+
+          if (itemName) {
+            itemName.textContent = coffeeData.coffee_type;
+          }
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching coffee data:", error);
+  }
+
+  const coffeeBtns = document.querySelectorAll(".menu__content__item");
 
   coffeeBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      resetButtons();
-      btn.classList.add("selected");
-      const coffeeBtnText = btn.querySelector(".menu__options-type");
+      const coffeeBtnText = btn.querySelector(".menu__content__item-name");
       const btnTextValue = coffeeBtnText.textContent;
-      const storedCoffee = localStorage.getItem("coffee");
-      if (storedCoffee === btnTextValue) {
-        localStorage.removeItem("coffee");
-        btn.classList.remove("selected"); // Удаление класса при повторном нажатии
-      } else {
-        localStorage.setItem("coffee", btnTextValue);
-      }
-    });
-  });
-
-  function resetButtons() {
-    coffeeBtns.forEach((btn) => {
-      btn.classList.remove("selected");
-    });
-  }
-
-  const americano = document.querySelector(".elem1");
-  const cappuccino = document.querySelector(".elem2");
-  const latte = document.querySelector(".elem3");
-  const flatWhite = document.querySelector(".elem4");
-  const raf = document.querySelector(".elem5");
-  const espresso = document.querySelector(".elem6");
-
-  americano.addEventListener("click", () => {
-    window.location.href = "/order-options";
-  });
-
-  cappuccino.addEventListener("click", () => {
-    window.location.href = "/order-options";
-  });
-
-  latte.addEventListener("click", () => {
-    window.location.href = "/order-options";
+      localStorage.setItem("coffee_type", btnTextValue);
+      window.location.href = "/order-options";
+    })
   });
 }
+
+renderMenuPage(main)
