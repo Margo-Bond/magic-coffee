@@ -1,0 +1,143 @@
+#map-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    .map-header {
+        position: relative;
+        z-index: 2;
+        background-color: transparent;
+    }
+
+    .map-main {
+        position: relative;
+        z-index: 2;
+    }
+
+    #map {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.cafe {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .cafe__button {
+        padding: 0 28px;
+
+        .cafe__button__icon {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background-image: url('@/assets/images/geometric-icons/back.svg');
+            background-color: transparent;
+            cursor: pointer;
+        }
+    }
+
+    .cafe__box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 300px;
+        border-top-right-radius: 30px;
+        border-top-left-radius: 30px;
+
+        .cafe-box__element-title {
+            display: flex;
+            z-index: 1;
+            justify-content: center;
+            width: 100%;
+            height: 110px;
+            border-top-right-radius: 30px;
+            border-top-left-radius: 30px;
+            background: var(--accent-color);
+
+            .cafe-box__element-text {
+                padding: 30px 0;
+                margin: 0;
+                color: var(--white-color);
+                @include poppins(600);
+                font-size: var(--spase-m);
+            }
+        }
+
+        .cafe-box__element-wrap {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 220px;
+            z-index: 2;
+            margin-top: -30px;
+            border-top-right-radius: 30px;
+            border-top-left-radius: 30px;
+            background-color: var(--white-color);
+
+            .cafe-box__element {
+                display: grid;
+                width: 100%;
+                gap: 10px;
+                grid-template-columns: 1fr;
+                justify-items: center;
+                padding: 0 28px;
+
+                .cafe-box__button {
+                    display: grid;
+                    align-items: center;
+                    grid-template-columns: auto 1fr auto;
+                    border-radius: 15px;
+                    height: 50px;
+                    width: 100%;
+                    background: var(--button-color-gradient);
+                    cursor: pointer;
+                    padding: 0 20px;
+                    gap: 10px;
+
+                    .cafe-box__button__icon {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 21px;
+                        height: 21px;
+
+                        svg {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+
+                    .cafe-box__button__title {
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        color: var(--white-color);
+                        @include poppins(600);
+                        font-size: var(--spase-m);
+                    }
+
+                    .cafe-box__button__arrow {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 16px;
+                        height: 16px;
+
+                        svg {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

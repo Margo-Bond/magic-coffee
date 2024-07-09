@@ -1,0 +1,36 @@
+@import "../../../assets/styles/variables.scss";
+@import "../../../assets/styles/templates.scss";
+
+.additives-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--space-l);
+  padding: 0 var(--space-l);
+  margin-bottom: var(--space-l);
+
+  .additives-header__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+  }
+  .additives-header__title {
+    @include poppins(500);
+    font-size: var(--space-xm);
+    color: var(--text-color-base);
+  }
+  .additives-header__svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+  }
+  .additives-header__subtitle {
+    font-size: var(--space-xm);
+    color: var(--text-color-base);
+    margin: 0;
+    margin-left: var(--space-xxl);
+    @include poppins(500);
+  }
+}

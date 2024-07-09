@@ -1,0 +1,301 @@
+@import "/src/assets/styles/variables.scss";
+@import "/src/assets/styles/templates.scss";
+
+.order-option__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--space-xm);
+    max-height: 24px;
+    padding: 20px;
+
+    .order-option__arrowBack,
+    .order-option__cartBuy {
+        margin: 0;
+        max-height: 100%;
+        width: auto;
+    }
+
+}
+
+.order-option__coffee-img {
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #F7F8FB;
+    border-radius: 20px;
+
+    .coffeeCard {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 177px;
+        height: 177px;
+    }
+}
+
+.order-option__item {
+    padding: 14px 5px;
+    margin: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    font-family: "DM Sans";
+    font-weight: 500;
+    font-size: 14px;
+    border-bottom: 1px solid #F4F5F7;
+
+    &:last-of-type {
+        border-bottom: none;
+
+    }
+}
+
+.order-option__text {
+    font-family: "DM Sans";
+    font-weight: 500;
+    font-size: 14px;
+    color: #001833;
+    margin-left: 5px;
+}
+
+.order-option__image {
+    width: 152px;
+    height: 121px;
+    margin: 12.5px;
+}
+
+.order-optionr__item-quantity {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    height: 29px;
+    width: 73px;
+    border: 1.2px solid #D8D8D8;
+    border-radius: 50px;
+    margin-right: 20px;
+
+    input {
+        display: flex;
+        text-align: center;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+}
+
+.order-option__item-strength {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+    gap: 10px;
+
+}
+
+.order-option__strength {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 29px;
+    width: 73px;
+    background-color: white;
+    cursor: pointer;
+    border: 1.2px solid #D8D8D8;
+    border-radius: 50px;
+}
+
+.active {
+    border: 1.2px solid black;
+}
+
+.order-option__where {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 19px;
+    gap: 31px;
+
+    .order-option__svg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        #onsite {
+            width: 28px;
+            height: 27px;
+        }
+
+        #takeaway {
+            width: 20px;
+            height: 34px;
+
+        }
+    }
+}
+
+.order-option__item-cup {
+    display: flex;
+    justify-content: center;
+    margin-right: 14px;
+    align-items: flex-end;
+    gap: 28px;
+}
+
+.order-option__cup {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: "Poppins";
+    font-weight: 500;
+    font-size: 14px;
+
+    .order-option__text-size {
+        margin-top: 5px;
+    }
+}
+
+.order-option__item_switch {
+    display: inline-block;
+    position: relative;
+    width: 51px;
+    height: 31px;
+    border-radius: 31px;
+    padding: 16px 0;
+
+    .checkbox {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    text-align: center;
+    height: 27px;
+    width: 27px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+input:checked+.slider {
+    background-color: #34C759;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.order-option__item-watch {
+    border-radius: 5px;
+    display: none;
+    background-color: #767680 0.12;
+    width: 86px;
+    height: 36px;
+    border-radius: 5px;
+    font-size: 22px;
+    padding: 5px;
+
+    .order-option__watch {
+        cursor: pointer;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: none;
+        font-family: "DM Sans";
+        text-decoration: black;
+        width: 86px;
+        height: 36px;
+        border-radius: 5px;
+        font-size: 22px;
+        letter-spacing: 2px;
+    }
+
+    .order-option__watch::-webkit-calendar-picker-indicator {
+        display: none;
+    }
+}
+
+.order-option-footer {
+    display: flex;
+    flex-direction: column;
+    margin: 0 var(--space-xl);
+    gap: var(--space-m);
+    left: 0;
+    right: 0;
+    bottom: 30px;
+    width: calc(100% - 2 * var(--space-xl));
+    box-sizing: border-box;
+
+    .order-option-footer__count-container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        width: 100%;
+
+        * {
+            margin: 0;
+        }
+
+        .order-option-footer__count-text {
+            font-size: var(--space-xm);
+            color: var(--text-color-base);
+            @include poppins(500);
+        }
+
+        .order-option-footer__count-currency {
+            font-size: var(--space-xm);
+            color: var(--text-color-base);
+            @include poppins(600);
+        }
+    }
+
+    .order-option-footer__button {
+        width: 100%;
+        height: 46px;
+        font-size: var(--space-m);
+        color: var(--white-color);
+        border: none;
+        border-radius: 30px;
+        background-color: var(--accent-color);
+        @include poppins(600);
+    }
+
+    .order-option-footer__button:active {
+        background-color: rgba(50, 74, 89, 0.9);
+        transform: scale(0.95);
+    }
+}
