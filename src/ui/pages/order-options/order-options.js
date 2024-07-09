@@ -1,7 +1,26 @@
 
+/* 
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "../../../../firebase.js";
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
+
+import {
+  getDatabase,
+  get,
+  child,
+  update,
+  ref,
+  runTransaction,
+  set,
+} from "firebase/database";
+
+const app = firebase.initializeApp(firebaseConfig);
+const database = app.database();
+import { auth, onAuthStateChanged } from "../../../../main.js"; */
+
 import ArrowBack from "@/assets/images/geometric-icons/back.svg";
 import CartBuy from "@/assets/images/cart.svg";
-import CoffeeCard from "@/assets/images/coffee-cup.svg";
 import Takeaway from "@/assets/images/coffee-icons/cold-beverage.svg";
 import Onsite from "@/assets/images/coffee-icons/hot-beverage.svg";
 import CupSmall from "@/assets/images/coffee-icons/cup-250.svg";
@@ -18,12 +37,12 @@ export default function renderOrderOptionPage(main) {
       </div>
 
       <div class="order-option__coffee-img">
-        <div class="coffeeCard">${CoffeeCard}</div>
+        <div class="coffeeCard"></div>
       </div>
 
-      <div class="order-option__item">
+      <div class="order-option__item item1">
         <div class="order-option__item-text">
-          <p class="order-option__text">Cuppucino</p>
+          <p class="order-option__coffee"></p>
         </div>
         <div class="order-optionr__item-quantity" id="counter"> 
           <input type="button"  class="order-option__quantity" id="buttonCountMinus" value="-">
@@ -32,17 +51,17 @@ export default function renderOrderOptionPage(main) {
         </div>
       </div>
 
-      <div class="order-option__item">
+      <div class="order-option__item item2">
         <div class="order-option__item-text">
           <p class="order-option__text">Ristretto</p>
         </div>
         <div class="order-option__item-strength">
-          <button id="strength1" class="order-option__strength">One</button>
-          <button id="strength2"class="order-option__strength">Two</button>
+          <button id="strength1" class="order-option__strength" data-strength="One">One</button>
+          <button id="strength2" class="order-option__strength" data-strength="Two">Two</button>
         </div>
       </div>
 
-      <div class="order-option__item">
+      <div class="order-option__item item3">
         <div class="order-option__item-text">
           <p class="order-option__text">Onsite / Takeaway</p>
         </div>
@@ -52,7 +71,7 @@ export default function renderOrderOptionPage(main) {
         </div>
       </div>
 
-      <div class="order-option__item">
+      <div class="order-option__item item4">
         <div class="order-option__item-text">
           <p class="order-option__text"> Volume, ml </p>
         </div>
@@ -72,7 +91,7 @@ export default function renderOrderOptionPage(main) {
         </div>  
       </div>
 
-      <div class="order-option__item">
+      <div class="order-option__item item5">
         <div class="order-option__item-text">
           <p class="order-option__text">Prepare by a certain time today?</p>
         </div>
@@ -82,15 +101,19 @@ export default function renderOrderOptionPage(main) {
             <span class="slider round"></span>
           </label>
         </div>
+      </div>
+      <div class="order-option__item item6">
+        <div class="order-option__empty"></div>
         <div class="order-option__item-watch">
           <input type="time" id="time" class="order-option__watch" value="00:00" />
         </div>
+      </div>
     </div>
 
     <footer class="order-option-footer">
       <div class="order-option-footer__count-container"
         <p class="order-option-footer__count-text"> Total Amount </p>
-        <p class="order-option-footer__count-currency">BYN <span id="multipliedValue" class="order-option-footer__count">1</span></p>
+        <p class="order-option-footer__count-currency">BYN <span id="multipliedValue" class="order-option-footer__count">3.00</span></p>
       </div>
       <button class="order-option-footer__button">Next</button>
     </footer>`;
@@ -107,41 +130,62 @@ export default function renderOrderOptionPage(main) {
   });
 
   ///
-  /*   db.collection('coffee').get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        document.querySelector('.coffeeCard').innerHTML += `<div>${doc.data().name}</div>`;
-      });
-    }); */
+  /*   async function getcafe(path) {
+      const dbRef = ref(database, path);
+      get(dbRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            console.log(snapshot.val());
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error("Error", error);
+        });
+    } */
   ///
 
-  document.addEventListener('DOMContentLoaded', function () {
-    const counter = document.getElementById('buttonCountNumber');
-    const buttonPlus = document.getElementById('buttonCountPlus');
-    const buttonMinus = document.getElementById('buttonCountMinus');
-    let count = 1;
-    const minCount = 1;
-    const multiplier = 3;
-
-    function updateCount(newCount) {
-      count = newCount;
-      counter.textContent = count;
-      document.getElementById('multipliedValue').textContent = count * multiplier;
-    }
-
-    buttonPlus.addEventListener('click', function () {
-      if (count) {
-        updateCount(count + 1);
+  /*   onAuthStateChanged(auth, (user) => {
+      if (user) {
+        slider.addEventListener("input", (event) => {
+          const value = event.target.value;
+          localStorage.setItem("coffee_type", value);
+        });
+      } else {
+        alert("You should sign in.");
+        console.log("No user is signed in.");
       }
-    });
+    }); */
 
-    buttonMinus.addEventListener('click', function () {
-      if (count > minCount) {
-        updateCount(count - 1);
-      }
-    });
+  ///
 
-    updateCount(count);
+
+  const counter = document.getElementById('buttonCountNumber');
+  const buttonPlus = document.getElementById('buttonCountPlus');
+  const buttonMinus = document.getElementById('buttonCountMinus');
+  let count = 1;
+  const minCount = 1;
+  const multiplier = 3;
+
+  function updateCount(newCount) {
+    count = newCount;
+    counter.textContent = count;
+    const totalAmount = document.getElementById('multipliedValue').textContent = (count * multiplier) + '.00';
+    localStorage.setItem('quantity', count.toString());
+    localStorage.setItem('order_price', totalAmount);
+  }
+
+  buttonPlus.addEventListener('click', function () {
+    updateCount(count + 1);
   });
+
+  buttonMinus.addEventListener('click', function () {
+    if (count > minCount) {
+      updateCount(count - 1);
+    }
+  });
+
 
   ///
 
@@ -156,16 +200,19 @@ export default function renderOrderOptionPage(main) {
     button.addEventListener('click', function () {
       resetButtons();
       this.classList.add('active');
+      localStorage.setItem('ristretto', this.getAttribute('data-strength'));
     });
   });
 
-  document.getElementById('strength1').addEventListener('click', function () {
-    localStorage.setItem('mug_option', 'One');
-  });
+  ///
 
-  document.getElementById('strength2').addEventListener('click', function () {
-    localStorage.setItem('mug_option', 'Two');
+  const timeInput = document.getElementById('time');
+  timeInput.addEventListener('change', function () {
+    localStorage.setItem('order_time', this.value);
   });
+  if (localStorage.getItem('order_time')) {
+    timeInput.value = localStorage.getItem('order_time');
+  }
 
   ///
 
@@ -190,7 +237,7 @@ export default function renderOrderOptionPage(main) {
 
     if (isBlack) {
       selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(category);
+      localStorage.removeItem(category === 'where' ? 'mug_option' : 'volume');
     } else {
       selectCategory(type, category, "black");
     }
@@ -201,6 +248,7 @@ export default function renderOrderOptionPage(main) {
       where: ["onsite", "takeaway"],
       cup: ["small", "medium", "large"],
     };
+    const storageKey = category === 'where' ? 'mug_option' : 'volume';
     options[category].forEach((option) => {
       const elements = document.querySelectorAll(
         `.order-option__svg-${category}_${option}`
@@ -210,7 +258,7 @@ export default function renderOrderOptionPage(main) {
         if (option === type) {
           setFillColor(element, color);
           if (color === "black") {
-            localStorage.setItem(category, type);
+            localStorage.setItem(storageKey, type);
           }
         } else {
           setFillColor(element, "#D8D8D8");
@@ -218,6 +266,7 @@ export default function renderOrderOptionPage(main) {
       });
     });
   }
+
   onsite.addEventListener("click", () =>
     checkBlack(onsite, "onsite", "where")
   );
@@ -227,7 +276,6 @@ export default function renderOrderOptionPage(main) {
   cupSizeSmall.addEventListener("click", () =>
     checkBlack(cupSizeSmall, "small", "cup")
   );
-
   cupSizeMedium.addEventListener("click", () =>
     checkBlack(cupSizeMedium, "medium", "cup")
   );
@@ -235,45 +283,51 @@ export default function renderOrderOptionPage(main) {
     checkBlack(cupSizeLarge, "large", "cup")
   );
 
-  ///
-  document.addEventListener('DOMContentLoaded', function () {
-    const toggle = document.getElementById('togBtn');
-    const watch = document.querySelector('.order-option__item-watch');
-
-    toggle.addEventListener('change', function () {
-      if (this.checked) {
-        watch.style.display = 'flex';
+  document.querySelectorAll('.order-option__cup').forEach(textSize => {
+    textSize.addEventListener('click', function () {
+      let currentText = this.querySelector('.order-option__text-size');
+      if (currentText.style.color === 'black') {
+        currentText.style.color = '#D8D8D8';
       } else {
-        watch.style.display = 'none';
+        document.querySelectorAll('.order-option__text-size').forEach(text => {
+          text.style.color = '#D8D8D8';
+        });
+        currentText.style.color = 'black';
       }
     });
   });
 
-  /*   document.addEventListener('DOMContentLoaded', function () {
-      const toggleButton = document.getElementById('togBtn');
-  
-      toggleButton.addEventListener('change', function () {
-        if (this.checked) {
-     time.addEventListener("input", (event) => {
-        const value = event.target.value;
-        localStorage.setItem("coffee_type", value);
-      });
-        } else {
-          console.log("Toggled off");
-          // Добавьте сюда код, который должен выполняться при выключении тоглера
-        }
-      });
-    }); 
-  
-      onAuthStateChanged(auth, (user) => {
-    if (user) {
-      slider.addEventListener("span", (event) => {
-        const value = event.target.value;
-        localStorage.setItem("coffee_type", value);
-      });
+
+
+
+  ///
+  const toggle = document.getElementById('togBtn');
+  const watch = document.querySelector('.order-option__item-watch');
+
+  toggle.addEventListener('change', function () {
+    if (this.checked) {
+      watch.style.display = 'flex';
     } else {
-      alert("You should sign in.");
-      console.log("No user is signed in.");
+      watch.style.display = 'none';
     }
-  });*/
+  });
+
+  const next = document.querySelector(".order-option-footer__button");
+
+  next.addEventListener("click", () => {
+    window.location.href = "/designer";
+  });
+
 }
+
+/* onAuthStateChanged(auth, (user) => {
+  if (user) {
+    slider.addEventListener("span", (event) => {
+      const value = event.target.value;
+      localStorage.setItem("coffee_type", value);
+    });
+  } else {
+    alert("You should sign in.");
+    console.log("No user is signed in.");
+  }
+}); */
