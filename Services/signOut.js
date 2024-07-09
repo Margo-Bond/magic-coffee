@@ -3,7 +3,7 @@
 import { getAuth, signOut } from "../main.js";
 
 const auth = getAuth();
-export default signOut(auth)
+signOut(auth)
   .then(() => {
     window.location.href = "/";
   })

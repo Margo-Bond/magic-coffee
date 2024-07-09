@@ -1,5 +1,5 @@
 import { createHeaderBlack } from "@/ui/components/header/header.js";
-import { signOut } from "Services/signOut.js";
+//import { signOut } from "@/Services/signOut.js";
 import ProfileName from "@/assets/images/user-icons/profile-name.svg";
 import ProfilePhone from "@/assets/images/user-icons/profile-phone.svg";
 import ProfileEmail from "@/assets/images/user-icons/profile-email.svg";
@@ -94,7 +94,7 @@ export default function renderProfilePage(main) {
   const logOut = document.getElementById("logOut");
   logOut.addEventListener("click", () => {
     e.preventDefault();
-    signOut();
+    //signOut();
   });
 
   const menu = document.getElementById("button-menu");
