@@ -18,26 +18,32 @@ export default async function renderCoffeeTypePage(main) {
           <div class="coffeetype-content">
             <div class="coffeetype-content__wrapper">
               <p class="coffeetype-content__text">Santos</p>
+              <div class="coffeetype-content__icon"></div>
             </div>
 
             <div class="coffeetype-content__wrapper">
               <p class="coffeetype-content__text">Bourbon santos</p>
+              <div class="coffeetype-content__icon"></div>
             </div>
 
             <div class="coffeetype-content__wrapper">
               <p class="coffeetype-content__text">Minas</p>
+              <div class="coffeetype-content__icon"></div>
             </div>
 
             <div class="coffeetype-content__wrapper">
               <p class="coffeetype-content__text">Rio</p>
+              <div class="coffeetype-content__icon"></div>
             </div>
 
             <div class="coffeetype-content__wrapper">
               <p class="coffeetype-content__text">Canilon</p>
+              <div class="coffeetype-content__icon"></div>
             </div>
 
             <div class="coffeetype-content__wrapper">
               <p class="coffeetype-content__text">Flat beat</p>
+              <div class="coffeetype-content__icon"></div>
             </div>
           </div>
         </div>
