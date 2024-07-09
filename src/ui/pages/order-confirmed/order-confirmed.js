@@ -1,5 +1,5 @@
 import OrderedSvg from "@/assets/images/ordered.svg";
-import getCafes from "../../../../Services/GetCafes.js";
+import { getCafes } from "../../../../Services/GetCafes.js";
 
 const nameUser = "Dasha";
 const timeOrder = "18:10";

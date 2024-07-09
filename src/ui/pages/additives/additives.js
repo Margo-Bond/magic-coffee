@@ -1,7 +1,7 @@
 import CartSvg from "@/assets/images/cart.svg";
 import BackSvg from "@/assets/images/geometric-icons/back.svg";
 import Chosen from "@/assets/images/geometric-icons/chosen.svg";
-import getCafes from "../../../../Services/GetCafes";
+import { getCafes } from "../../../../Services/GetCafes";
 
 export default function renderAdditivesPage(main) {
   main.innerHTML = `
