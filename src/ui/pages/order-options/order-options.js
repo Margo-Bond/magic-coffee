@@ -1,4 +1,4 @@
-import getCafes from '../../../../Services/GetCafes.js';
+//import getCafes from "../../../../Services/GetCafes.js";
 import ArrowBack from "@/assets/images/geometric-icons/back.svg";
 import CartBuy from "@/assets/images/cart.svg";
 import Takeaway from "@/assets/images/coffee-icons/cold-beverage.svg";
@@ -29,6 +29,7 @@ if (!getApps().length) {
 
 const database = getDatabase(app);
 
+/*
 async function getCafes() {
   const dbRef = ref(database, "cafes");
   const snapshot = await get(dbRef);
@@ -38,7 +39,7 @@ async function getCafes() {
     console.log("No data available");
     return {};
   }
-}
+}*/
 
 export default async function renderOrderOptionPage(main) {
   main.innerHTML = `
@@ -136,7 +137,7 @@ export default async function renderOrderOptionPage(main) {
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem('address');
+    const getAddress = localStorage.getItem("address");
 
     let selectedCafe = null;
 
@@ -150,7 +151,9 @@ export default async function renderOrderOptionPage(main) {
 
     if (selectedCafe) {
       const priceOptions = Object.keys(selectedCafe);
-      const orderPriceCount = document.querySelector(".order-option-footer__count");
+      const orderPriceCount = document.querySelector(
+        ".order-option-footer__count"
+      );
 
       priceOptions.forEach((priceOption) => {
         const coffeeData = selectedCafe[priceOption];
@@ -180,10 +183,9 @@ export default async function renderOrderOptionPage(main) {
 
   ///
 
-
-  const counter = document.getElementById('buttonCountNumber');
-  const buttonPlus = document.getElementById('buttonCountPlus');
-  const buttonMinus = document.getElementById('buttonCountMinus');
+  const counter = document.getElementById("buttonCountNumber");
+  const buttonPlus = document.getElementById("buttonCountPlus");
+  const buttonMinus = document.getElementById("buttonCountMinus");
   let count = 1;
   const minCount = 1;
   const multiplier = 1;
@@ -191,16 +193,18 @@ export default async function renderOrderOptionPage(main) {
   function updateCount(newCount) {
     count = newCount;
     counter.textContent = count;
-    const totalAmount = document.getElementById('multipliedValue').textContent = (count * multiplier) + '.00';
-    localStorage.setItem('quantity', count.toString());
-    localStorage.setItem('order_price', totalAmount);
+    const totalAmount = (document.getElementById(
+      "multipliedValue"
+    ).textContent = count * multiplier + ".00");
+    localStorage.setItem("quantity", count.toString());
+    localStorage.setItem("order_price", totalAmount);
   }
 
-  buttonPlus.addEventListener('click', function () {
+  buttonPlus.addEventListener("click", function () {
     updateCount(count + 1);
   });
 
-  buttonMinus.addEventListener('click', function () {
+  buttonMinus.addEventListener("click", function () {
     if (count > minCount) {
       updateCount(count - 1);
     }
@@ -241,19 +245,19 @@ export default async function renderOrderOptionPage(main) {
     button.addEventListener("click", function () {
       resetButtons();
 
-      this.classList.add('active');
-      localStorage.setItem('ristretto', this.getAttribute('data-strength'));
+      this.classList.add("active");
+      localStorage.setItem("ristretto", this.getAttribute("data-strength"));
     });
   });
 
   ///
 
-  const timeInput = document.getElementById('time');
-  timeInput.addEventListener('change', function () {
-    localStorage.setItem('order_time', this.value);
+  const timeInput = document.getElementById("time");
+  timeInput.addEventListener("change", function () {
+    localStorage.setItem("order_time", this.value);
   });
-  if (localStorage.getItem('order_time')) {
-    timeInput.value = localStorage.getItem('order_time');
+  if (localStorage.getItem("order_time")) {
+    timeInput.value = localStorage.getItem("order_time");
   }
 
   const onsite = document.querySelector(".order-option__svg-where_onsite");
@@ -277,7 +281,7 @@ export default async function renderOrderOptionPage(main) {
 
     if (isBlack) {
       selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(category === 'where' ? 'mug_option' : 'volume');
+      localStorage.removeItem(category === "where" ? "mug_option" : "volume");
     } else {
       selectCategory(type, category, "black");
     }
@@ -288,7 +292,7 @@ export default async function renderOrderOptionPage(main) {
       where: ["onsite", "takeaway"],
       cup: ["small", "medium", "large"],
     };
-    const storageKey = category === 'where' ? 'mug_option' : 'volume';
+    const storageKey = category === "where" ? "mug_option" : "volume";
     options[category].forEach((option) => {
       const elements = document.querySelectorAll(
         `.order-option__svg-${category}_${option}`
@@ -306,9 +310,7 @@ export default async function renderOrderOptionPage(main) {
       });
     });
   }
-  onsite.addEventListener("click", () =>
-    checkBlack(onsite, "onsite", "where")
-  );
+  onsite.addEventListener("click", () => checkBlack(onsite, "onsite", "where"));
   takeaway.addEventListener("click", () =>
     checkBlack(takeaway, "takeaway", "where")
   );
@@ -322,33 +324,31 @@ export default async function renderOrderOptionPage(main) {
     checkBlack(cupSizeLarge, "large", "cup")
   );
 
-
-  document.querySelectorAll('.order-option__cup').forEach(textSize => {
-    textSize.addEventListener('click', function () {
-      let currentText = this.querySelector('.order-option__text-size');
-      if (currentText.style.color === 'black') {
-        currentText.style.color = '#D8D8D8';
+  document.querySelectorAll(".order-option__cup").forEach((textSize) => {
+    textSize.addEventListener("click", function () {
+      let currentText = this.querySelector(".order-option__text-size");
+      if (currentText.style.color === "black") {
+        currentText.style.color = "#D8D8D8";
       } else {
-        document.querySelectorAll('.order-option__text-size').forEach(text => {
-          text.style.color = '#D8D8D8';
-        });
-        currentText.style.color = 'black';
+        document
+          .querySelectorAll(".order-option__text-size")
+          .forEach((text) => {
+            text.style.color = "#D8D8D8";
+          });
+        currentText.style.color = "black";
       }
     });
   });
 
-
-
-
   ///
-  const toggle = document.getElementById('togBtn');
-  const watch = document.querySelector('.order-option__item-watch');
+  const toggle = document.getElementById("togBtn");
+  const watch = document.querySelector(".order-option__item-watch");
 
-  toggle.addEventListener('change', function () {
+  toggle.addEventListener("change", function () {
     if (this.checked) {
-      watch.style.display = 'flex';
+      watch.style.display = "flex";
     } else {
-      watch.style.display = 'none';
+      watch.style.display = "none";
     }
   });
 
@@ -357,7 +357,6 @@ export default async function renderOrderOptionPage(main) {
   next.addEventListener("click", () => {
     window.location.href = "/designer";
   });
-
 }
 
 /* onAuthStateChanged(auth, (user) => {

@@ -1,4 +1,4 @@
-import getCafes from "../../../../Services/GetCafes.js";
+import { getCafes } from "../../../../Services/GetCafes.js";
 
 export default async function renderMenuPage(main) {
   main.innerHTML = `

@@ -9,7 +9,24 @@ const app = firebase.initializeApp(firebaseConfig);
 const database = app.database();
 const dbRef = ref(database);
 
-export default async function getCafes(cafeKey, coffeeKey) {
+export async function getCafes(cafeKey = null, coffeeKey = null) {
+  const dbRef = ref(database);
+  return get(child(dbRef, `cafes`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting cafes:", error);
+    });
+}
+
+export async function getCoffees(cafeKey = null, coffeeKey = null) {
   const dbRef = ref(database);
   return get(child(dbRef, `cafes/${cafeKey}/coffees/${coffeeKey}`))
     .then((snapshot) => {
