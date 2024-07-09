@@ -1,5 +1,5 @@
 import { auth, signInWithEmailAndPassword } from "../main.js";
-import { ref, get, child } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { database } from "../main.js";
 
 export default async function authenticateUser(email, password) {
@@ -20,6 +20,7 @@ export default async function authenticateUser(email, password) {
     }
 
     const userData = snapshot.val();
+    console.log("User data fetched:", userData);
 
     // Сохраняем данные пользователя в Local Storage
     localStorage.setItem(
@@ -32,11 +33,11 @@ export default async function authenticateUser(email, password) {
         cart: userData.cart,
         currentOrders: userData.currentOrders,
         orderHistory: userData.orderHistory,
-        // другие данные, если нужно
       })
     );
     return user;
   } catch (error) {
+    console.error("Authentication failed: ", error.message);
     throw new Error("Authentication failed: " + error.message);
   }
 }
