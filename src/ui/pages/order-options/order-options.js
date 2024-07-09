@@ -100,6 +100,7 @@ export default async function renderOrderOptionPage(main) {
       <button class="order-option-footer__button">Next</button>
     </footer>`;
 
+
   try {
     const data = await getCafes();
     const cafeOne = "Bradford BD1 1PR";
