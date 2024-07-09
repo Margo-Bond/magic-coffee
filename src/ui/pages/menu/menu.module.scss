@@ -1,112 +1,119 @@
-.menu__welcome-wrap {
-    display: flex;
-    justify-content: space-between;
-    //width: 375px; //Temporarily
-
-    .menu__welcome-container {
-        min-width: 75px;
-        max-width: 100px;
-        min-height: 45px;
-        display: flex;
-        flex-direction: column;
-        margin-left: 30px;
-
-        .menu__welcome-title {
-            display: flex;
-            align-items: center;
-            width: 71px;
-            height: 20px;
-            @include poppins(500);
-            color: var(--svg-color-muted);
-            font-size: var(--spase-m);
-        }
-
-        .menu__welcome-username {
-            display: flex;
-            align-items: center;
-            width: 71px;
-            height: 20px;
-            @include poppins(500);
-            color: var(--text-color-base);
-            font-size: var(--space-l);
-        }
-    }
-
-    .menu__welcome-carticon_container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-right: 30px;
-
-        .menu__welcome-carticon_btn {
-            width: 26px;
-            height: 26px;
-            background-image: url("@/assets/images/cart.svg");
-            background-repeat: no-repeat;
-            background-position: 50% 50%;
-        }
-    }
-}
-
-.menu__options-container {
+.menu {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    width: 100%;
     height: 100%;
-    background-color: var(--accent-color);
-    border-top-right-radius: 30px;
-    border-top-left-radius: 30px;
 
-    .menu__options-title {
-        min-width: 324px;
-        height: 45px;
-        @include poppins(500);
-        color: var(--svg-color-muted);
-        font-size: var(--space-xm);
-        margin: 0;
+    .menu__header {
         display: flex;
-        align-items: center;
-        margin-left: 10px;
-    }
+        justify-content: space-between;
 
-    .menu__options-selection {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-template-rows: repeat(3, minmax(0, 1fr));
-        grid-column-gap: 20px;
-        grid-row-gap: 15px;
-        justify-items: center;
-        margin-bottom: 15px;
-
-        .menu__options-elem {
-            width: 154px;
-            height: 164px;
+        .menu__header__title {
+            min-width: 75px;
+            max-width: 100px;
+            min-height: 45px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            background-color: var(--card-color-background);
-            border-radius: 15px;
-            cursor: pointer;
+            margin-left: 30px;
 
-            .img-wrap6 {
-                overflow: hidden;
+            .menu__header__title-text {
                 display: flex;
-                justify-content: center;
                 align-items: center;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                }
+                width: 71px;
+                height: 20px;
+                @include poppins(500);
+                color: var(--svg-color-muted);
+                font-size: var(--spase-m);
             }
 
-            .menu__options-type {
+            .menu__header__title-username {
+                display: flex;
+                align-items: center;
+                width: 71px;
+                height: 20px;
                 @include poppins(500);
-                color: var(--accent-color);
-                font-size: var(--spase-m);
-                line-height: calc(2*var(--space-xs));
-                margin: 10px;
+                color: var(--text-color-base);
+                font-size: var(--space-l);
+            }
+        }
+
+        .menu__header__button {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-right: 30px;
+
+            .menu__header__button-icon {
+                width: 26px;
+                height: 26px;
+                background-image: url("@/assets/images/cart.svg");
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+            }
+        }
+    }
+
+    .menu__content__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        background-color: var(--accent-color);
+        border-top-right-radius: 30px;
+        border-top-left-radius: 30px;
+
+        .menu__content__title {
+            @include poppins(500);
+            color: var(--svg-color-muted);
+            font-size: var(--space-xm);
+            display: flex;
+            width: 100%;
+            align-items: center;
+            padding: 25px 0;
+            padding-left: 40px;
+        }
+
+        .menu__content {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-rows: repeat(3, minmax(0, 1fr));
+            grid-column-gap: min(20px);
+            grid-row-gap: min(20px);
+            justify-items: center;
+            margin: 0 auto;
+            padding: 0 26px;
+
+            .menu__content__item {
+                width: 154px;
+                height: 164px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--card-color-background);
+                border-radius: 15px;
+                cursor: pointer;
+
+                .menu__content__item-image {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    overflow: hidden;
+
+                    img {
+                        object-fit: cover;
+                    }
+                }
+
+                .menu__content__item-name {
+                    @include poppins(500);
+                    color: var(--accent-color);
+                    font-size: var(--spase-m);
+                    line-height: calc(2*var(--space-xs));
+                    margin: 10px;
+                }
             }
         }
     }
