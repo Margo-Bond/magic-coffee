@@ -1,0 +1,86 @@
+@import "../../../assets/styles/variables.scss";
+@import "../../../assets//styles/templates.scss";
+
+.current-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  //.current-header__button {}
+  .current-header__title {
+    font-size: 20px;
+    color: var(--text-color-base);
+    @include poppins(500);
+  }
+}
+
+.current-order {
+  display: grid;
+  justify-content: center;
+  gap: 20px;
+  .current-order__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin: 0 20px;
+    background-color: var(--card-color-background);
+    border-radius: 15px;
+    border: none;
+    gap: 20px;
+    .current-order__item-img {
+      height: 61px;
+      width: auto;
+    }
+    .current-order__item-description {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      .current-order__item-title {
+        font-size: 12px;
+        color: var(--text-color-base);
+        @include poppins(500);
+      }
+      .current-order__item-details {
+        font-size: var(--space-xs);
+        color: var(--text-color-options);
+        @include poppins(300);
+      }
+      .current-order__item-quantity {
+        font-size: var(--space-s);
+        color: rgba(0, 0, 0, 0.57);
+        @include poppins(600);
+      }
+    }
+    .current-order__item-sum {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      .current-order__item-count {
+        .current-order__item-currency {
+          font-size: var(--space-xm);
+          color: var(--text-color-base);
+          @include poppins(500);
+        }
+      }
+    }
+  }
+}
+.current__button-next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--accent-color);
+  border: none;
+  border-radius: 50%;
+  color: var(--white-color);
+  font-size: var(--space-m);
+  @include poppins(600);
+}
+.current__button-next:active {
+  padding: 10px;
+  background-color: var(--text-color-base);
+}
+.none {
+  display: none;
+}
