@@ -1,4 +1,4 @@
-import signOut from "../../../../Services/signOut.js";
+import handleSignOut from "../../../../Services/signOut.js";
 import Back from "@/assets/images/geometric-icons/back.svg";
 import LogOut from "@/assets/images/geometric-icons/logout.svg";
 import ProfileName from "@/assets/images/user-icons/profile-name.svg";
@@ -57,32 +57,38 @@ export default function renderProfilePage(main) {
       </div>
     </div>`;
 
+  // Back button
   const back = document.querySelector(".profile__arrowBack");
-  back.addEventListener("click", () => {
+  back.addEventListener("click", (e) => {
     e.preventDefault();
     window.location.href = "/order-confirmed";
   });
 
+  // Log Out button
   const logOut = document.querySelector(".profile__logOut");
-  logOut.addEventListener("click", () => {
+  logOut.addEventListener("click", (e) => {
     e.preventDefault();
-    signOut();
+    handleSignOut();
+    window.location.href = "/authorization";
   });
 
+  // MAIN LOGIC HERE
+
+  //Footer menu - HERE!!!
   const menu = document.getElementById("button-menu");
-  menu.addEventListener("click", () => {
+  menu.addEventListener("click", (e) => {
     e.preventDefault();
     window.location.href = "/menu";
   });
 
   const profilePage = document.getElementById("button-profile");
-  profilePage.addEventListener("click", () => {
+  profilePage.addEventListener("click", (e) => {
     e.preventDefault();
     window.location.href = "/profile";
   });
 
   const orders = document.getElementById("button-order");
-  orders.addEventListener("click", () => {
+  orders.addEventListener("click", (e) => {
     e.preventDefault();
     window.location.href = "/my-orders";
   });
