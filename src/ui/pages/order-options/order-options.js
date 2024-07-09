@@ -1,6 +1,4 @@
-
 import getCafes from '../../../../Services/GetCafes.js';
-
 import ArrowBack from "@/assets/images/geometric-icons/back.svg";
 import CartBuy from "@/assets/images/cart.svg";
 import Takeaway from "@/assets/images/coffee-icons/cold-beverage.svg";
@@ -8,6 +6,39 @@ import Onsite from "@/assets/images/coffee-icons/hot-beverage.svg";
 import CupSmall from "@/assets/images/coffee-icons/cup-250.svg";
 import CupMedium from "@/assets/images/coffee-icons/cup-350.svg";
 import CupLarge from "@/assets/images/coffee-icons/cup-450.svg";
+import { getDatabase, ref, get } from "firebase/database";
+import { initializeApp, getApps } from "firebase/app";
+
+// Инициализация Firebase
+let app;
+if (!getApps().length) {
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID",
+    databaseURL: "YOUR_DATABASE_URL",
+  };
+
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApps()[0];
+}
+
+const database = getDatabase(app);
+
+async function getCafes() {
+  const dbRef = ref(database, "cafes");
+  const snapshot = await get(dbRef);
+  if (snapshot.exists()) {
+    return snapshot.val();
+  } else {
+    console.log("No data available");
+    return {};
+  }
+}
 
 export default async function renderOrderOptionPage(main) {
   main.innerHTML = `
@@ -27,7 +58,7 @@ export default async function renderOrderOptionPage(main) {
           <p class="order-option__coffee"></p>
         </div>
         <div class="order-optionr__item-quantity" id="counter"> 
-          <input type="button"  class="order-option__quantity" id="buttonCountMinus" value="-">
+          <input type="button" class="order-option__quantity" id="buttonCountMinus" value="-">
           <div id="buttonCountNumber">1</div>
           <input type="button" class="order-option__quantity" id="buttonCountPlus" value="+">
         </div>
@@ -48,27 +79,27 @@ export default async function renderOrderOptionPage(main) {
           <p class="order-option__text">Onsite / Takeaway</p>
         </div>
         <div class="order-option__where">
-          <div class="order-option__svg order-option__svg-where_onsite" >${Onsite}</div>
-          <div class="order-option__svg order-option__svg-where_takeaway" >${Takeaway}</div>
+          <div class="order-option__svg order-option__svg-where_onsite">${Onsite}</div>
+          <div class="order-option__svg order-option__svg-where_takeaway">${Takeaway}</div>
         </div>
       </div>
 
       <div class="order-option__item item4">
         <div class="order-option__item-text">
-          <p class="order-option__text"> Volume, ml </p>
+          <p class="order-option__text">Volume, ml</p>
         </div>
         <div class="order-option__item-cup">
           <div class="order-option__cup">
-            <div class="order-option__svg order-option__svg-cup_small" >${CupSmall}</div>
-            <div class="order-option__text-size" >250</div>
+            <div class="order-option__svg order-option__svg-cup_small">${CupSmall}</div>
+            <div class="order-option__text-size">250</div>
           </div>
           <div class="order-option__cup">
-            <div class="order-option__svg order-option__svg-cup_medium" >${CupMedium}</div>
-            <div class="order-option__text-size" >350</div>
+            <div class="order-option__svg order-option__svg-cup_medium">${CupMedium}</div>
+            <div class="order-option__text-size">350</div>
           </div>
           <div class="order-option__cup">
-            <div class="order-option__svg order-option__svg-cup_large" >${CupLarge}</div>
-            <div class="order-option__text-size" >450</div>
+            <div class="order-option__svg order-option__svg-cup_large">${CupLarge}</div>
+            <div class="order-option__text-size">450</div>
           </div>
         </div>  
       </div>
@@ -99,7 +130,6 @@ export default async function renderOrderOptionPage(main) {
       </div>
       <button class="order-option-footer__button">Next</button>
     </footer>`;
-
 
   try {
     const data = await getCafes();
@@ -142,12 +172,11 @@ export default async function renderOrderOptionPage(main) {
 
   back.addEventListener("click", () => {
     window.location.href = "/menu";
-  })
+  });
 
   cart.addEventListener("click", () => {
     window.location.href = "/current-order";
   });
-
 
   ///
 
@@ -176,20 +205,42 @@ export default async function renderOrderOptionPage(main) {
       updateCount(count - 1);
     }
   });
-
+  /*
+  getCafes().then((cafes) => {
+    if (cafes) {
+      Object.keys(cafes).forEach((cafeKey) => {
+        const cafe = cafes[cafeKey];
+        if (cafe.coffee_selection && cafe.coffee_selection.coffees) {
+          Object.keys(cafe.coffee_selection.coffees).forEach((coffeeKey) => {
+            const coffee = cafe.coffee_selection.coffees[coffeeKey];
+            if (coffee.price) {
+              console.log(`Price of ${coffeeKey} in ${cafeKey}:`, coffee.price);
+            } else {
+              console.log(`Price for ${coffeeKey} not found in ${cafeKey}`);
+            }
+          });
+        } else {
+          console.log(`No coffee selection available for ${cafeKey}`);
+        }
+      });
+    } else {
+      console.log("No cafes data available");
+    }
+  });*/
 
   ///
 
-  const buttons = document.querySelectorAll('.order-option__strength');
+  const buttons = document.querySelectorAll(".order-option__strength");
   function resetButtons() {
-    buttons.forEach(button => {
-      button.classList.remove('active');
+    buttons.forEach((button) => {
+      button.classList.remove("active");
     });
   }
 
-  buttons.forEach(button => {
-    button.addEventListener('click', function () {
+  buttons.forEach((button) => {
+    button.addEventListener("click", function () {
       resetButtons();
+
       this.classList.add('active');
       localStorage.setItem('ristretto', this.getAttribute('data-strength'));
     });
@@ -204,8 +255,6 @@ export default async function renderOrderOptionPage(main) {
   if (localStorage.getItem('order_time')) {
     timeInput.value = localStorage.getItem('order_time');
   }
-
-  ///
 
   const onsite = document.querySelector(".order-option__svg-where_onsite");
   const takeaway = document.querySelector(".order-option__svg-where_takeaway");
@@ -257,7 +306,6 @@ export default async function renderOrderOptionPage(main) {
       });
     });
   }
-
   onsite.addEventListener("click", () =>
     checkBlack(onsite, "onsite", "where")
   );
@@ -273,6 +321,7 @@ export default async function renderOrderOptionPage(main) {
   cupSizeLarge.addEventListener("click", () =>
     checkBlack(cupSizeLarge, "large", "cup")
   );
+
 
   document.querySelectorAll('.order-option__cup').forEach(textSize => {
     textSize.addEventListener('click', function () {
@@ -322,3 +371,15 @@ export default async function renderOrderOptionPage(main) {
     console.log("No user is signed in.");
   }
 }); */
+
+/*ДАША, ТУТ ПОЛУЧАЕМ ЦЕНУ
+  const cafeKey = "cafe_one";
+  const coffeeKey = "americano";
+
+  try {
+    const data = await getCafes(cafeKey, coffeeKey);
+    console.log(data.price);
+  } catch (error) {
+    console.error("Error fetching coffee data:", error);
+  }
+*/

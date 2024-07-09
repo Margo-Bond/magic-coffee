@@ -1,25 +1,17 @@
-//для страниц: #6-15
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase.js";
 import firebase from "firebase/compat/app";
 import "firebase/compat/database";
 
-import {
-  getDatabase,
-  get,
-  child,
-  update,
-  ref,
-  runTransaction,
-  set,
-} from "firebase/database";
+import { getDatabase, get, child, ref } from "firebase/database";
 
 const app = firebase.initializeApp(firebaseConfig);
 const database = app.database();
+const dbRef = ref(database);
 
-export default function getCafes() {
+export default async function getCafes(cafeKey, coffeeKey) {
   const dbRef = ref(database);
-  return get(child(dbRef, `cafes`))
+  return get(child(dbRef, `cafes/${cafeKey}/coffees/${coffeeKey}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         console.log(snapshot.val());
@@ -33,14 +25,3 @@ export default function getCafes() {
       console.error("Error getting cafes:", error);
     });
 }
-
-//вызов функции на получение данных кофеен
-/*
-import getCafes from "./Services/GetCafes.js";
-getCafes().then((cafes) => {
-  if (cafes) {
-    console.log("Cafes data:", cafes);
-  } else {
-    console.log("No cafes data available");
-  }
-});*/

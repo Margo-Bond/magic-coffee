@@ -1,11 +1,12 @@
 import OrderedSvg from "@/assets/images/ordered.svg";
+import getCafes from "../../../../Services/GetCafes.js";
 
 const nameUser = "Dasha";
 const timeOrder = "18:10";
 const adressUser = "Krasnodar, 5 Krasnaya st.";
 const qr = "/profile";
 
-export default function renderOrderConfirmedPage(main) {
+export default async function renderOrderConfirmedPage(main) {
   main.innerHTML = `
     <div class="order-confirmed">
       <div class="order-confirmed__image"></div>
@@ -36,4 +37,15 @@ export default function renderOrderConfirmedPage(main) {
   //The order will be ready today in 30 minutes at the address ${adressUser}
 
   //const div = document.querySelector('.order-confirmed__result');
+
+  /*
+  const cafeKey = "cafe_one";
+  const coffeeKey = "americano";
+
+  try {
+    const data = await getCafes(cafeKey, coffeeKey);
+    console.log(data.price);
+  } catch (error) {
+    console.error("Error fetching coffee data:", error);
+  }*/
 }
