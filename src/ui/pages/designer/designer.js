@@ -97,7 +97,7 @@ export default function renderDesignerPage(main) {
     <footer class="designer-footer">
       <div class="designer-footer__count-container">
         <p class="designer-footer__count-text">Total Amount</p>
-        <p class="designer-footer__count-currency">BYN<span class="designer-footer__count">${count}</span></p>
+        <p class="designer-footer__count-currency">BYN<span class="designer-footer__count"></span></p>
       </div>
       <button class="designer-footer__button">Next</button>
     </footer>
