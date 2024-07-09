@@ -80,17 +80,15 @@ export default async function renderMenuPage(main) {
     const cafeThree = "Bradford BD1 4RN";
     const getAddress = localStorage.getItem('address');
 
-    //let selectedCafe = null; //variable for chosen cafe
+    let selectedCafe = null;
 
-    // if (getAddress === cafeOne) {
-    //   selectedCafe = data.cafe_one.coffees;
-    // } else if (getAddress === cafeTwo) {
-    //   selectedCafe = data.cafe_two.coffees;
-    // } else if (getAddress === cafeThree) {
-    //   selectedCafe = data.cafe_three.coffees;
-    // }
-
-    const selectedCafe = data.cafe_one.coffees;
+    if (getAddress === cafeOne) {
+      selectedCafe = data.cafe_one.coffees;
+    } else if (getAddress === cafeTwo) {
+      selectedCafe = data.cafe_two.coffees;
+    } else if (getAddress === cafeThree) {
+      selectedCafe = data.cafe_three.coffees;
+    }
 
     if (selectedCafe) {
       const coffeeTypes = Object.keys(selectedCafe);
@@ -131,5 +129,3 @@ export default async function renderMenuPage(main) {
     })
   });
 }
-
-renderMenuPage(main)
