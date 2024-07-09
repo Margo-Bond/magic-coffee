@@ -1,5 +1,4 @@
 //для страниц: #6-15
-
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../firebase.js";
 import firebase from "firebase/compat/app";
