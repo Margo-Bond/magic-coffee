@@ -1,23 +1,5 @@
 
-/* 
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../../../../firebase.js";
-import firebase from "firebase/compat/app";
-import "firebase/compat/database";
-
-import {
-  getDatabase,
-  get,
-  child,
-  update,
-  ref,
-  runTransaction,
-  set,
-} from "firebase/database";
-
-const app = firebase.initializeApp(firebaseConfig);
-const database = app.database();
-import { auth, onAuthStateChanged } from "../../../../main.js"; */
+import getCafes from '../../../../Services/GetCafes.js';
 
 import ArrowBack from "@/assets/images/geometric-icons/back.svg";
 import CartBuy from "@/assets/images/cart.svg";
@@ -27,7 +9,7 @@ import CupSmall from "@/assets/images/coffee-icons/cup-250.svg";
 import CupMedium from "@/assets/images/coffee-icons/cup-350.svg";
 import CupLarge from "@/assets/images/coffee-icons/cup-450.svg";
 
-export default function renderOrderOptionPage(main) {
+export default async function renderOrderOptionPage(main) {
   main.innerHTML = `
     <div class="order-option">
       <div class="order-option__main">
@@ -113,10 +95,46 @@ export default function renderOrderOptionPage(main) {
     <footer class="order-option-footer">
       <div class="order-option-footer__count-container"
         <p class="order-option-footer__count-text"> Total Amount </p>
-        <p class="order-option-footer__count-currency">BYN <span id="multipliedValue" class="order-option-footer__count">3.00</span></p>
+        <p class="order-option-footer__count-currency">BYN <span id="multipliedValue" class="order-option-footer__count"></span></p>
       </div>
       <button class="order-option-footer__button">Next</button>
     </footer>`;
+
+  try {
+    const data = await getCafes();
+    const cafeOne = "Bradford BD1 1PR";
+    const cafeTwo = "Bradford BD4 7SJ";
+    const cafeThree = "Bradford BD1 4RN";
+    const getAddress = localStorage.getItem('address');
+
+    let selectedCafe = null;
+
+    if (getAddress === cafeOne) {
+      selectedCafe = data.cafe_one.coffee_selection;
+    } else if (getAddress === cafeTwo) {
+      selectedCafe = data.cafe_two.coffee_selection;
+    } else if (getAddress === cafeThree) {
+      selectedCafe = data.cafe_three.coffee_selection;
+    }
+
+    if (selectedCafe) {
+      const priceOptions = Object.keys(selectedCafe);
+      const orderPriceCount = document.querySelector(".order-option-footer__count");
+
+      priceOptions.forEach((priceOption) => {
+        const coffeeData = selectedCafe[priceOption];
+        const coffeePrice = coffeeData.price;
+
+        if (coffeePrice && orderPriceCount) {
+          orderPriceCount.textContent = `${coffeePrice}`;
+        }
+      });
+    }
+  } catch (error) {
+    console.error("Ошибка при получении данных о ценах:", error);
+  }
+
+  ////
 
   const back = document.querySelector(".order-option__arrowBack");
   const cart = document.querySelector(".order-option__cartBuy");
@@ -129,34 +147,6 @@ export default function renderOrderOptionPage(main) {
     window.location.href = "/current-order";
   });
 
-  ///
-  /*   async function getcafe(path) {
-      const dbRef = ref(database, path);
-      get(dbRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            console.log(snapshot.val());
-          } else {
-            console.log("No data available");
-          }
-        })
-        .catch((error) => {
-          console.error("Error", error);
-        });
-    } */
-  ///
-
-  /*   onAuthStateChanged(auth, (user) => {
-      if (user) {
-        slider.addEventListener("input", (event) => {
-          const value = event.target.value;
-          localStorage.setItem("coffee_type", value);
-        });
-      } else {
-        alert("You should sign in.");
-        console.log("No user is signed in.");
-      }
-    }); */
 
   ///
 
@@ -166,7 +156,7 @@ export default function renderOrderOptionPage(main) {
   const buttonMinus = document.getElementById('buttonCountMinus');
   let count = 1;
   const minCount = 1;
-  const multiplier = 3;
+  const multiplier = 1;
 
   function updateCount(newCount) {
     count = newCount;
