@@ -1,10 +1,19 @@
 import OrderedSvg from "@/assets/images/ordered.svg";
-import { getCafes } from "../../../../Services/GetCafes.js";
 
-const nameUser = "Dasha";
-const timeOrder = "18:10";
-const adressUser = "Krasnodar, 5 Krasnaya st.";
+const nameUser = JSON.parse(localStorage.getItem("user"))?.name || 'Customer';
+const timeOrder = localStorage.getItem('order_time');
+const adressUser = localStorage.getItem('address') || 'specified address';
 const qr = "/profile";
+
+const greetingElement = document.querySelector('.order-confirmed__greeting');
+const resultElement = document.querySelector('.order-confirmed__result');
+const qrLinkElement = document.querySelector('.order-confirmed__submit a');
+
+
+
+//greetingElement.textContent = `${nameUser}, your order has been successfully placed.`;
+//resultElement.textContent = `ЗThe order will be ready today at ${timeOrder} at the address ${adressUser}`;
+//qrLinkElement.href = "/profile";
 
 export default async function renderOrderConfirmedPage(main) {
   main.innerHTML = `
@@ -27,25 +36,10 @@ export default async function renderOrderConfirmedPage(main) {
 
   const imageContainer = main.querySelector(".order-confirmed__image");
   imageContainer.insertAdjacentHTML("afterbegin", OrderedSvg);
+  ///
 
   const resultDiv = document.querySelector(".order-confirmed__result");
   if (!timeOrder) {
     resultDiv.innerHTML = `The order will be ready today in 30 minutes at the address ${adressUser}`;
   }
-
-  //Если пользователь не указывает время, то меняем текст на
-  //The order will be ready today in 30 minutes at the address ${adressUser}
-
-  //const div = document.querySelector('.order-confirmed__result');
-
-  /*
-  const cafeKey = "cafe_one";
-  const coffeeKey = "americano";
-
-  try {
-    const data = await getCafes(cafeKey, coffeeKey);
-    console.log(data.price);
-  } catch (error) {
-    console.error("Error fetching coffee data:", error);
-  }*/
 }
