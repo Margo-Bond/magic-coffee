@@ -1,4 +1,4 @@
-import { getCafes } from "../../../../Services/GetCafes.js";
+import { getCafes } from "../../../../Services/Get.js";
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
 import More from "@/assets/images/geometric-icons/icon-more-grey.svg";

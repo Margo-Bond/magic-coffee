@@ -12,6 +12,22 @@
     opacity: 1;
   }
 }
+@keyframes slideDown {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+.slide-up {
+  animation: slideUp 1s forwards;
+}
+.slide-down {
+  animation: slideDown 1s forwards;
+}
 
 .designer__svg {
   display: flex;
@@ -185,130 +201,77 @@
   .designer-content__select:active {
     background-color: var(--text-color-data);
   }
-
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 16%);
-    z-index: 2;
-  }
 }
 
-.designer-modal__milk-container {
+.overlay {
   position: absolute;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 10px;
-  left: 10px;
-  right: 10px;
-  width: calc(100% - 20px);
-  bottom: 40px;
-  animation: slideUp 1s forwards;
-
-  .designer-modal__milk-options {
-    display: grid;
-    grid-template-rows: 40px repeat(5, 50px);
-    border-radius: 13px;
-    background-color: var(--white-color);
-
-    .designer-modal__milk-question {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-color-question);
-      font-size: 13px;
-    }
-
-    .designer-modal__milk-option {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      color: var(--text-color-base);
-      border-top: 1px solid rgba(60, 60, 67, 0.37);
-    }
-
-    .designer-modal__milk-option:hover,
-    .designer-modal__milk-option:active,
-    .designer-modal__syrup-option:hover,
-    .designer-modal__syrup-option:active {
-      color: var(--black-color);
-      background-color: var(--text-color-data);
-    }
-  }
-
-  .designer-modal__button {
-    height: 60px;
-    border: none;
-    border-radius: 13px;
-    color: var(--text-color-base);
-    background-color: var(--white-color);
-    font-size: 20px;
-    @include poppins(700);
-  }
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 16%);
+  z-index: 2;
 }
 
+.designer-modal__milk-container,
 .designer-modal__syrup-container {
   position: absolute;
   z-index: 3;
   display: flex;
   flex-direction: column;
   text-align: center;
-  gap: 10px;
   left: 10px;
   right: 10px;
   width: calc(100% - 20px);
   bottom: 40px;
-  animation: slideUp 1s forwards;
+}
 
-  .designer-modal__syrup-options {
-    display: grid;
-    grid-template-rows: 40px repeat(5, 50px);
-    border-radius: 13px;
-    background-color: var(--white-color);
+.designer-modal__milk-question,
+.designer-modal__syrup-question {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  color: var(--text-color-question);
+  font-size: 13px;
+  background-color: var(--white-color);
+  border-radius: 13px 13px 0 0;
+}
 
-    .designer-modal__syrup-question {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-color-question);
-      font-size: 13px;
-    }
+.designer-modal__milk-options,
+.designer-modal__syrup-options {
+  display: grid;
+  margin-bottom: 10px;
+  border-radius: 0 0 13px 13px;
+  background-color: var(--white-color);
+}
+.designer-modal__milk-option,
+.designer-modal__syrup-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  font-size: 20px;
+  color: var(--text-color-base);
+  border-top: 1px solid rgba(60, 60, 67, 0.37);
+}
 
-    .designer-modal__syrup-option {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      color: var(--text-color-base);
-      border-top: 1px solid rgba(60, 60, 67, 0.37);
-    }
+.designer-modal__milk-option:active,
+.designer-modal__syrup-option:active {
+  color: var(--blue-color);
+}
 
-    .designer-modal__syrup-option:hover,
-    .designer-modal__syrup-option:active {
-      color: var(--black-color);
-    }
-  }
-
-  .designer-modal__button {
-    height: 60px;
-    border: none;
-    border-radius: 13px;
-    color: var(--text-color-base);
-    background-color: var(--white-color);
-    font-size: 20px;
-    @include poppins(700);
-    cursor: pointer;
-  }
-
-  .designer-modal__button:active {
-    background-color: var(--svg-color-muted);
-  }
+.designer-modal__button {
+  height: 60px;
+  border: none;
+  border-radius: 13px;
+  color: var(--text-color-base);
+  background-color: var(--white-color);
+  font-size: 20px;
+  @include poppins(700);
+}
+.designer-modal__button:active {
+  background-color: var(--svg-color-muted);
 }
 
 .designer-footer {
@@ -344,6 +307,9 @@
       font-size: var(--space-xm);
       color: var(--text-color-base);
       @include poppins(600);
+    }
+    .designer-footer__count {
+      padding-left: var(--space-s);
     }
   }
 
