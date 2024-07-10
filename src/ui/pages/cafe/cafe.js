@@ -1,7 +1,7 @@
 import Cafe from "@/assets/images/cafe.svg";
 import Forward from "@/assets/images/geometric-icons/icon-more-white.svg";
 import Pin from "../../../assets/images/cafe-pin.png";
-import { getCafes } from "../../../../Services/GetCafes.js";
+import { getCafes } from "../../../../Services/Get.js";
 
 export default async function renderCafePage(main) {
   main.innerHTML = `

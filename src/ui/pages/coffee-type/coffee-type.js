@@ -69,7 +69,7 @@ export default async function renderCoffeeTypePage(main) {
         btn.classList.remove("selected");
         coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
       } else {
-        localStorage.setItem("coffee_type", btnTextValue);
+        localStorage.setItem("coffee_sort", btnTextValue);
         coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
       }
     });
