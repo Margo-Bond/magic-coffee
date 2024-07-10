@@ -1,4 +1,4 @@
-import getCafes from '../../../../Services/GetCafes.js';
+import { getCoffeeSorts } from '../../../../Services/GetCafes.js';
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
 import Chosen from "@/assets/images/geometric-icons/chosen.svg";
@@ -18,32 +18,32 @@ export default async function renderCoffeeTypePage(main) {
 
           <div class="coffeetype-content">
             <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Santos</p>
+              <p class="coffeetype-content__text"></p>
               <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
 
             <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Bourbon santos</p>
+              <p class="coffeetype-content__text"></p>
               <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
 
             <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Minas</p>
+              <p class="coffeetype-content__text"></p>
               <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
 
             <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Rio</p>
+              <p class="coffeetype-content__text"></p>
               <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
 
             <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Canilon</p>
+              <p class="coffeetype-content__text"></p>
               <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
 
             <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Flat beat</p>
+              <p class="coffeetype-content__text"></p>
               <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
           </div>
@@ -60,48 +60,56 @@ export default async function renderCoffeeTypePage(main) {
     () => (window.location.href = "/current-order")
   );
 
+  const coffeeTypeBtns = document.querySelectorAll(".coffeetype-content__wrapper");
+
   try {
-    const data = await getCafes();
-    const cafeOne = "Bradford BD1 1PR";
-    const cafeTwo = "Bradford BD4 7SJ";
-    const cafeThree = "Bradford BD1 4RN";
     const getAddress = localStorage.getItem('address');
 
-    let selectedCafe = null;
+    const getCountry = localStorage.getItem('country');
+    const countryKey = getCountry.toLowerCase().replace(/\s+/g, '_');
 
-    if (getAddress === cafeOne) {
-      selectedCafe = data.cafe_one.coffee_selection;
-    } else if (getAddress === cafeTwo) {
-      selectedCafe = data.cafe_two.coffee_selection;
-    } else if (getAddress === cafeThree) {
-      selectedCafe = data.cafe_three.coffee_selection;
+    let cafeKey = null;
+
+    if (getAddress === "Bradford BD1 1PR") {
+      cafeKey = "cafe_one";
+    } else if (getAddress === "Bradford BD4 7SJ") {
+      cafeKey = "cafe_two";
+    } else if (getAddress === "Bradford BD1 4RN") {
+      cafeKey = "cafe_three";
     }
 
-    if (selectedCafe) {
-      const countryOptions = Object.keys(selectedCafe);
-      console.log(countryOptions);
+    const data = await getCoffeeSorts(cafeKey, countryKey);
+    console.log(data);
 
+    coffeeTypeBtns.forEach((btn, index) => {
+      const coffeeTypeBtnText = btn.querySelector(".coffeetype-content__text");
 
-    }
+      const coffeeType = data[`sort_of_coffee${index + 1}`];
+
+      if (coffeeType) {
+        coffeeTypeBtnText.textContent = coffeeType;
+      }
+    })
+
   } catch (error) {
-    console.error("Error fetching country data:", error);
+    console.error("Error fetching coffee types data:", error);
   }
 
 
+  coffeeTypeBtns.forEach((btn) => {
+    const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
+    const btnTextValue = coffeetypeBtnText.textContent;
+    const isSelected = localStorage.getItem("coffee_type");
+
+    if (isSelected === btnTextValue) {
+      btn.classList.add("selected");
+      coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
+      const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
+      coffeetypeBtnIcon.style.display = "block";
+    }
+  });
 
 
-
-
-
-
-
-
-
-
-
-  const coffeeTypeBtns = document.querySelectorAll(
-    ".coffeetype-content__wrapper"
-  );
 
   coffeeTypeBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -124,7 +132,11 @@ export default async function renderCoffeeTypePage(main) {
         localStorage.setItem("coffee_type", btnTextValue);
         coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
         const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
-        coffeetypeBtnIcon.style.display = "block"; // Показываем картинку
+
+        setTimeout(() => {
+          coffeetypeBtnIcon.style.display = "block"; // Показываем картинку
+          window.location.href = "/designer";
+        }, 1000);
       }
     });
   });
