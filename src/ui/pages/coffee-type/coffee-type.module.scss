@@ -52,9 +52,9 @@
 
     .coffeetype-content__wrapper {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
-        margin: 0px var(--space-xs);
+        margin: 0px var(--space-s);
         min-height: 50px;
         border-bottom: 1px solid var(--line-color);
         cursor: pointer;
