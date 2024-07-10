@@ -58,13 +58,13 @@ export default function renderProfilePage(main) {
     </div>`;
 
   const back = document.querySelector(".profile__arrowBack");
-  back.addEventListener("click", () => {
+  back.addEventListener("click", (e) => {
     e.preventDefault();
     window.location.href = "/order-confirmed";
   });
 
   const logOut = document.querySelector(".profile__logOut");
-  logOut.addEventListener("click", () => {
+  logOut.addEventListener("click", (e) => {
     e.preventDefault();
     signOut();
   });
