@@ -111,3 +111,17 @@ export async function getCoffeeSorts(cafeKey = null, countryKey = null) {
       console.error("Error getting countries:", error);
     });
 }
+
+export async function getPrice(cafeKey, coffeeKey) {
+  return get(child(dbRef, `cafes/${cafeKey}/coffees/${coffeeKey}/price`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const coffeePrice = snapshot.val();
+        return coffeePrice;
+      } else {
+        console.log("No data available in a price");
+        return null;
+      }
+    })
+    .catch((err) => console.error("Error getting price:", err));
+}
