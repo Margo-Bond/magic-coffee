@@ -65,6 +65,12 @@ export default async function renderAdditivesPage(main) {
       }
     })
 
+    const additivesPrice = data.price;
+    if (additivesPrice) {
+      localStorage.setItem('additives_price', additivesPrice);
+    } else {
+      console.log("Error additive price wasn't set");
+    }
   } catch (error) {
     console.error("Error fetching additive types data:", error);
   }
@@ -85,6 +91,8 @@ export default async function renderAdditivesPage(main) {
   additivesBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const isSelected = btn.classList.contains("selected");
+      const getOrderPrice = Number(localStorage.getItem('order_price'));
+      const getAdditivePrice = Number(localStorage.getItem('additives_price'));
 
       if (isSelected) {
         btn.classList.remove("selected");
@@ -93,6 +101,8 @@ export default async function renderAdditivesPage(main) {
         const additivesBtnIcon = btn.querySelector(".additives-content__icon");
         additivesBtnIcon.style.display = "none";
         localStorage.removeItem("coffee_additives");
+        const originalOrderPrice = getOrderPrice - getAdditivePrice;
+        localStorage.setItem('order_price', originalOrderPrice);
       } else {
         resetButtons();
         btn.classList.add("selected");
@@ -101,10 +111,11 @@ export default async function renderAdditivesPage(main) {
         localStorage.setItem("coffee_additives", btnTextValue);
         additivesBtnText.style.color = "rgb(10, 132, 255)";
         const additivesBtnIcon = btn.querySelector(".additives-content__icon");
+        const newOrderPrice = getAdditivePrice + getOrderPrice;
+        localStorage.setItem('order_price', newOrderPrice);
 
         setTimeout(() => {
           additivesBtnIcon.style.display = "block";
-          window.location.href = "/designer";
         }, 700);
       }
     });
