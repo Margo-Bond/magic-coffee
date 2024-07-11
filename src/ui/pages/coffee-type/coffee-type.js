@@ -17,35 +17,12 @@ export default async function renderCoffeeTypePage(main) {
           </div>
 
           <div class="coffeetype-content">
+          ${Array(6).fill(`
             <div class="coffeetype-content__wrapper">
               <p class="coffeetype-content__text"></p>
               <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text"></p>
-              <div class="coffeetype-content__icon">${Chosen}</div>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text"></p>
-              <div class="coffeetype-content__icon">${Chosen}</div>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text"></p>
-              <div class="coffeetype-content__icon">${Chosen}</div>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text"></p>
-              <div class="coffeetype-content__icon">${Chosen}</div>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text"></p>
-              <div class="coffeetype-content__icon">${Chosen}</div>
-            </div>
+          `).join('')}
           </div>
         </div>
   `;
@@ -95,11 +72,10 @@ export default async function renderCoffeeTypePage(main) {
     console.error("Error fetching coffee types data:", error);
   }
 
-
   coffeeTypeBtns.forEach((btn) => {
     const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
     const btnTextValue = coffeetypeBtnText.textContent;
-    const isSelected = localStorage.getItem("coffee_type");
+    const isSelected = localStorage.getItem("coffee_sort");
 
     if (isSelected === btnTextValue) {
       btn.classList.add("selected");
@@ -108,8 +84,6 @@ export default async function renderCoffeeTypePage(main) {
       coffeetypeBtnIcon.style.display = "block";
     }
   });
-
-
 
   coffeeTypeBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -121,13 +95,13 @@ export default async function renderCoffeeTypePage(main) {
         coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
         const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
         coffeetypeBtnIcon.style.display = "none";
-        localStorage.removeItem("coffee_type");
+        localStorage.removeItem("coffee_sort");
       } else {
         resetButtons();
         btn.classList.add("selected");
         const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
         const btnTextValue = coffeetypeBtnText.textContent;
-        localStorage.setItem("coffee_type", btnTextValue);
+        localStorage.setItem("coffee_sort", btnTextValue);
         coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
         const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
 
@@ -149,5 +123,3 @@ export default async function renderCoffeeTypePage(main) {
     });
   }
 }
-
-renderCoffeeTypePage(main);
