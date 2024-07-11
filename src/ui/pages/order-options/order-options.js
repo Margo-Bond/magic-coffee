@@ -138,182 +138,182 @@ export default async function renderOrderOptionPage(main) {
   const coffeType = document.querySelector(".coffee");
   coffeType.textContent = localStorage.getItem('coffee_type');
   ////
-  export async function getCafes() {
-    /*     return get(child(dbRef, 'cafes'))
-          .then((snapshot) => {
-            if (snapshot.exists()) {
-              console.log(snapshot.val());
-              return snapshot.val();
-            } else {
-              console.log("No data available");
-              return null;
-            }
-          })
-          .catch((error) => {
-            console.error("Error getting cafes:", error);
-          });
-      } */
-    const counter = document.getElementById("buttonCountNumber");
-    const buttonPlus = document.getElementById("buttonCountPlus");
-    const buttonMinus = document.getElementById("buttonCountMinus");
-    const totalAmount = document.getElementById("multipliedValue");
-    let count = 1;
-    const minCount = 1;
+  /* export async function getCafes() {
+      return get(child(dbRef, 'cafes'))
+         .then((snapshot) => {
+           if (snapshot.exists()) {
+             console.log(snapshot.val());
+             return snapshot.val();
+           } else {
+             console.log("No data available");
+             return null;
+           }
+         })
+         .catch((error) => {
+           console.error("Error getting cafes:", error);
+         });
+     } */
+  const counter = document.getElementById("buttonCountNumber");
+  const buttonPlus = document.getElementById("buttonCountPlus");
+  const buttonMinus = document.getElementById("buttonCountMinus");
+  const totalAmount = document.getElementById("multipliedValue");
+  let count = 1;
+  const minCount = 1;
 
-    function updateCount(newCount) {
-      count = newCount;
-      counter.textContent = count;
+  function updateCount(newCount) {
+    count = newCount;
+    counter.textContent = count;
+  }
+  async function calculateTotalAmount() {
+    const data = await getCafes();
+    if (data) {
+      const multiplier = parseFloat(data.price);
+      totalAmount.textContent = (count * multiplier).toFixed(2) + ".00";
+      console.log(`Total amount: ${totalAmount}`);
+      localStorage.setItem("cup_quantity", count.toString());
+      localStorage.setItem("order_price", totalAmount);
     }
-    async function calculateTotalAmount() {
-      const data = await getCafes();
-      if (data) {
-        const multiplier = parseFloat(data.price);
-        totalAmount.textContent = (count * multiplier).toFixed(2) + ".00";
-        console.log(`Total amount: ${totalAmount}`);
-        localStorage.setItem("cup_quantity", count.toString());
-        localStorage.setItem("order_price", totalAmount);
-      }
-    };
-    calculateTotalAmount();
+  };
+  calculateTotalAmount();
 
-    buttonPlus.addEventListener("click", function () {
-      updateCount(count + 1);
-    });
+  buttonPlus.addEventListener("click", function () {
+    updateCount(count + 1);
+  });
 
-    buttonMinus.addEventListener("click", function () {
-      if (count > minCount) {
-        updateCount(count - 1);
-      }
-    });
-
-    ///
-
-    const buttons = document.querySelectorAll(".order-option__strength");
-    function resetButtons() {
-      buttons.forEach((button) => {
-        button.classList.remove("active");
-      });
+  buttonMinus.addEventListener("click", function () {
+    if (count > minCount) {
+      updateCount(count - 1);
     }
+  });
 
+  ///
+
+  const buttons = document.querySelectorAll(".order-option__strength");
+  function resetButtons() {
     buttons.forEach((button) => {
-      button.addEventListener("click", function () {
-        resetButtons();
-
-        this.classList.add("active");
-        localStorage.setItem("coffee_ristretto", this.getAttribute("data-strength"));
-      });
+      button.classList.remove("active");
     });
+  }
 
-    ///
+  buttons.forEach((button) => {
+    button.addEventListener("click", function () {
+      resetButtons();
 
-    /// Изменение цвета кнопок в зависимости от выделения
+      this.classList.add("active");
+      localStorage.setItem("coffee_ristretto", this.getAttribute("data-strength"));
+    });
+  });
 
-    const onsite = document.querySelector(".order-option__svg-where_onsite");
-    const takeaway = document.querySelector(".order-option__svg-where_takeaway");
-    const cupSizeSmall = document.querySelector(".order-option__svg-cup_small");
-    const cupSizeMedium = document.querySelector(".order-option__svg-cup_medium");
-    const cupSizeLarge = document.querySelector(".order-option__svg-cup_large");
+  ///
 
-    function setFillColor(element, color) {
-      element.querySelectorAll("svg path, svg rect").forEach((svg) => {
-        svg.setAttribute("fill", color);
-        svg.setAttribute("stroke", color);
-        svg.setAttribute("stroke-width", "0.1");
-      });
+  /// Изменение цвета кнопок в зависимости от выделения
+
+  const onsite = document.querySelector(".order-option__svg-where_onsite");
+  const takeaway = document.querySelector(".order-option__svg-where_takeaway");
+  const cupSizeSmall = document.querySelector(".order-option__svg-cup_small");
+  const cupSizeMedium = document.querySelector(".order-option__svg-cup_medium");
+  const cupSizeLarge = document.querySelector(".order-option__svg-cup_large");
+
+  function setFillColor(element, color) {
+    element.querySelectorAll("svg path, svg rect").forEach((svg) => {
+      svg.setAttribute("fill", color);
+      svg.setAttribute("stroke", color);
+      svg.setAttribute("stroke-width", "0.1");
+    });
+  }
+
+  function checkBlack(element, type, category) {
+    const isBlack = Array.from(
+      element.querySelectorAll("svg path, svg rect")
+    ).some((svg) => svg.getAttribute("fill") === "black");
+
+    if (isBlack) {
+      selectCategory(type, category, "#D8D8D8");
+      localStorage.removeItem(category === "where" ? "mug_option" : "cup_volume");
+    } else {
+      selectCategory(type, category, "black");
     }
+  }
 
-    function checkBlack(element, type, category) {
-      const isBlack = Array.from(
-        element.querySelectorAll("svg path, svg rect")
-      ).some((svg) => svg.getAttribute("fill") === "black");
+  function selectCategory(type, category, color) {
+    const options = {
+      where: ["onsite", "takeaway"],
+      cup: ["small", "medium", "large"],
+    };
+    const storageKey = category === "where" ? "mug_option" : "cup_volume";
+    options[category].forEach((option) => {
+      const elements = document.querySelectorAll(
+        `.order-option__svg-${category}_${option}`
+      );
 
-      if (isBlack) {
-        selectCategory(type, category, "#D8D8D8");
-        localStorage.removeItem(category === "where" ? "mug_option" : "cup_volume");
-      } else {
-        selectCategory(type, category, "black");
-      }
-    }
-
-    function selectCategory(type, category, color) {
-      const options = {
-        where: ["onsite", "takeaway"],
-        cup: ["small", "medium", "large"],
-      };
-      const storageKey = category === "where" ? "mug_option" : "cup_volume";
-      options[category].forEach((option) => {
-        const elements = document.querySelectorAll(
-          `.order-option__svg-${category}_${option}`
-        );
-
-        elements.forEach((element) => {
-          if (option === type) {
-            setFillColor(element, color);
-            if (color === "black") {
-              localStorage.setItem(storageKey, type);
-            }
-          } else {
-            setFillColor(element, "#D8D8D8");
+      elements.forEach((element) => {
+        if (option === type) {
+          setFillColor(element, color);
+          if (color === "black") {
+            localStorage.setItem(storageKey, type);
           }
-        });
-      });
-    }
-    onsite.addEventListener("click", () => checkBlack(onsite, "onsite", "where"));
-    takeaway.addEventListener("click", () =>
-      checkBlack(takeaway, "takeaway", "where")
-    );
-    cupSizeSmall.addEventListener("click", () =>
-      checkBlack(cupSizeSmall, "small", "cup")
-    );
-    cupSizeMedium.addEventListener("click", () =>
-      checkBlack(cupSizeMedium, "medium", "cup")
-    );
-    cupSizeLarge.addEventListener("click", () =>
-      checkBlack(cupSizeLarge, "large", "cup")
-    );
-    /// Изменение цвета обьема чашек кофе в зависимости от выделения 
-    document.querySelectorAll(".order-option__cup").forEach((textSize) => {
-      textSize.addEventListener("click", function () {
-        let currentText = this.querySelector(".order-option__text-size");
-        if (currentText.style.color === "black") {
-          currentText.style.color = "#D8D8D8";
         } else {
-          document
-            .querySelectorAll(".order-option__text-size")
-            .forEach((text) => {
-              text.style.color = "#D8D8D8";
-            });
-          currentText.style.color = "black";
+          setFillColor(element, "#D8D8D8");
         }
       });
     });
-    ///Закидываем вермя заказа в ЛС и забираем оттуда данные
-    const timeInput = document.getElementById("time");
-    timeInput.addEventListener("change", function () {
-      localStorage.setItem("order_time", this.value);
-    });
-    if (localStorage.getItem("order_time")) {
-      timeInput.value = localStorage.getItem("order_time");
-    }
-
-    /// Появление часов для выбора времени заказа после нажания тоглера
-    const toggle = document.getElementById("togBtn");
-    const watch = document.querySelector(".order-option__item-watch");
-
-    toggle.addEventListener("change", function () {
-      if (this.checked) {
-        watch.style.display = "flex";
+  }
+  onsite.addEventListener("click", () => checkBlack(onsite, "onsite", "where"));
+  takeaway.addEventListener("click", () =>
+    checkBlack(takeaway, "takeaway", "where")
+  );
+  cupSizeSmall.addEventListener("click", () =>
+    checkBlack(cupSizeSmall, "small", "cup")
+  );
+  cupSizeMedium.addEventListener("click", () =>
+    checkBlack(cupSizeMedium, "medium", "cup")
+  );
+  cupSizeLarge.addEventListener("click", () =>
+    checkBlack(cupSizeLarge, "large", "cup")
+  );
+  /// Изменение цвета обьема чашек кофе в зависимости от выделения 
+  document.querySelectorAll(".order-option__cup").forEach((textSize) => {
+    textSize.addEventListener("click", function () {
+      let currentText = this.querySelector(".order-option__text-size");
+      if (currentText.style.color === "black") {
+        currentText.style.color = "#D8D8D8";
       } else {
-        watch.style.display = "none";
+        document
+          .querySelectorAll(".order-option__text-size")
+          .forEach((text) => {
+            text.style.color = "#D8D8D8";
+          });
+        currentText.style.color = "black";
       }
     });
-
-    const next = document.querySelector(".order-option-footer__button");
-
-    next.addEventListener("click", () => {
-      window.location.href = "/designer";
-    });
+  });
+  ///Закидываем вермя заказа в ЛС и забираем оттуда данные
+  const timeInput = document.getElementById("time");
+  timeInput.addEventListener("change", function () {
+    localStorage.setItem("order_time", this.value);
+  });
+  if (localStorage.getItem("order_time")) {
+    timeInput.value = localStorage.getItem("order_time");
   }
+
+  /// Появление часов для выбора времени заказа после нажания тоглера
+  const toggle = document.getElementById("togBtn");
+  const watch = document.querySelector(".order-option__item-watch");
+
+  toggle.addEventListener("change", function () {
+    if (this.checked) {
+      watch.style.display = "flex";
+    } else {
+      watch.style.display = "none";
+    }
+  });
+
+  const next = document.querySelector(".order-option-footer__button");
+
+  next.addEventListener("click", () => {
+    window.location.href = "/designer";
+  });
+}
 
 
 /* onAuthStateChanged(auth, (user) => {
