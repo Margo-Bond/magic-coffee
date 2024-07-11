@@ -111,3 +111,20 @@ export async function getCoffeeSorts(cafeKey = null, countryKey = null) {
       console.error("Error getting countries:", error);
     });
 }
+
+export async function getAdditives(cafeKey = null) {
+  const dbRef = ref(database);
+  return get(child(dbRef, `cafes/${cafeKey}/additives_selection`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting additives:", error);
+    });
+}
