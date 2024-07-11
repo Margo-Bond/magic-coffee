@@ -8,7 +8,7 @@ import CupMedium from "@/assets/images/coffee-icons/cup-350.svg";
 import CupLarge from "@/assets/images/coffee-icons/cup-450.svg";
 import { getDatabase, ref, get } from "firebase/database";
 import { initializeApp, getApps } from "firebase/app";
-import { getPrice } from "../../../../Services/Get.js";
+import { getCafes, getCoffeeType, getPrice } from "../../../../Services/Get.js";
 
 // Инициализация Firebase
 let app;
@@ -40,7 +40,9 @@ export default async function renderOrderOptionPage(main) {
       </div>
 
       <div class="order-option__coffee-img">
-        <div class="coffeeCard"></div>
+        <div class="coffeeCard">
+          <img id="coffeeImage" src="" alt="Coffee Image">
+        </div>
       </div>
 
       <div class="order-option__item item1">
@@ -122,6 +124,45 @@ export default async function renderOrderOptionPage(main) {
     </footer>`;
 
   ////
+  const cafeAddress = localStorage.getItem("cafe_address");
+  const coffeeType = localStorage.getItem("coffee_type");
+  const cafeOne = "Bradford BD1 1PR";
+  const cafeTwo = "Bradford BD4 7SJ";
+  const cafeThree = "Bradford BD1 4RN";
+
+  function getCafeKey(address) {
+    switch (address) {
+      case cafeOne:
+        return "cafe_one";
+      case cafeTwo:
+        return "cafe_two";
+      case cafeThree:
+        return "cafe_three";
+      default:
+        return null;
+    }
+  }
+  const cafeKey = getCafeKey(cafeAddress);
+
+  const coffeeKeys = {
+    Americano: "americano",
+    Cappuccino: "cappuccino",
+    Latte: "latte",
+    "Flat White": "flat_white",
+    Raf: "raf",
+    Espresso: "espresso",
+  };
+  const coffeeKey = coffeeKeys[coffeeType];
+
+  if (!cafeKey) {
+    console.error("Invalid cafe address:", cafeAddress);
+  }
+
+  if (!coffeeKey) {
+    console.error("Invalid coffee type:", coffeeType);
+  }
+
+  ///
 
   const back = document.querySelector(".order-option__arrowBack");
   const cart = document.querySelector(".order-option__cartBuy");
@@ -136,6 +177,34 @@ export default async function renderOrderOptionPage(main) {
 
   ///Получение картинки и установка
 
+  async function setCoffeeImage(cafeKey, coffeeKey) {
+    try {
+      const cafes = await getCafes();
+      if (cafes) {
+        if (cafes[cafeKey]) {
+          const coffeeData = await getCoffeeType(cafeKey, coffeeKey);
+          if (coffeeData && coffeeData.imageUrl) {
+            const coffeeImage = document.getElementById("coffeeImage");
+            coffeeImage.src = coffeeData.imageUrl;
+            coffeeImage.alt = coffeeData.name || "Coffee Image";
+          } else {
+            console.log("No coffee data available");
+          }
+        } else {
+          console.log("Cafe not found");
+        }
+      } else {
+        console.log("No cafes data available");
+      }
+    } catch (error) {
+      console.error("Error setting coffee image:", error);
+    }
+  }
+
+  if (cafeKey && coffeeKey) {
+    setCoffeeImage(cafeKey, coffeeKey);
+  }
+
   ///
   const coffeType = document.querySelector(".coffee");
   coffeType.textContent = localStorage.getItem("coffee_type");
@@ -147,45 +216,6 @@ export default async function renderOrderOptionPage(main) {
   const totalAmount = document.getElementById("multipliedValue");
   let count = 1;
   const minCount = 1;
-  const cafeAddress = localStorage.getItem("cafe_address");
-  const coffeeType = localStorage.getItem("coffee_type");
-  const cafeOne = "Bradford BD1 1PR";
-  const cafeTwo = "Bradford BD4 7SJ";
-  const cafeThree = "Bradford BD1 4RN";
-
-  const coffeeKeys = {
-    Americano: "americano",
-    Cappuccino: "cappuccino",
-    Latte: "latte",
-    "Flat White": "flat_white",
-    Raf: "raf",
-    Espresso: "espresso",
-  };
-
-  const coffeeKey = coffeeKeys[coffeeType];
-
-  if (!coffeeKey) {
-    console.error("Invalid coffee type:", coffeeType);
-  }
-
-  function getCafeKey(address) {
-    switch (address) {
-      case cafeOne:
-        return "cafe_one";
-      case cafeTwo:
-        return "cafe_two";
-      case cafeThree:
-        return "cafe_three";
-      default:
-        return null;
-    }
-  }
-
-  const cafeKey = getCafeKey(cafeAddress);
-
-  if (!cafeKey) {
-    console.error("Invalid cafe address:", cafeAddress);
-  }
 
   function updateCount(newCount) {
     count = newCount;
