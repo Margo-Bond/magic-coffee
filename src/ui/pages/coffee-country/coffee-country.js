@@ -1,4 +1,4 @@
-import getCafes from '../../../../Services/GetCafes.js';
+import { getCafes } from "../../../../Services/Get.js";
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
 import More from "@/assets/images/geometric-icons/icon-more-grey.svg";
@@ -80,7 +80,7 @@ export default async function renderCoffeeCountryPage(main) {
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem('address');
+    const getAddress = localStorage.getItem("address");
 
     let selectedCafe = null;
 
@@ -94,14 +94,16 @@ export default async function renderCoffeeCountryPage(main) {
 
     if (selectedCafe) {
       const countryOptions = Object.keys(selectedCafe);
-      const countryBtns = document.querySelectorAll(".country-content__wrapper");
+      const countryBtns = document.querySelectorAll(
+        ".country-content__wrapper"
+      );
 
       countryBtns.forEach((countryItem, index) => {
         if (countryOptions[index]) {
           const countryOption = countryOptions[index];
           const countryData = selectedCafe[countryOption];
 
-          const itemName = countryItem.querySelector('.country-content__text');
+          const itemName = countryItem.querySelector(".country-content__text");
 
           if (itemName) {
             itemName.textContent = countryData.country;
@@ -146,5 +148,8 @@ export default async function renderCoffeeCountryPage(main) {
   const cart = document.querySelector(".country-header__icon-cart");
 
   back.addEventListener("click", () => (window.location.href = "/designer"));
-  cart.addEventListener("click", () => (window.location.href = "/current-order"));
+  cart.addEventListener(
+    "click",
+    () => (window.location.href = "/current-order")
+  );
 }

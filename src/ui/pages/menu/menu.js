@@ -1,4 +1,4 @@
-import getCafes from '../../../../Services/GetCafes.js';
+import { getCafes } from "../../../../Services/Get.js";
 
 export default async function renderMenuPage(main) {
   main.innerHTML = `
@@ -78,7 +78,7 @@ export default async function renderMenuPage(main) {
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem('cafe_address');
+    const getAddress = localStorage.getItem("cafe_address");
 
     let selectedCafe = null;
 
@@ -92,16 +92,18 @@ export default async function renderMenuPage(main) {
 
     if (selectedCafe) {
       const coffeeTypes = Object.keys(selectedCafe);
-      console.log(coffeeTypes)
-      const menuContentItems = document.querySelectorAll('.menu__content__item');
+      console.log(coffeeTypes);
+      const menuContentItems = document.querySelectorAll(
+        ".menu__content__item"
+      );
 
       menuContentItems.forEach((menuItem, index) => {
         if (coffeeTypes[index]) {
           const coffeeType = coffeeTypes[index];
           const coffeeData = selectedCafe[coffeeType];
 
-          const imageElement = menuItem.querySelector('.image');
-          const itemName = menuItem.querySelector('.menu__content__item-name');
+          const imageElement = menuItem.querySelector(".image");
+          const itemName = menuItem.querySelector(".menu__content__item-name");
 
           if (imageElement) {
             imageElement.src = coffeeData.image_url;
@@ -126,6 +128,6 @@ export default async function renderMenuPage(main) {
       const btnTextValue = coffeeBtnText.textContent;
       localStorage.setItem("coffee_type", btnTextValue);
       window.location.href = "/order-options";
-    })
+    });
   });
 }
