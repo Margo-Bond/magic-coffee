@@ -2,7 +2,7 @@ import OrderedSvg from "@/assets/images/ordered.svg";
 
 const nameUser = JSON.parse(localStorage.getItem("user"))?.name || 'Customer';
 const timeOrder = localStorage.getItem('order_time');
-const adressUser = localStorage.getItem('cafe-address') || 'specified';
+const adressUser = localStorage.getItem('cafe_address') || 'specified';
 const qr = "/profile";
 
 const greetingElement = document.querySelector('.order-confirmed__greeting');
