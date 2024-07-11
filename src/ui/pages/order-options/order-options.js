@@ -8,7 +8,7 @@ import CupMedium from "@/assets/images/coffee-icons/cup-350.svg";
 import CupLarge from "@/assets/images/coffee-icons/cup-450.svg";
 import { getDatabase, ref, get } from "firebase/database";
 import { initializeApp, getApps } from "firebase/app";
-import { getCafes } from "../../../../Services/Get.js";
+import { getCafes, getCoffeeType, getPrice } from "../../../../Services/Get.js";
 
 // Инициализация Firebase
 let app;
@@ -40,7 +40,9 @@ export default async function renderOrderOptionPage(main) {
       </div>
 
       <div class="order-option__coffee-img">
-        <div class="coffeeCard"></div>
+        <div class="coffeeCard">
+          <img id="coffeeImage" src="" alt="Coffee Image">
+        </div>
       </div>
 
       <div class="order-option__item item1">
@@ -122,6 +124,49 @@ export default async function renderOrderOptionPage(main) {
     </footer>`;
 
   ////
+  const cafeAddress = localStorage.getItem("cafe_address");
+  const coffeeType = localStorage.getItem("coffee_type");
+  const cafeOne = "Bradford BD1 1PR";
+  const cafeTwo = "Bradford BD4 7SJ";
+  const cafeThree = "Bradford BD1 4RN";
+
+  function getCafeKey(address) {
+    switch (address) {
+      case cafeOne:
+        return "cafe_one";
+      case cafeTwo:
+        return "cafe_two";
+      case cafeThree:
+        return "cafe_three";
+      default:
+        return null;
+    }
+  }
+  const cafeKey = getCafeKey(cafeAddress);
+
+  const coffeeKeys = {
+    Americano: "americano",
+    Cappuccino: "cappuccino",
+    Latte: "latte",
+    "Flat White": "flat_white",
+    Raf: "raf",
+    Espresso: "espresso",
+    "Matcha Latte": "matcha_latte",
+    "Vienna Coffee": "vienna_coffee",
+    Frappuccino: "frappuccino",
+    Macchiato: "macchiato",
+  };
+  const coffeeKey = coffeeKeys[coffeeType];
+
+  if (!cafeKey) {
+    console.error("Invalid cafe address:", cafeAddress);
+  }
+
+  if (!coffeeKey) {
+    console.error("Invalid coffee type:", coffeeType);
+  }
+
+  ///
 
   const back = document.querySelector(".order-option__arrowBack");
   const cart = document.querySelector(".order-option__cartBuy");
@@ -134,25 +179,41 @@ export default async function renderOrderOptionPage(main) {
     window.location.href = "/current-order";
   });
 
+  ///Получение картинки и установка
+
+  async function setCoffeeImage(cafeKey, coffeeKey) {
+    try {
+      const cafes = await getCafes();
+      if (cafes) {
+        if (cafes[cafeKey]) {
+          const coffeeData = await getCoffeeType(cafeKey, coffeeKey);
+          if (coffeeData && coffeeData.image_url) {
+            const coffeeImage = document.getElementById("coffeeImage");
+            coffeeImage.src = coffeeData.image_url;
+            coffeeImage.alt = coffeeType;
+          } else {
+            console.log("No coffee data available");
+          }
+        } else {
+          console.log("Cafe not found");
+        }
+      } else {
+        console.log("No cafes data available");
+      }
+    } catch (error) {
+      console.error("Error setting coffee image:", error);
+    }
+  }
+
+  if (cafeKey && coffeeKey) {
+    setCoffeeImage(cafeKey, coffeeKey);
+  }
+
   ///
   const coffeType = document.querySelector(".coffee");
-  coffeType.textContent = localStorage.getItem('coffee_type');
+  coffeType.textContent = localStorage.getItem("coffee_type");
   ////
-  /* export async function getCafes() {
-      return get(child(dbRef, 'cafes'))
-         .then((snapshot) => {
-           if (snapshot.exists()) {
-             console.log(snapshot.val());
-             return snapshot.val();
-           } else {
-             console.log("No data available");
-             return null;
-           }
-         })
-         .catch((error) => {
-           console.error("Error getting cafes:", error);
-         });
-     } */
+
   const counter = document.getElementById("buttonCountNumber");
   const buttonPlus = document.getElementById("buttonCountPlus");
   const buttonMinus = document.getElementById("buttonCountMinus");
@@ -163,18 +224,20 @@ export default async function renderOrderOptionPage(main) {
   function updateCount(newCount) {
     count = newCount;
     counter.textContent = count;
+    calculateTotalAmount(cafeKey, coffeeKey, count);
   }
-  async function calculateTotalAmount() {
-    const data = await getCafes();
-    if (data) {
-      const multiplier = parseFloat(data.price);
-      totalAmount.textContent = (count * multiplier).toFixed(2) + ".00";
-      console.log(`Total amount: ${totalAmount}`);
+
+  async function calculateTotalAmount(cafeKey, coffeeKey, count) {
+    const price = await getPrice(cafeKey, coffeeKey);
+
+    if (price) {
+      totalAmount.textContent = (count * price).toFixed(2);
       localStorage.setItem("cup_quantity", count.toString());
-      localStorage.setItem("order_price", totalAmount);
+      localStorage.setItem("order_price", totalAmount.textContent);
+    } else {
+      console.error("Price is not a valid number:", price);
     }
-  };
-  calculateTotalAmount();
+  }
 
   buttonPlus.addEventListener("click", function () {
     updateCount(count + 1);
@@ -186,6 +249,7 @@ export default async function renderOrderOptionPage(main) {
     }
   });
 
+  calculateTotalAmount(cafeKey, coffeeKey, count);
   ///
 
   const buttons = document.querySelectorAll(".order-option__strength");
@@ -200,7 +264,10 @@ export default async function renderOrderOptionPage(main) {
       resetButtons();
 
       this.classList.add("active");
-      localStorage.setItem("coffee_ristretto", this.getAttribute("data-strength"));
+      localStorage.setItem(
+        "coffee_ristretto",
+        this.getAttribute("data-strength")
+      );
     });
   });
 
@@ -229,7 +296,9 @@ export default async function renderOrderOptionPage(main) {
 
     if (isBlack) {
       selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(category === "where" ? "mug_option" : "cup_volume");
+      localStorage.removeItem(
+        category === "where" ? "mug_option" : "cup_volume"
+      );
     } else {
       selectCategory(type, category, "black");
     }
@@ -271,7 +340,7 @@ export default async function renderOrderOptionPage(main) {
   cupSizeLarge.addEventListener("click", () =>
     checkBlack(cupSizeLarge, "large", "cup")
   );
-  /// Изменение цвета обьема чашек кофе в зависимости от выделения 
+  /// Изменение цвета обьема чашек кофе в зависимости от выделения
   document.querySelectorAll(".order-option__cup").forEach((textSize) => {
     textSize.addEventListener("click", function () {
       let currentText = this.querySelector(".order-option__text-size");
@@ -315,7 +384,6 @@ export default async function renderOrderOptionPage(main) {
   });
 }
 
-
 /* onAuthStateChanged(auth, (user) => {
   if (user) {
     slider.addEventListener("span", (event) => {
@@ -333,7 +401,7 @@ export default async function renderOrderOptionPage(main) {
   const coffeeKey = "americano";
 
   try {
-    const data = await getCafes(cafeKey, coffeeKey);
+    const data = await getCafes(cafe, coffee_type);
     console.log(data.price);
   } catch (error) {
     console.error("Error fetching coffee data:", error);

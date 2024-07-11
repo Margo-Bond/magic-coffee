@@ -6,7 +6,6 @@ import SmallGrinding from "@/assets/images/coffee-icons/small-grinding.svg";
 import BigGrinding from "@/assets/images/coffee-icons/big-grinding.svg";
 import Ice from "@/assets/images/coffee-icons/ice.svg";
 import { getMilkList, getSyrupList } from "../../../../Services/Get.js";
-import { } from "../../../../Services/Get.js";
 import { auth, onAuthStateChanged } from "../../../../main.js";
 
 export default function renderDesignerPage(main) {
@@ -274,7 +273,7 @@ export default function renderDesignerPage(main) {
     renderMilkList("cafe_three");
     renderSyrupList("cafe_three");
   } else {
-    console.log("Cade address wasn't got");
+    console.log("Cafe address wasn't got");
   }
 
   async function renderMilkList(cafe) {
