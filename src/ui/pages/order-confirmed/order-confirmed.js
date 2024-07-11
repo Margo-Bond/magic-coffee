@@ -2,18 +2,12 @@ import OrderedSvg from "@/assets/images/ordered.svg";
 
 const nameUser = JSON.parse(localStorage.getItem("user"))?.name || 'Customer';
 const timeOrder = localStorage.getItem('order_time');
-const adressUser = localStorage.getItem('address') || 'specified address';
+const adressUser = localStorage.getItem('cafe-address') || 'specified';
 const qr = "/profile";
 
 const greetingElement = document.querySelector('.order-confirmed__greeting');
 const resultElement = document.querySelector('.order-confirmed__result');
 const qrLinkElement = document.querySelector('.order-confirmed__submit a');
-
-
-
-//greetingElement.textContent = `${nameUser}, your order has been successfully placed.`;
-//resultElement.textContent = `ЗThe order will be ready today at ${timeOrder} at the address ${adressUser}`;
-//qrLinkElement.href = "/profile";
 
 export default async function renderOrderConfirmedPage(main) {
   main.innerHTML = `
@@ -39,7 +33,7 @@ export default async function renderOrderConfirmedPage(main) {
   ///
 
   const resultDiv = document.querySelector(".order-confirmed__result");
-  if (!timeOrder) {
-    resultDiv.innerHTML = `The order will be ready today in 30 minutes at the address ${adressUser}`;
+  if (!timeOrder, "00:00") {
+    resultDiv.innerHTML = `The order will be ready today in 30 minutes at the ${adressUser} address.`;
   }
 }
