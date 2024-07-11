@@ -94,3 +94,17 @@ export async function getCart(userUid) {
       console.error("Error getting cart:", error);
     });
 }
+
+export async function getPrice(cafe = null, coffeeKey = null) {
+  return get(child(dbRef, `cafes/${cafe}/coffees/${coffeeKey}/price`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const coffeePrice = snapshot.val();
+        return coffeePrice;
+      } else {
+        console.log("No data available in a price");
+        return null;
+      }
+    })
+    .catch((err) => console.error("Error getting price:", err));
+}
