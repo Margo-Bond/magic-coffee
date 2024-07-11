@@ -8,6 +8,7 @@ import CupMedium from "@/assets/images/coffee-icons/cup-350.svg";
 import CupLarge from "@/assets/images/coffee-icons/cup-450.svg";
 import { getDatabase, ref, get } from "firebase/database";
 import { initializeApp, getApps } from "firebase/app";
+import { getCafes } from "../../../../Services/Get.js";
 
 // Инициализация Firebase
 let app;
@@ -28,18 +29,6 @@ if (!getApps().length) {
 }
 
 const database = getDatabase(app);
-
-/*
-async function getCafes() {
-  const dbRef = ref(database, "cafes");
-  const snapshot = await get(dbRef);
-  if (snapshot.exists()) {
-    return snapshot.val();
-  } else {
-    console.log("No data available");
-    return {};
-  }
-}*/
 
 export default async function renderOrderOptionPage(main) {
   main.innerHTML = `
@@ -132,42 +121,6 @@ export default async function renderOrderOptionPage(main) {
       <button class="order-option-footer__button">Next</button>
     </footer>`;
 
-  try {
-    const data = await getCafes();
-    const cafeOne = "Bradford BD1 1PR";
-    const cafeTwo = "Bradford BD4 7SJ";
-    const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem("cafe_address");
-
-    let selectedCafe = null;
-
-    if (getAddress === cafeOne) {
-      selectedCafe = data.cafe_one.coffee_selection;
-    } else if (getAddress === cafeTwo) {
-      selectedCafe = data.cafe_two.coffee_selection;
-    } else if (getAddress === cafeThree) {
-      selectedCafe = data.cafe_three.coffee_selection;
-    }
-
-    if (selectedCafe) {
-      const priceOptions = Object.keys(selectedCafe);
-      const orderPriceCount = document.querySelector(
-        ".order-option-footer__count"
-      );
-
-      priceOptions.forEach((priceOption) => {
-        const coffeeData = selectedCafe[priceOption];
-        const coffeePrice = coffeeData.price;
-
-        if (coffeePrice && orderPriceCount) {
-          orderPriceCount.textContent = `${coffeePrice}`;
-        }
-      });
-    }
-  } catch (error) {
-    console.error("Ошибка при получении данных о ценах:", error);
-  }
-
   ////
 
   const back = document.querySelector(".order-option__arrowBack");
@@ -185,181 +138,183 @@ export default async function renderOrderOptionPage(main) {
   const coffeType = document.querySelector(".coffee");
   coffeType.textContent = localStorage.getItem('coffee_type');
   ////
-  const counter = document.getElementById("buttonCountNumber");
-  const buttonPlus = document.getElementById("buttonCountPlus");
-  const buttonMinus = document.getElementById("buttonCountMinus");
-  let count = 1;
-  const minCount = 1;
-  const multiplier = 1;
-
-  function updateCount(newCount) {
-    count = newCount;
-    counter.textContent = count;
-    const totalAmount = (document.getElementById(
-      "multipliedValue"
-    ).textContent = count * multiplier + ".00");
-    localStorage.setItem("cup_quantity", count.toString());
-    localStorage.setItem("order_price", totalAmount);
-  }
-
-  buttonPlus.addEventListener("click", function () {
-    updateCount(count + 1);
-  });
-
-  buttonMinus.addEventListener("click", function () {
-    if (count > minCount) {
-      updateCount(count - 1);
-    }
-  });
-  /*
-  getCafes().then((cafes) => {
-    if (cafes) {
-      Object.keys(cafes).forEach((cafeKey) => {
-        const cafe = cafes[cafeKey];
-        if (cafe.coffee_selection && cafe.coffee_selection.coffees) {
-          Object.keys(cafe.coffee_selection.coffees).forEach((coffeeKey) => {
-            const coffee = cafe.coffee_selection.coffees[coffeeKey];
-            if (coffee.price) {
-              console.log(`Price of ${coffeeKey} in ${cafeKey}:`, coffee.price);
+  export async function getCafes() {
+    /*     return get(child(dbRef, 'cafes'))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              console.log(snapshot.val());
+              return snapshot.val();
             } else {
-              console.log(`Price for ${coffeeKey} not found in ${cafeKey}`);
+              console.log("No data available");
+              return null;
             }
+          })
+          .catch((error) => {
+            console.error("Error getting cafes:", error);
           });
-        } else {
-          console.log(`No coffee selection available for ${cafeKey}`);
-        }
-      });
-    } else {
-      console.log("No cafes data available");
+      } */
+    const counter = document.getElementById("buttonCountNumber");
+    const buttonPlus = document.getElementById("buttonCountPlus");
+    const buttonMinus = document.getElementById("buttonCountMinus");
+    const totalAmount = document.getElementById("multipliedValue");
+    let count = 1;
+    const minCount = 1;
+
+    function updateCount(newCount) {
+      count = newCount;
+      counter.textContent = count;
     }
-  });*/
-
-  ///
-
-  const buttons = document.querySelectorAll(".order-option__strength");
-  function resetButtons() {
-    buttons.forEach((button) => {
-      button.classList.remove("active");
-    });
-  }
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", function () {
-      resetButtons();
-
-      this.classList.add("active");
-      localStorage.setItem("coffee_ristretto", this.getAttribute("data-strength"));
-    });
-  });
-
-  ///
-
-  const timeInput = document.getElementById("time");
-  timeInput.addEventListener("change", function () {
-    localStorage.setItem("order_time", this.value);
-  });
-  if (localStorage.getItem("order_time")) {
-    timeInput.value = localStorage.getItem("order_time");
-  }
-
-  const onsite = document.querySelector(".order-option__svg-where_onsite");
-  const takeaway = document.querySelector(".order-option__svg-where_takeaway");
-  const cupSizeSmall = document.querySelector(".order-option__svg-cup_small");
-  const cupSizeMedium = document.querySelector(".order-option__svg-cup_medium");
-  const cupSizeLarge = document.querySelector(".order-option__svg-cup_large");
-
-  function setFillColor(element, color) {
-    element.querySelectorAll("svg path, svg rect").forEach((svg) => {
-      svg.setAttribute("fill", color);
-      svg.setAttribute("stroke", color);
-      svg.setAttribute("stroke-width", "0.1");
-    });
-  }
-
-  function checkBlack(element, type, category) {
-    const isBlack = Array.from(
-      element.querySelectorAll("svg path, svg rect")
-    ).some((svg) => svg.getAttribute("fill") === "black");
-
-    if (isBlack) {
-      selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(category === "where" ? "mug_option" : "cup_volume");
-    } else {
-      selectCategory(type, category, "black");
-    }
-  }
-
-  function selectCategory(type, category, color) {
-    const options = {
-      where: ["onsite", "takeaway"],
-      cup: ["small", "medium", "large"],
+    async function calculateTotalAmount() {
+      const data = await getCafes();
+      if (data) {
+        const multiplier = parseFloat(data.price);
+        totalAmount.textContent = (count * multiplier).toFixed(2) + ".00";
+        console.log(`Total amount: ${totalAmount}`);
+        localStorage.setItem("cup_quantity", count.toString());
+        localStorage.setItem("order_price", totalAmount);
+      }
     };
-    const storageKey = category === "where" ? "mug_option" : "cup_volume";
-    options[category].forEach((option) => {
-      const elements = document.querySelectorAll(
-        `.order-option__svg-${category}_${option}`
-      );
+    calculateTotalAmount();
 
-      elements.forEach((element) => {
-        if (option === type) {
-          setFillColor(element, color);
-          if (color === "black") {
-            localStorage.setItem(storageKey, type);
-          }
-        } else {
-          setFillColor(element, "#D8D8D8");
-        }
-      });
+    buttonPlus.addEventListener("click", function () {
+      updateCount(count + 1);
     });
-  }
-  onsite.addEventListener("click", () => checkBlack(onsite, "onsite", "where"));
-  takeaway.addEventListener("click", () =>
-    checkBlack(takeaway, "takeaway", "where")
-  );
-  cupSizeSmall.addEventListener("click", () =>
-    checkBlack(cupSizeSmall, "small", "cup")
-  );
-  cupSizeMedium.addEventListener("click", () =>
-    checkBlack(cupSizeMedium, "medium", "cup")
-  );
-  cupSizeLarge.addEventListener("click", () =>
-    checkBlack(cupSizeLarge, "large", "cup")
-  );
 
-  document.querySelectorAll(".order-option__cup").forEach((textSize) => {
-    textSize.addEventListener("click", function () {
-      let currentText = this.querySelector(".order-option__text-size");
-      if (currentText.style.color === "black") {
-        currentText.style.color = "#D8D8D8";
-      } else {
-        document
-          .querySelectorAll(".order-option__text-size")
-          .forEach((text) => {
-            text.style.color = "#D8D8D8";
-          });
-        currentText.style.color = "black";
+    buttonMinus.addEventListener("click", function () {
+      if (count > minCount) {
+        updateCount(count - 1);
       }
     });
-  });
 
-  ///
-  const toggle = document.getElementById("togBtn");
-  const watch = document.querySelector(".order-option__item-watch");
+    ///
 
-  toggle.addEventListener("change", function () {
-    if (this.checked) {
-      watch.style.display = "flex";
-    } else {
-      watch.style.display = "none";
+    const buttons = document.querySelectorAll(".order-option__strength");
+    function resetButtons() {
+      buttons.forEach((button) => {
+        button.classList.remove("active");
+      });
     }
-  });
 
-  const next = document.querySelector(".order-option-footer__button");
+    buttons.forEach((button) => {
+      button.addEventListener("click", function () {
+        resetButtons();
 
-  next.addEventListener("click", () => {
-    window.location.href = "/designer";
-  });
-}
+        this.classList.add("active");
+        localStorage.setItem("coffee_ristretto", this.getAttribute("data-strength"));
+      });
+    });
+
+    ///
+
+    /// Изменение цвета кнопок в зависимости от выделения
+
+    const onsite = document.querySelector(".order-option__svg-where_onsite");
+    const takeaway = document.querySelector(".order-option__svg-where_takeaway");
+    const cupSizeSmall = document.querySelector(".order-option__svg-cup_small");
+    const cupSizeMedium = document.querySelector(".order-option__svg-cup_medium");
+    const cupSizeLarge = document.querySelector(".order-option__svg-cup_large");
+
+    function setFillColor(element, color) {
+      element.querySelectorAll("svg path, svg rect").forEach((svg) => {
+        svg.setAttribute("fill", color);
+        svg.setAttribute("stroke", color);
+        svg.setAttribute("stroke-width", "0.1");
+      });
+    }
+
+    function checkBlack(element, type, category) {
+      const isBlack = Array.from(
+        element.querySelectorAll("svg path, svg rect")
+      ).some((svg) => svg.getAttribute("fill") === "black");
+
+      if (isBlack) {
+        selectCategory(type, category, "#D8D8D8");
+        localStorage.removeItem(category === "where" ? "mug_option" : "cup_volume");
+      } else {
+        selectCategory(type, category, "black");
+      }
+    }
+
+    function selectCategory(type, category, color) {
+      const options = {
+        where: ["onsite", "takeaway"],
+        cup: ["small", "medium", "large"],
+      };
+      const storageKey = category === "where" ? "mug_option" : "cup_volume";
+      options[category].forEach((option) => {
+        const elements = document.querySelectorAll(
+          `.order-option__svg-${category}_${option}`
+        );
+
+        elements.forEach((element) => {
+          if (option === type) {
+            setFillColor(element, color);
+            if (color === "black") {
+              localStorage.setItem(storageKey, type);
+            }
+          } else {
+            setFillColor(element, "#D8D8D8");
+          }
+        });
+      });
+    }
+    onsite.addEventListener("click", () => checkBlack(onsite, "onsite", "where"));
+    takeaway.addEventListener("click", () =>
+      checkBlack(takeaway, "takeaway", "where")
+    );
+    cupSizeSmall.addEventListener("click", () =>
+      checkBlack(cupSizeSmall, "small", "cup")
+    );
+    cupSizeMedium.addEventListener("click", () =>
+      checkBlack(cupSizeMedium, "medium", "cup")
+    );
+    cupSizeLarge.addEventListener("click", () =>
+      checkBlack(cupSizeLarge, "large", "cup")
+    );
+    /// Изменение цвета обьема чашек кофе в зависимости от выделения 
+    document.querySelectorAll(".order-option__cup").forEach((textSize) => {
+      textSize.addEventListener("click", function () {
+        let currentText = this.querySelector(".order-option__text-size");
+        if (currentText.style.color === "black") {
+          currentText.style.color = "#D8D8D8";
+        } else {
+          document
+            .querySelectorAll(".order-option__text-size")
+            .forEach((text) => {
+              text.style.color = "#D8D8D8";
+            });
+          currentText.style.color = "black";
+        }
+      });
+    });
+    ///Закидываем вермя заказа в ЛС и забираем оттуда данные
+    const timeInput = document.getElementById("time");
+    timeInput.addEventListener("change", function () {
+      localStorage.setItem("order_time", this.value);
+    });
+    if (localStorage.getItem("order_time")) {
+      timeInput.value = localStorage.getItem("order_time");
+    }
+
+    /// Появление часов для выбора времени заказа после нажания тоглера
+    const toggle = document.getElementById("togBtn");
+    const watch = document.querySelector(".order-option__item-watch");
+
+    toggle.addEventListener("change", function () {
+      if (this.checked) {
+        watch.style.display = "flex";
+      } else {
+        watch.style.display = "none";
+      }
+    });
+
+    const next = document.querySelector(".order-option-footer__button");
+
+    next.addEventListener("click", () => {
+      window.location.href = "/designer";
+    });
+  }
+
 
 /* onAuthStateChanged(auth, (user) => {
   if (user) {
