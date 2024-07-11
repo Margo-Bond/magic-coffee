@@ -80,7 +80,7 @@ export default async function renderCoffeeCountryPage(main) {
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem("address");
+    const getAddress = localStorage.getItem("cafe_address");
 
     let selectedCafe = null;
 
@@ -118,21 +118,28 @@ export default async function renderCoffeeCountryPage(main) {
   const countryBtns = document.querySelectorAll(".country-content__wrapper");
 
   countryBtns.forEach((btn) => {
+    const countryBtnText = btn.querySelector(".country-content__text");
+    const btnTextValue = countryBtnText.textContent;
+    const isSelected = localStorage.getItem("coffee_country");
+
+    if (isSelected === btnTextValue) {
+      btn.classList.add("selected");
+      countryBtnText.style.color = "rgb(10, 132, 255)";
+    }
+  });
+
+  countryBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       resetButtons();
       btn.classList.add("selected");
       const countryBtnText = btn.querySelector(".country-content__text");
       const btnTextValue = countryBtnText.textContent;
-      const storedCountry = localStorage.getItem("country");
-      if (storedCountry === btnTextValue) {
-        localStorage.removeItem("country");
-        btn.classList.remove("selected");
-        countryBtnText.style.color = "rgb(0, 24, 51)";
-      } else {
-        localStorage.setItem("country", btnTextValue);
-        countryBtnText.style.color = "rgb(10, 132, 255)";
-      }
-      window.location.href = "/coffee-type";
+      const storedCountry = localStorage.getItem("coffee_country");
+      localStorage.setItem("coffee_country", btnTextValue);
+      countryBtnText.style.color = "rgb(10, 132, 255)";
+      setTimeout(() => {
+        window.location.href = "/coffee-type";
+      }, 700)
     });
   });
 

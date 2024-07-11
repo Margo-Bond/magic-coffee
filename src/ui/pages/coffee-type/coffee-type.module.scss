@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--space-l);
+    margin: var(--space-m) 0;
     padding: 0 var(--space-l);
 
     .coffeetype-header__title {
@@ -52,9 +52,9 @@
 
     .coffeetype-content__wrapper {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
-        margin: 0px var(--space-xs);
+        margin: 0px var(--space-s);
         min-height: 50px;
         border-bottom: 1px solid var(--line-color);
         cursor: pointer;
@@ -72,6 +72,8 @@
             align-items: center;
             border-radius: 50%;
             cursor: pointer;
+            display: none;
+            animation-delay: 1s;
         }
     }
 }

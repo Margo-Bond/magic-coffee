@@ -95,16 +95,19 @@ export async function getCart(userUid) {
     });
 }
 
-export async function getPrice(cafe = null, coffeeKey = null) {
-  return get(child(dbRef, `cafes/${cafe}/coffees/${coffeeKey}/price`))
+export async function getCoffeeSorts(cafeKey = null, countryKey = null) {
+  const dbRef = ref(database);
+  return get(child(dbRef, `cafes/${cafeKey}/coffee_selection/${countryKey}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        const coffeePrice = snapshot.val();
-        return coffeePrice;
+        console.log(snapshot.val());
+        return snapshot.val();
       } else {
-        console.log("No data available in a price");
+        console.log("No data available");
         return null;
       }
     })
-    .catch((err) => console.error("Error getting price:", err));
+    .catch((error) => {
+      console.error("Error getting countries:", error);
+    });
 }
