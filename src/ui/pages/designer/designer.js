@@ -5,7 +5,8 @@ import Roasting from "@/assets/images/coffee-icons/roasting.svg";
 import SmallGrinding from "@/assets/images/coffee-icons/small-grinding.svg";
 import BigGrinding from "@/assets/images/coffee-icons/big-grinding.svg";
 import Ice from "@/assets/images/coffee-icons/ice.svg";
-import { auth, database, onAuthStateChanged } from "../../../../main.js";
+import { getMilkList, getSyrupList } from "../../../../Services/Get.js";
+import { auth, onAuthStateChanged } from "../../../../main.js";
 
 export default function renderDesignerPage(main) {
   main.innerHTML = `
@@ -73,25 +74,13 @@ export default function renderDesignerPage(main) {
     </div>
     <div class="overlay none"></div>
     <div class="designer-modal__milk-container none">
-      <div class="designer-modal__milk-options">
-        <div class="designer-modal__milk-question">What type of milk do you prefer?</div>
-        <div class="designer-modal__milk-option designer-modal__milk_none">None</div>
-        <div class="designer-modal__milk-option designer-modal__milk_cow">Cow's</div>
-        <div class="designer-modal__milk-option designer-modal__milk_lactose-free">Lactose-free</div>
-        <div class="designer-modal__milk-option designer-modal__milk_skimmed">Skimmed</div>
-        <div class="designer-modal__milk-option designer-modal__milk_vegetable">Vegetable</div>
-      </div>
+      <div class="designer-modal__milk-question">What type of milk do you prefer?</div>
+      <div class="designer-modal__milk-options"></div>
       <button class="designer-modal__button">Cancel</button>
     </div>
     <div class="designer-modal__syrup-container none">
-      <div class="designer-modal__syrup-options">
-        <div class="designer-modal__syrup-question">What flavor of syrup do you prefer?</div>
-        <div class="designer-modal__syrup-option designer-modal__syrup_none">None</div>
-        <div class="designer-modal__syrup-option designer-modal__syrup_cow">Amaretto</div>
-        <div class="designer-modal__syrup-option designer-modal__syrup_lactose-free">Coconut</div>
-        <div class="designer-modal__syrup-option designer-modal__syrup_skimmed">Vanilla</div>
-        <div class="designer-modal__syrup-option designer-modal__syrup_vegetable">Caramel</div>
-      </div>
+      <div class="designer-modal__syrup-question">What flavor of syrup do you prefer?</div>
+      <div class="designer-modal__syrup-options"></div>
       <button class="designer-modal__button">Cancel</button>
     </div>
     <footer class="designer-footer">
@@ -109,10 +98,18 @@ export default function renderDesignerPage(main) {
   const selectSyrup = document.querySelector(".designer-content__select_syrup");
   const overlay = document.querySelector(".overlay");
   const cancelButtons = document.querySelectorAll(".designer-modal__button");
-  const milkList = document.querySelector(".designer-modal__milk-container");
-  const syrupList = document.querySelector(".designer-modal__syrup-container");
+  const milkContainer = document.querySelector(
+    ".designer-modal__milk-container"
+  );
+  const syrupContainer = document.querySelector(
+    ".designer-modal__syrup-container"
+  );
   const slider = document.getElementById("type__coffee-slider");
   const sortSvg = document.querySelector(".designer-content__svg-sort");
+  const milkOptions = document.querySelectorAll(".designer-modal__milk-option");
+  const syrupOptions = document.querySelectorAll(
+    ".designer-modal__syrup-option"
+  );
   const additivesSvg = document.querySelector(
     ".designer-content__svg-additives"
   );
@@ -134,25 +131,10 @@ export default function renderDesignerPage(main) {
   const iceOne = document.querySelector(".designer-content__svg-ice_one");
   const iceTwo = document.querySelector(".designer-content__svg-ice_two");
   const iceThree = document.querySelector(".designer-content__svg-ice_three");
+  const totalCount = document.querySelector(".designer-footer__count");
+  const buttonNext = document.querySelector(".designer-footer__button");
 
-  selectMilk.addEventListener("click", function () {
-    overlay.classList.remove("none");
-    milkList.classList.remove("none");
-  });
-
-  selectSyrup.addEventListener("click", function () {
-    overlay.classList.remove("none");
-    syrupList.classList.remove("none");
-  });
-
-  cancelButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      overlay.classList.add("none");
-      milkList.classList.add("none");
-      syrupList.classList.add("none");
-    });
-  });
-
+  // Получение значения ползунка на coffee_ratio
   slider.addEventListener("input", (event) => {
     const value = event.target.value;
     const min = event.target.min;
@@ -169,7 +151,7 @@ export default function renderDesignerPage(main) {
     if (user) {
       slider.addEventListener("input", (event) => {
         const value = event.target.value;
-        localStorage.setItem("coffee_type", value);
+        localStorage.setItem("coffee_ratio", value);
       });
     } else {
       alert("You should sign in.");
@@ -177,6 +159,7 @@ export default function renderDesignerPage(main) {
     }
   });
 
+  //Получение coffee_roasiting, coffee_grinding и coffee_ice
   function setFillColor(element, color) {
     element.querySelectorAll("svg path, svg rect").forEach((svg) => {
       svg.setAttribute("fill", color);
@@ -191,7 +174,8 @@ export default function renderDesignerPage(main) {
 
     if (isBlack) {
       selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(category);
+      localStorage.removeItem(`coffee_${category}`);
+      console.log(category);
     } else {
       selectCategory(type, category, "black");
     }
@@ -199,21 +183,21 @@ export default function renderDesignerPage(main) {
 
   function selectCategory(type, category, color) {
     const options = {
-      roasting: ["light", "medium", "strong"],
-      grinding: ["small", "big"],
-      ice: ["one", "two", "three"],
+      coffee_roasting: ["light", "medium", "strong"],
+      coffee_grinding: ["small", "big"],
+      coffee_ice: ["one", "two", "three"],
     };
 
     options[category].forEach((option) => {
       const elements = document.querySelectorAll(
-        `.designer-content__svg-${category}_${option}`
+        `.designer-content__svg-${category.replace("coffee_", "")}_${option}`
       );
 
       elements.forEach((element) => {
         if (option === type) {
           setFillColor(element, color);
           if (color === "black") {
-            localStorage.setItem(category, type);
+            localStorage.setItem(`coffee_${category}`, type);
           }
         } else {
           setFillColor(element, "#D8D8D8");
@@ -223,28 +207,161 @@ export default function renderDesignerPage(main) {
   }
 
   roastingLight.addEventListener("click", () =>
-    checkBlack(roastingLight, "light", "roasting")
+    checkBlack(roastingLight, "light", "coffee_roasting")
   );
   roastingMedium.addEventListener("click", () =>
-    checkBlack(roastingMedium, "medium", "roasting")
+    checkBlack(roastingMedium, "medium", "coffee_roasting")
   );
   roastingStrong.addEventListener("click", () =>
-    checkBlack(roastingStrong, "strong", "roasting")
+    checkBlack(roastingStrong, "strong", "coffee_roasting")
   );
 
   grindingSmall.addEventListener("click", () =>
-    checkBlack(grindingSmall, "small", "grinding")
+    checkBlack(grindingSmall, "small", "coffee_grinding")
   );
   grindingBig.addEventListener("click", () =>
-    checkBlack(grindingBig, "big", "grinding")
+    checkBlack(grindingBig, "big", "coffee_grinding")
   );
 
-  iceOne.addEventListener("click", () => checkBlack(iceOne, "one", "ice"));
-  iceTwo.addEventListener("click", () => checkBlack(iceTwo, "two", "ice"));
+  iceOne.addEventListener("click", () =>
+    checkBlack(iceOne, "one", "coffee_ice")
+  );
+  iceTwo.addEventListener("click", () =>
+    checkBlack(iceTwo, "two", "coffee_ice")
+  );
   iceThree.addEventListener("click", () =>
-    checkBlack(iceThree, "three", "ice")
+    checkBlack(iceThree, "three", "coffee_ice")
   );
 
+  //Получение milk_option и syrup_option
+  const cafeAddress = localStorage.getItem("cafe_address");
+
+  function showMilkContainer() {
+    overlay.classList.remove("none");
+    milkContainer.classList.remove("none");
+    milkContainer.classList.remove("slide-down");
+    milkContainer.classList.add("slide-up");
+  }
+
+  function showSyrupContainer() {
+    overlay.classList.remove("none");
+    syrupContainer.classList.remove("none");
+    syrupContainer.classList.remove("slide-down");
+    syrupContainer.classList.add("slide-up");
+  }
+
+  function closeMilkSyrupcontainers() {
+    overlay.classList.add("none");
+    milkContainer.classList.remove("slide-up");
+    syrupContainer.classList.remove("slide-up");
+    milkContainer.classList.add("slide-down");
+    syrupContainer.classList.add("slide-down");
+
+    setTimeout(() => {
+      milkContainer.classList.add("none");
+      syrupContainer.classList.add("none");
+    }, 1000);
+  }
+
+  if (cafeAddress === "Bradford BD1 1PR") {
+    renderMilkList("cafe_one");
+    renderSyrupList("cafe_one");
+  } else if (cafeAddress === "Bradford BD4 7SJ") {
+    renderMilkList("cafe_two");
+    renderSyrupList("cafe_two");
+  } else if (cafeAddress === "Bradford BD1 4RN") {
+    renderMilkList("cafe_three");
+    renderSyrupList("cafe_three");
+  } else {
+    console.log("Cafe address wasn't got");
+  }
+
+  async function renderMilkList(cafe) {
+    try {
+      const milkList = await getMilkList(cafe);
+      if (milkList) {
+        const milkOptions = Object.values(milkList);
+
+        const milkOptionsContainer = document.querySelector(
+          ".designer-modal__milk-options"
+        );
+        milkOptionsContainer.innerHTML = "";
+
+        milkOptions.forEach((milkOption) => {
+          const optionElement = document.createElement("div");
+          optionElement.classList.add("designer-modal__milk-option");
+          optionElement.textContent = milkOption;
+          milkOptionsContainer.append(optionElement);
+
+          optionElement.addEventListener("click", function () {
+            const milkValue = milkOption;
+            localStorage.setItem("milk_option", milkValue);
+          });
+        });
+      } else {
+        console.log("No data receoved from getMilkList");
+      }
+    } catch (err) {
+      console.log("Error fetching milk list: ", err);
+    }
+  }
+
+  async function renderSyrupList(cafe) {
+    try {
+      const syrupList = await getSyrupList(cafe);
+      if (syrupList) {
+        const syrupOptions = Object.values(syrupList);
+
+        const syrupOptionsContainer = document.querySelector(
+          ".designer-modal__syrup-options"
+        );
+        syrupOptionsContainer.innerHTML = "";
+
+        syrupOptions.forEach((syrupOption) => {
+          const optionElement = document.createElement("div");
+          optionElement.classList.add("designer-modal__syrup-option");
+          optionElement.textContent = syrupOption;
+          syrupOptionsContainer.append(optionElement);
+
+          optionElement.addEventListener("click", function () {
+            const syrupValue = syrupOption;
+            localStorage.setItem("syrup_option", syrupValue);
+          });
+        });
+      } else {
+        console.log("No data receoved from getSyrupList");
+      }
+    } catch (err) {
+      console.log("Error fetching syrup list: ", err);
+    }
+  }
+
+  selectMilk.addEventListener("click", showMilkContainer);
+  selectSyrup.addEventListener("click", showSyrupContainer);
+  overlay.addEventListener("click", closeMilkSyrupcontainers);
+
+  cancelButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const isMilkVisible = !milkContainer.classList.contains("none");
+      const isSyrupVisible = !syrupContainer.classList.contains("none");
+      if (isMilkVisible) {
+        localStorage.removeItem("milk_option");
+        console.log("Milk option removed");
+      } else if (isSyrupVisible) {
+        localStorage.removeItem("syrup_option");
+        console.log("Syrup option removed");
+      }
+
+      closeMilkSyrupcontainers();
+    });
+  });
+
+  //Перезапись order_price
+  let orderPrice = JSON.parse(localStorage.getItem("order_price")).toFixed(2);
+  console.log(orderPrice);
+  totalCount.textContent = orderPrice;
+
+  //Маршруты
   sortSvg.addEventListener("click", function () {
     window.location.href = "/coffee-country";
   });
@@ -260,4 +377,8 @@ export default function renderDesignerPage(main) {
   cartSvg.addEventListener("click", function () {
     window.location.href = "/current-order";
   });
+  buttonNext.addEventListener(
+    "click",
+    () => (window.location.href = "/current-order")
+  );
 }

@@ -1,4 +1,4 @@
-import getCafes from '../../../../Services/GetCafes.js';
+import { getCafes } from "../../../../Services/Get.js";
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
 import More from "@/assets/images/geometric-icons/icon-more-grey.svg";
@@ -80,7 +80,7 @@ export default async function renderCoffeeCountryPage(main) {
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem('address');
+    const getAddress = localStorage.getItem("cafe_address");
 
     let selectedCafe = null;
 
@@ -94,14 +94,16 @@ export default async function renderCoffeeCountryPage(main) {
 
     if (selectedCafe) {
       const countryOptions = Object.keys(selectedCafe);
-      const countryBtns = document.querySelectorAll(".country-content__wrapper");
+      const countryBtns = document.querySelectorAll(
+        ".country-content__wrapper"
+      );
 
       countryBtns.forEach((countryItem, index) => {
         if (countryOptions[index]) {
           const countryOption = countryOptions[index];
           const countryData = selectedCafe[countryOption];
 
-          const itemName = countryItem.querySelector('.country-content__text');
+          const itemName = countryItem.querySelector(".country-content__text");
 
           if (itemName) {
             itemName.textContent = countryData.country;
@@ -116,21 +118,28 @@ export default async function renderCoffeeCountryPage(main) {
   const countryBtns = document.querySelectorAll(".country-content__wrapper");
 
   countryBtns.forEach((btn) => {
+    const countryBtnText = btn.querySelector(".country-content__text");
+    const btnTextValue = countryBtnText.textContent;
+    const isSelected = localStorage.getItem("coffee_country");
+
+    if (isSelected === btnTextValue) {
+      btn.classList.add("selected");
+      countryBtnText.style.color = "rgb(10, 132, 255)";
+    }
+  });
+
+  countryBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       resetButtons();
       btn.classList.add("selected");
       const countryBtnText = btn.querySelector(".country-content__text");
       const btnTextValue = countryBtnText.textContent;
-      const storedCountry = localStorage.getItem("country");
-      if (storedCountry === btnTextValue) {
-        localStorage.removeItem("country");
-        btn.classList.remove("selected");
-        countryBtnText.style.color = "rgb(0, 24, 51)";
-      } else {
-        localStorage.setItem("country", btnTextValue);
-        countryBtnText.style.color = "rgb(10, 132, 255)";
-      }
-      window.location.href = "/coffee-type";
+      const storedCountry = localStorage.getItem("coffee_country");
+      localStorage.setItem("coffee_country", btnTextValue);
+      countryBtnText.style.color = "rgb(10, 132, 255)";
+      setTimeout(() => {
+        window.location.href = "/coffee-type";
+      }, 700)
     });
   });
 
@@ -146,5 +155,8 @@ export default async function renderCoffeeCountryPage(main) {
   const cart = document.querySelector(".country-header__icon-cart");
 
   back.addEventListener("click", () => (window.location.href = "/designer"));
-  cart.addEventListener("click", () => (window.location.href = "/current-order"));
+  cart.addEventListener(
+    "click",
+    () => (window.location.href = "/current-order")
+  );
 }

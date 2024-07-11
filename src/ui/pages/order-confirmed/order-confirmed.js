@@ -1,11 +1,15 @@
 import OrderedSvg from "@/assets/images/ordered.svg";
 
-const nameUser = "Dasha";
-const timeOrder = "18:10";
-const adressUser = "Krasnodar, 5 Krasnaya st.";
+const nameUser = JSON.parse(localStorage.getItem("user"))?.name || 'Customer';
+const timeOrder = localStorage.getItem('order_time');
+const adressUser = localStorage.getItem('cafe_address') || 'specified';
 const qr = "/profile";
 
-export default function renderOrderConfirmedPage(main) {
+const greetingElement = document.querySelector('.order-confirmed__greeting');
+const resultElement = document.querySelector('.order-confirmed__result');
+const qrLinkElement = document.querySelector('.order-confirmed__submit a');
+
+export default async function renderOrderConfirmedPage(main) {
   main.innerHTML = `
     <div class="order-confirmed">
       <div class="order-confirmed__image"></div>
@@ -26,14 +30,10 @@ export default function renderOrderConfirmedPage(main) {
 
   const imageContainer = main.querySelector(".order-confirmed__image");
   imageContainer.insertAdjacentHTML("afterbegin", OrderedSvg);
+  ///
 
   const resultDiv = document.querySelector(".order-confirmed__result");
-  if (!timeOrder) {
-    resultDiv.innerHTML = `The order will be ready today in 30 minutes at the address ${adressUser}`;
+  if (!timeOrder, "00:00") {
+    resultDiv.innerHTML = `The order will be ready today in 30 minutes at the ${adressUser} address.`;
   }
-
-  //Если пользователь не указывает время, то меняем текст на
-  //The order will be ready today in 30 minutes at the address ${adressUser}
-
-  //const div = document.querySelector('.order-confirmed__result');
 }

@@ -1,6 +1,7 @@
+import { getCoffeeSorts } from '../../../../Services/Get.js';
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
-import More from "@/assets/images/geometric-icons/icon-more-grey.svg";
+import Chosen from "@/assets/images/geometric-icons/chosen.svg";
 
 export default async function renderCoffeeTypePage(main) {
   main.innerHTML = `
@@ -16,29 +17,12 @@ export default async function renderCoffeeTypePage(main) {
           </div>
 
           <div class="coffeetype-content">
+          ${Array(6).fill(`
             <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Santos</p>
+              <p class="coffeetype-content__text"></p>
+              <div class="coffeetype-content__icon">${Chosen}</div>
             </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Bourbon santos</p>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Minas</p>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Rio</p>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Canilon</p>
-            </div>
-
-            <div class="coffeetype-content__wrapper">
-              <p class="coffeetype-content__text">Flat beat</p>
-            </div>
+          `).join('')}
           </div>
         </div>
   `;
@@ -53,24 +37,78 @@ export default async function renderCoffeeTypePage(main) {
     () => (window.location.href = "/current-order")
   );
 
-  const coffeeTypeBtns = document.querySelectorAll(
-    ".coffeetype-content__wrapper"
-  );
+  const coffeeTypeBtns = document.querySelectorAll(".coffeetype-content__wrapper");
+
+  try {
+    const getAddress = localStorage.getItem('cafe_address');
+
+    const getCountry = localStorage.getItem('coffee_country');
+    const countryKey = getCountry.toLowerCase().replace(/\s+/g, '_');
+
+    let cafeKey = null;
+
+    if (getAddress === "Bradford BD1 1PR") {
+      cafeKey = "cafe_one";
+    } else if (getAddress === "Bradford BD4 7SJ") {
+      cafeKey = "cafe_two";
+    } else if (getAddress === "Bradford BD1 4RN") {
+      cafeKey = "cafe_three";
+    }
+
+    const data = await getCoffeeSorts(cafeKey, countryKey);
+    console.log(data);
+
+    coffeeTypeBtns.forEach((btn, index) => {
+      const coffeeTypeBtnText = btn.querySelector(".coffeetype-content__text");
+
+      const coffeeType = data[`sort_of_coffee${index + 1}`];
+
+      if (coffeeType) {
+        coffeeTypeBtnText.textContent = coffeeType;
+      }
+    })
+
+  } catch (error) {
+    console.error("Error fetching coffee types data:", error);
+  }
+
+  coffeeTypeBtns.forEach((btn) => {
+    const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
+    const btnTextValue = coffeetypeBtnText.textContent;
+    const isSelected = localStorage.getItem("coffee_sort");
+
+    if (isSelected === btnTextValue) {
+      btn.classList.add("selected");
+      coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
+      const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
+      coffeetypeBtnIcon.style.display = "block";
+    }
+  });
 
   coffeeTypeBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      resetButtons();
-      btn.classList.add("selected");
-      const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
-      const btnTextValue = coffeetypeBtnText.textContent;
-      const storedCoffeeType = localStorage.getItem("coffee_type");
-      if (storedCoffeeType === btnTextValue) {
-        localStorage.removeItem("coffee_type");
+      const isSelected = btn.classList.contains("selected");
+
+      if (isSelected) {
         btn.classList.remove("selected");
+        const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
         coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
+        const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
+        coffeetypeBtnIcon.style.display = "none";
+        localStorage.removeItem("coffee_sort");
       } else {
-        localStorage.setItem("coffee_type", btnTextValue);
+        resetButtons();
+        btn.classList.add("selected");
+        const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
+        const btnTextValue = coffeetypeBtnText.textContent;
+        localStorage.setItem("coffee_sort", btnTextValue);
         coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
+        const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
+
+        setTimeout(() => {
+          coffeetypeBtnIcon.style.display = "block"; // Показываем картинку
+          window.location.href = "/designer";
+        }, 700);
       }
     });
   });
@@ -80,8 +118,8 @@ export default async function renderCoffeeTypePage(main) {
       btn.classList.remove("selected");
       const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
       coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
+      const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
+      coffeetypeBtnIcon.style.display = "none";
     });
   }
 }
-
-renderCoffeeTypePage(main);
