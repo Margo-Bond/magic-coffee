@@ -56,7 +56,7 @@ export default async function renderOrderOptionPage(main) {
 
       <div class="order-option__item item1">
         <div class="order-option__item-text">
-          <p class="order-option__coffee"></p>
+          <p class="order-option__text coffee"></p>
         </div>
         <div class="order-optionr__item-quantity" id="counter"> 
           <input type="button" class="order-option__quantity" id="buttonCountMinus" value="-">
@@ -137,7 +137,7 @@ export default async function renderOrderOptionPage(main) {
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem("address");
+    const getAddress = localStorage.getItem("cafe_address");
 
     let selectedCafe = null;
 
@@ -182,7 +182,9 @@ export default async function renderOrderOptionPage(main) {
   });
 
   ///
-
+  const coffeType = document.querySelector(".coffee");
+  coffeType.textContent = localStorage.getItem('coffee_type');
+  ////
   const counter = document.getElementById("buttonCountNumber");
   const buttonPlus = document.getElementById("buttonCountPlus");
   const buttonMinus = document.getElementById("buttonCountMinus");
