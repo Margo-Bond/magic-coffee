@@ -1,8 +1,7 @@
 import BackSvg from "@/assets/images/geometric-icons/back.svg";
-import DeleteSvg from "@/assets/images/user-icons/remove.svg";
 
 export default function renderCurrentOrderPage(main) {
-  /*main.innerHTML = `
+  main.innerHTML = `
   <div class="current-header">
     <button class="current-header__back-btn">${BackSvg}</button>
     <p class="current-header__title">My order</p>
@@ -24,7 +23,7 @@ export default function renderCurrentOrderPage(main) {
     <div class="current-order__item current-order__three"></div>
   </div>
   <button class="current__button-next">Next</button>
-  `;*/
+  `;
 
   const backSvg = document.querySelector(".current-header__back-btn");
   backSvg.addEventListener("click", () => (window.location.href = "/designer"));

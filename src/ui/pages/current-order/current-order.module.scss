@@ -4,8 +4,15 @@
 .current-header {
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  //.current-header__button {}
+  align-items: start;
+  padding-left: var(--space-s);
+  .current-header__back-btn {
+    display: flex;
+    align-items: start;
+    padding: 0;
+    border: none;
+    background-color: var(--white-color);
+  }
   .current-header__title {
     font-size: 20px;
     color: var(--text-color-base);
@@ -22,7 +29,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    margin: 0 20px;
+    margin: 0 var(--space-s);
     background-color: var(--card-color-background);
     border-radius: 15px;
     border: none;
