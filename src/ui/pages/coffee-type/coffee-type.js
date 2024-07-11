@@ -1,4 +1,4 @@
-import { getCoffeeSorts } from '../../../../Services/GetCafes.js';
+import { getCoffeeSorts } from '../../../../Services/Get.js';
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
 import Chosen from "@/assets/images/geometric-icons/chosen.svg";
@@ -63,9 +63,9 @@ export default async function renderCoffeeTypePage(main) {
   const coffeeTypeBtns = document.querySelectorAll(".coffeetype-content__wrapper");
 
   try {
-    const getAddress = localStorage.getItem('address');
+    const getAddress = localStorage.getItem('cafe_address');
 
-    const getCountry = localStorage.getItem('country');
+    const getCountry = localStorage.getItem('coffee_country');
     const countryKey = getCountry.toLowerCase().replace(/\s+/g, '_');
 
     let cafeKey = null;
@@ -116,15 +116,13 @@ export default async function renderCoffeeTypePage(main) {
       const isSelected = btn.classList.contains("selected");
 
       if (isSelected) {
-        // Если элемент уже выбран, снимаем выделение и скрываем картинку
         btn.classList.remove("selected");
         const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
         coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
         const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
-        coffeetypeBtnIcon.style.display = "none"; // Скрываем картинку
+        coffeetypeBtnIcon.style.display = "none";
         localStorage.removeItem("coffee_type");
       } else {
-        // Если элемент не выбран, выделяем его и показываем картинку
         resetButtons();
         btn.classList.add("selected");
         const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
@@ -136,7 +134,7 @@ export default async function renderCoffeeTypePage(main) {
         setTimeout(() => {
           coffeetypeBtnIcon.style.display = "block"; // Показываем картинку
           window.location.href = "/designer";
-        }, 1000);
+        }, 700);
       }
     });
   });
@@ -147,26 +145,9 @@ export default async function renderCoffeeTypePage(main) {
       const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
       coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
       const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
-      coffeetypeBtnIcon.style.display = "none"; // Скрываем картинку у всех элементов
+      coffeetypeBtnIcon.style.display = "none";
     });
   }
 }
 
 renderCoffeeTypePage(main);
-
-export async function getCoffeeSorts(cafeKey = null, countryKey = null) {
-  const dbRef = ref(database);
-  return get(child(dbRef, `cafes/${cafeKey}/coffee_selection/${countryKey}`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-        return snapshot.val();
-      } else {
-        console.log("No data available");
-        return null;
-      }
-    })
-    .catch((error) => {
-      console.error("Error getting countries:", error);
-    });
-}
