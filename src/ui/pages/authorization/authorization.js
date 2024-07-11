@@ -107,24 +107,32 @@ export default function renderAuthorizationPage(main) {
       return false;
     }
   }
-
-  const nextButton = createForwardButton("/startup-screen");
+  const nextButton = createForwardButton();
   buttonContainer.append(nextButton);
 
-  nextButton.addEventListener("click", (e) => {
+  nextButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    const email = document.querySelector("#email").value;
-    const password = document.querySelector("#password").value;
 
-    authenticateUser(email, password)
-      .then((result) => {
-        window.location.href = "/startup-screen";
-      })
-      .catch((err) => {
-        console.error("Authentication failed:", err);
+    if (validateEmail() && validatePassword()) {
+      const email = document.querySelector("#email").value;
+      const password = document.querySelector("#password").value;
+
+      try {
+        const user = await authenticateUser(email, password);
+        console.log("User authenticated successfully:", user);
+
+        nextButton.addEventListener("click", () => {
+          window.location.href = "/startup-screen";
+        });
+        nextButton.click();
+      } catch (err) {
+        console.log("Authentication failed:", err);
         alert(
           `Invalid email or password. Please try again. Error: ${err.message}`
         );
-      });
+      }
+    } else {
+      alert("Please enter valid email and password.");
+    }
   });
 }
