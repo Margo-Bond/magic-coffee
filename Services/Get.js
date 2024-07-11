@@ -95,6 +95,23 @@ export async function getCart(userUid) {
     });
 }
 
+export async function getCoffeeSorts(cafeKey = null, countryKey = null) {
+  const dbRef = ref(database);
+  return get(child(dbRef, `cafes/${cafeKey}/coffee_selection/${countryKey}`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting countries:", error);
+    });
+}
+
 export async function getPrice(cafeKey, coffeeKey) {
   return get(child(dbRef, `cafes/${cafeKey}/coffees/${coffeeKey}/price`))
     .then((snapshot) => {

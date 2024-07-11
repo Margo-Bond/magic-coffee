@@ -234,7 +234,7 @@ export default function renderDesignerPage(main) {
   );
 
   //Получение milk_option и syrup_option
-  const cafeAddress = localStorage.getItem("address");
+  const cafeAddress = localStorage.getItem("cafe_address");
 
   function showMilkContainer() {
     overlay.classList.remove("none");
