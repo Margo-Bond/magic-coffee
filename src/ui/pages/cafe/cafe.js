@@ -1,7 +1,7 @@
 import Cafe from "@/assets/images/cafe.svg";
 import Forward from "@/assets/images/geometric-icons/icon-more-white.svg";
 import Pin from "../../../assets/images/cafe-pin.png";
-import { getCafes } from "../../../../Services/GetCafes.js";
+import { getCafes } from "../../../../Services/Get.js";
 
 export default async function renderCafePage(main) {
   main.innerHTML = `
@@ -174,29 +174,8 @@ export default async function renderCafePage(main) {
     btn.addEventListener("click", () => {
       const cafeBtnTitle = btn.querySelector(".cafe-box__button__title");
       const btnTitleValue = cafeBtnTitle.textContent;
-      localStorage.setItem("address", btnTitleValue);
+      localStorage.setItem('cafe_address', btnTitleValue);
       window.location.href = "/menu";
     });
   });
 }
-
-//Dependencies pt make GetCafes function work
-
-// import { initializeApp } from "firebase/app";
-// import { firebaseConfig } from "../firebase.js";
-// //initializeApp(firebaseConfig);
-// import firebase from "firebase/compat/app";
-// //import "firebase/compat/database";
-
-// import {
-//   getDatabase,
-//   get,
-//   child,
-//   update,
-//   ref,
-//   runTransaction,
-//   set,
-// } from "firebase/database";
-
-// const app = firebase.initializeApp(firebaseConfig);
-// const database = app.database();
