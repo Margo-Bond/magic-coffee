@@ -106,7 +106,7 @@ export default async function renderCoffeeTypePage(main) {
         const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
 
         setTimeout(() => {
-          coffeetypeBtnIcon.style.display = "block"; // Показываем картинку
+          coffeetypeBtnIcon.style.display = "block";
           window.location.href = "/designer";
         }, 700);
       }
