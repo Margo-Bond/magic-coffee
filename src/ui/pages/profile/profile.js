@@ -10,6 +10,7 @@ import QrCode from "@/assets/images/qr-code.svg";
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
+  let address = localStorage.getItem("address");
   let userName = localData.name;
   let userPhone = localData.phoneNumber;
   let userEmail = localData.email;
@@ -55,7 +56,7 @@ export default function renderProfilePage(main) {
           <div class="profile-table__item-image">${ProfileStore}</div>      
           <div class="profile-table__item-block">
             <p class="item-block__text">Magic Coffee store address</p>
-            <h2 class="item-block__variable location">Bradford BD1 1PR</h2>
+            <h2 class="item-block__variable location">${address}</h2>
           </div>
           <button class="profile-table__item-button edit" id="location"></button>
         </div>
@@ -153,7 +154,6 @@ export default function renderProfilePage(main) {
       localData.email = input.value;
     }
     localStorage.setItem("user", JSON.stringify(localData));
-    console.log(localStorage.getItem("user"));
   }
 
   //Перебираем кнопки и отслеживаем, которую нажимаем
@@ -176,6 +176,7 @@ export default function renderProfilePage(main) {
               currentBtn.classList.remove("change-icon");
               const location = document.querySelector(".location");
               location.textContent = locationBtn.value;
+              localStorage.setItem("address", locationBtn.value);
               menu.classList.add("invisible");
             });
           } else {
