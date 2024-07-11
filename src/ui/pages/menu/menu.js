@@ -78,7 +78,7 @@ export default async function renderMenuPage(main) {
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem('address');
+    const getAddress = localStorage.getItem('cafe_address');
 
     let selectedCafe = null;
 
