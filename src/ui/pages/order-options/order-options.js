@@ -198,7 +198,7 @@ export default async function renderOrderOptionPage(main) {
     const totalAmount = (document.getElementById(
       "multipliedValue"
     ).textContent = count * multiplier + ".00");
-    localStorage.setItem("quantity", count.toString());
+    localStorage.setItem("cup_quantity", count.toString());
     localStorage.setItem("order_price", totalAmount);
   }
 
@@ -248,7 +248,7 @@ export default async function renderOrderOptionPage(main) {
       resetButtons();
 
       this.classList.add("active");
-      localStorage.setItem("ristretto", this.getAttribute("data-strength"));
+      localStorage.setItem("coffee_ristretto", this.getAttribute("data-strength"));
     });
   });
 
@@ -283,7 +283,7 @@ export default async function renderOrderOptionPage(main) {
 
     if (isBlack) {
       selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(category === "where" ? "mug_option" : "volume");
+      localStorage.removeItem(category === "where" ? "mug_option" : "cup_volume");
     } else {
       selectCategory(type, category, "black");
     }
@@ -294,7 +294,7 @@ export default async function renderOrderOptionPage(main) {
       where: ["onsite", "takeaway"],
       cup: ["small", "medium", "large"],
     };
-    const storageKey = category === "where" ? "mug_option" : "volume";
+    const storageKey = category === "where" ? "mug_option" : "cup_volume";
     options[category].forEach((option) => {
       const elements = document.querySelectorAll(
         `.order-option__svg-${category}_${option}`
