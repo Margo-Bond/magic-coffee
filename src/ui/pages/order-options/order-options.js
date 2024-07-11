@@ -151,6 +151,10 @@ export default async function renderOrderOptionPage(main) {
     "Flat White": "flat_white",
     Raf: "raf",
     Espresso: "espresso",
+    "Matcha Latte": "matcha_latte",
+    "Vienna Coffee": "vienna_coffee",
+    Frappuccino: "frappuccino",
+    Macchiato: "macchiato",
   };
   const coffeeKey = coffeeKeys[coffeeType];
 
@@ -183,10 +187,10 @@ export default async function renderOrderOptionPage(main) {
       if (cafes) {
         if (cafes[cafeKey]) {
           const coffeeData = await getCoffeeType(cafeKey, coffeeKey);
-          if (coffeeData && coffeeData.imageUrl) {
+          if (coffeeData && coffeeData.image_url) {
             const coffeeImage = document.getElementById("coffeeImage");
-            coffeeImage.src = coffeeData.imageUrl;
-            coffeeImage.alt = coffeeData.name || "Coffee Image";
+            coffeeImage.src = coffeeData.image_url;
+            coffeeImage.alt = coffeeType;
           } else {
             console.log("No coffee data available");
           }
