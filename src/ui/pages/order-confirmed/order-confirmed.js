@@ -35,10 +35,11 @@ export default async function renderOrderConfirmedPage(main) {
 
   const imageContainer = main.querySelector(".order-confirmed__image");
   imageContainer.insertAdjacentHTML("afterbegin", OrderedSvg);
-  ///
 
-  const resultDiv = document.querySelector(".order-confirmed__result");
-  if ((!timeOrder, "00:00")) {
-    resultDiv.innerHTML = `The order will be ready today in 30 minutes at the ${adressUser} address.`;
+  if (!timeOrder) {
+    const resultDiv = document.querySelector(".order-confirmed__result");
+    if ((!timeOrder, "00:00")) {
+      resultDiv.innerHTML = `The order will be ready today in 30 minutes at the ${adressUser} address.`;
+    }
   }
 }
