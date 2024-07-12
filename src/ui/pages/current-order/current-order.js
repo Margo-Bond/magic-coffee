@@ -12,16 +12,18 @@ export default function renderCurrentOrderPage(main) {
   `;
 
   // Константы
+  let order = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(order);
+  let lastKey = keys[keys.length - 1];
   const backBtn = document.querySelector(".current-header__back-btn");
   const nextBtn = document.querySelector(".current__button-next");
-  const cafeAddress = localStorage.getItem("cafe_address");
-  const coffeeType = localStorage.getItem("coffee_type");
-  const orderPrice = localStorage.getItem("order_price");
-  const cupQuantity = localStorage.getItem("cup_quantity");
-  const coffeeRistretto = localStorage.getItem("coffee_ristretto") || "none";
-  const coffeeIce = localStorage.getItem("coffee_ice") || "none";
-  const coffeeRoasting = localStorage.getItem("coffee_roasting") || "none";
-
+  const cafeAddress = order[lastKey].cafe_address;
+  const coffeeType = order[lastKey].coffee_type;
+  const orderPrice = order[lastKey].order_price;
+  const cupQuantity = order[lastKey].cup_quantity || "none";
+  const coffeeRistretto = order[lastKey].coffee_ristretto || "none";
+  const coffeeIce = order[lastKey].coffee_ice;
+  const coffeeRoasting = order[lastKey].coffee_roasting || "none";
   const cafeOne = "Bradford BD1 1PR";
   const cafeTwo = "Bradford BD4 7SJ";
   const cafeThree = "Bradford BD1 4RN";
@@ -62,7 +64,7 @@ export default function renderCurrentOrderPage(main) {
   if (!coffeeKey) {
     console.error("Invalid coffee type:", coffeeType);
   }
-  /*
+
   // Получение картинки и установка
   async function setCoffeeImage(cafeKey, coffeeKey) {
     try {
@@ -91,8 +93,8 @@ export default function renderCurrentOrderPage(main) {
   if (cafeKey && coffeeKey) {
     setCoffeeImage(cafeKey, coffeeKey);
   }
-*/
-  /*// Функция для создания объекта заказа
+
+  // Функция для создания объекта заказа
   function createOrderObject() {
     return {
       coffee_roasting: localStorage.getItem("coffee_coffee_roasting") || "none",
@@ -110,7 +112,8 @@ export default function renderCurrentOrderPage(main) {
       cup_volume: localStorage.getItem("cup_volume") || "none",
       coffee_ratio: parseInt(localStorage.getItem("coffee_ratio")) || 0,
       coffee_grinding: localStorage.getItem("coffee_coffee_grinding") || "none",
-    };*/
+    };
+  }
   // Маршрутизация
   backBtn.addEventListener("click", () => {
     window.location.href = "/designer";
@@ -119,9 +122,8 @@ export default function renderCurrentOrderPage(main) {
   nextBtn.addEventListener("click", () => {
     window.location.href = "/order-confirmed";
   });
-}
 
-/*// Функция для добавления нового заказа
+  // Функция для добавления нового заказа
   function addOrder() {
     let orders = JSON.parse(localStorage.getItem("order")) || [];
     let newOrder = createOrderObject();
@@ -130,22 +132,22 @@ export default function renderCurrentOrderPage(main) {
   }
 
   // Вызов функции для добавления нового заказа
-  addOrder();*/
-/*
-// Функция для отображения заказов
-function displayOrder() {
-  const currentOrderContainer = document.getElementById(
-    "currentOrderContainer"
-  );
-  currentOrderContainer.innerHTML = "";
+  addOrder();
 
-  let order = JSON.parse(localStorage.getItem("order")) || [];
+  // Функция для отображения заказов
+  function displayOrder() {
+    const currentOrderContainer = document.getElementById(
+      "currentOrderContainer"
+    );
+    currentOrderContainer.innerHTML = "";
 
-  order.forEach((order) => {
-    const orderItem = document.createElement("div");
-    orderItem.classList.add("current-order__item");
+    let order = JSON.parse(localStorage.getItem("order")) || [];
 
-    orderItem.innerHTML = `
+    order.forEach((order) => {
+      const orderItem = document.createElement("div");
+      orderItem.classList.add("current-order__item");
+
+      orderItem.innerHTML = `
         <img class="current-order__img" src="${
           order.image_url || "path/to/default_image.jpg"
         }" alt="${order.coffee_type}" class="current-order__item-img"/>
@@ -160,11 +162,10 @@ function displayOrder() {
         </div>
       `;
 
-    currentOrderContainer.append(orderItem);
-  });
+      currentOrderContainer.append(orderItem);
+    });
+  }
+
+  // Отображаем заказы при загрузке страницы
+  displayOrder();
 }
-
-// Отображаем заказы при загрузке страницы
-displayOrder();
-
-*/
