@@ -1,5 +1,4 @@
 import { createHeaderBlack } from "@/ui/components/header/header.js";
-//import from "@/assets/images/";
 
 export default function renderMyOrdersPage(main) {
   main.innerHTML = `
@@ -25,12 +24,12 @@ export default function renderMyOrdersPage(main) {
                 <p class="item-block1__text">24 June | 12:30 | by 18:10</p>
 
                 <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./coffee-cup.svg">
+                  <img class="item-block1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
                   <p class="item-block1__element-text">Americano</p>
                 </div>
 
                 <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./Location-icon.svg">
+                  <img class="item-block1__element-img" src="./src/assets/images/chosen-store.svg">
                   <p class="item-block1__element-text">Bradford BD1 1PR</p>
                 </div>
               </div>

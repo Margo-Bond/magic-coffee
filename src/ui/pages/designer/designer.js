@@ -106,10 +106,7 @@ export default function renderDesignerPage(main) {
   );
   const slider = document.getElementById("type__coffee-slider");
   const sortSvg = document.querySelector(".designer-content__svg-sort");
-  const milkOptions = document.querySelectorAll(".designer-modal__milk-option");
-  const syrupOptions = document.querySelectorAll(
-    ".designer-modal__syrup-option"
-  );
+
   const additivesSvg = document.querySelector(
     ".designer-content__svg-additives"
   );
