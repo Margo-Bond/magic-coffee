@@ -8,41 +8,26 @@ export default async function renderCafePage(main) {
     <div class="cafe">
 
       <div class="cafe__button">
-        <button class="cafe__button__icon"></button>
+        <button class="cafe__button-icon"></button>
       </div>
 
       <div class="cafe__box">
-        <div class="cafe-box__element-title">
-          <p class="cafe-box__element-text">Select Magic Coffee store</p>
+        <div class="cafe__box-element-title">
+          <p class="cafe__box-element-text">Select Magic Coffee store</p>
         </div>
 
-        <div class="cafe-box__element-wrap">
+        <div class="cafe__box-element-wrap">
 
-          <div class="cafe-box__element">
-
-            <div class="cafe-box__button address-btn-one">
-              <div class="cafe-box__button__icon">${Cafe}</div>
+          <div class="cafe__box-element">
+            ${Array(3).fill(`
+              <div class="cafe__box-button">
+              <div class="cafe__box-button-icon">${Cafe}</div>
     
-              <div class="cafe-box__button__title"></div>
+              <div class="cafe__box-button-title"></div>
     
-              <div class="cafe-box__button__arrow">${Forward}</div>
+              <div class="cafe__box-button-arrow">${Forward}</div>
             </div>
-
-            <div class="cafe-box__button address-btn-two">
-              <div class="cafe-box__button__icon">${Cafe}</div>
-    
-              <div class="cafe-box__button__title"></div>
-    
-              <div class="cafe-box__button__arrow">${Forward}</div>
-            </div>
-
-            <div class="cafe-box__button address-btn-three">
-              <div class="cafe-box__button__icon">${Cafe}</div>
-    
-              <div class="cafe-box__button__title"></div>
-    
-              <div class="cafe-box__button__arrow">${Forward}</div>
-            </div>
+            `).join('')}
           </div>
         </div>
       </div>
@@ -116,7 +101,6 @@ export default async function renderCafePage(main) {
         });
       };
 
-      // Create placemarks
       createPlacemark(
         "marker1",
         53.79418191555254,
@@ -140,49 +124,39 @@ export default async function renderCafePage(main) {
     }
   });
 
+  const cafeAddressButtons = document.querySelectorAll(".cafe__box-button");
+
   try {
     const data = await getCafes();
+    const cafeAddresses = Object.keys(data);
 
-    if (data) {
-      const cafesData = data;
-      const addresses = Object.values(cafesData).map((cafe) => cafe.address);
+    cafeAddressButtons.forEach((btn, index) => {
+      const cafeAddressTitle = btn.querySelector(".cafe__box-button-title");
+      const cafeAddress = cafeAddresses[index];
+      const cafeAddressItem = data[cafeAddress];
 
-      const addressButtons = document.querySelectorAll(
-        ".cafe-box__button__title"
-      );
-
-      addressButtons.forEach((addressElement, index) => {
-        if (addresses[index]) {
-          addressElement.textContent = addresses[index];
-        }
-      });
-    } else {
-      console.log("No cafes data is available");
-    }
+      if (cafeAddressItem) {
+        cafeAddressTitle.textContent = cafeAddressItem.address;
+      }
+    });
   } catch (error) {
     console.error("Error fetching cafes data:", error);
   }
 
   const buttonBack = document.querySelector(".cafe__button");
-  const addressBtns = document.querySelectorAll(".cafe-box__button");
 
   buttonBack.addEventListener("click", () => {
     window.location.href = "/";
   });
 
-  addressBtns.forEach((btn) => {
+  cafeAddressButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
-      const cafeBtnTitle = btn.querySelector(".cafe-box__button__title");
-      const btnTitleValue = cafeBtnTitle.textContent;
+      const cafeAddressTitle = btn.querySelector(".cafe__box-button-title");
+      const btnTitleValue = cafeAddressTitle.textContent;
 
       let order = JSON.parse(localStorage.getItem("order")) || {};
-
       const orderKey = `order${Object.keys(order).length + 1}`;
-
-      const orderItem = {
-        cafe_address: btnTitleValue,
-      };
-
+      const orderItem = { cafe_address: btnTitleValue };
       order[orderKey] = orderItem;
       localStorage.setItem("order", JSON.stringify(order));
 

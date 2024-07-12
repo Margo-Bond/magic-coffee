@@ -15,6 +15,7 @@ import {
   child,
   update,
   ref,
+  remove,
   runTransaction,
   set,
 } from "firebase/database";
@@ -24,6 +25,7 @@ import "@/ui/routes.js";
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const auth = getAuth();
+const dbRef = ref(database);
 
 export {
   getDatabase,
@@ -31,12 +33,14 @@ export {
   app,
   database,
   auth,
+  dbRef,
   get,
   update,
   child,
   ref,
   runTransaction,
   set,
+  remove,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,

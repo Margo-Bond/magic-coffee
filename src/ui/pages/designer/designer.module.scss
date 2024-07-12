@@ -12,19 +12,23 @@
     opacity: 1;
   }
 }
+
 @keyframes slideDown {
   0% {
     transform: translateY(0);
     opacity: 1;
   }
+
   100% {
     transform: translateY(100%);
     opacity: 0;
   }
 }
+
 .slide-up {
   animation: slideUp 1s forwards;
 }
+
 .slide-down {
   animation: slideDown 1s forwards;
 }
@@ -245,6 +249,7 @@
   border-radius: 0 0 13px 13px;
   background-color: var(--white-color);
 }
+
 .designer-modal__milk-option,
 .designer-modal__syrup-option {
   display: flex;
@@ -270,6 +275,7 @@
   font-size: 20px;
   @include poppins(700);
 }
+
 .designer-modal__button:active {
   background-color: var(--svg-color-muted);
 }
@@ -308,6 +314,7 @@
       color: var(--text-color-base);
       @include poppins(600);
     }
+
     .designer-footer__count {
       padding-left: var(--space-s);
     }
