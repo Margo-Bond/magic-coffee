@@ -36,8 +36,8 @@ export async function getCafes() {
     });
 }
 
-export async function getCoffeeType(cafe, coffee_type) {
-  return get(child(dbRef, `cafes/${cafe}/coffees/${coffee_type}`))
+export async function getCoffeeType(cafeKey, coffeeKey) {
+  return get(child(dbRef, `cafes/${cafeKey}/coffees/${coffeeKey}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val();
@@ -124,4 +124,21 @@ export async function getPrice(cafeKey, coffeeKey) {
       }
     })
     .catch((err) => console.error("Error getting price:", err));
+}
+
+export async function getAdditives(cafeKey = null) {
+  const dbRef = ref(database);
+  return get(child(dbRef, `cafes/${cafeKey}/additives_selection`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting additives:", error);
+    });
 }

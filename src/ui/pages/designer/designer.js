@@ -106,7 +106,6 @@ export default function renderDesignerPage(main) {
   );
   const slider = document.getElementById("type__coffee-slider");
   const sortSvg = document.querySelector(".designer-content__svg-sort");
-
   const additivesSvg = document.querySelector(
     ".designer-content__svg-additives"
   );
@@ -130,6 +129,10 @@ export default function renderDesignerPage(main) {
   const iceThree = document.querySelector(".designer-content__svg-ice_three");
   const totalCount = document.querySelector(".designer-footer__count");
   const buttonNext = document.querySelector(".designer-footer__button");
+  let order = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(order);
+  let lastKey = keys[keys.length - 1];
+  const cafeAddress = order[lastKey].cafe_address;
 
   // Получение значения ползунка на coffee_ratio
   slider.addEventListener("input", (event) => {
@@ -148,7 +151,8 @@ export default function renderDesignerPage(main) {
     if (user) {
       slider.addEventListener("input", (event) => {
         const value = event.target.value;
-        localStorage.setItem("coffee_ratio", value);
+        order[lastKey].coffee_ratio = value;
+        localStorage.setItem("order", JSON.stringify(order));
       });
     } else {
       alert("You should sign in.");
@@ -164,6 +168,26 @@ export default function renderDesignerPage(main) {
     });
   }
 
+  /*const selectedElements = document.querySelectorAll(".selected");
+  selectedElements.forEach((element) => {
+    element.classList.add("selected");
+
+    const coffeeRoasting = order[lastKey].coffee_roasting;
+    const coffeeGrinding = order[lastKey].coffee_grinding;
+    const coffeeIce = order[lastKey].coffee_ice;
+
+    if (coffeeRoasting) {
+      const roastingElem = document.querySelector(
+        `.designer-content__svg-roasting_${coffeeRoasting}`
+      );
+      roastingElem
+        .querySelectorAll("svg path, svg rect")
+        .some((svg) => svg.getAttribute("fill") === "black");
+    } else {
+      console.log("Не покрасилось");
+    }
+  });*/
+
   function checkBlack(element, type, category) {
     const isBlack = Array.from(
       element.querySelectorAll("svg path, svg rect")
@@ -171,7 +195,13 @@ export default function renderDesignerPage(main) {
 
     if (isBlack) {
       selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(`coffee_${category}`);
+      let order = JSON.parse(localStorage.getItem("order")) || {};
+      let keys = Object.keys(order);
+      if (keys.length > 0) {
+        let lastKey = keys[keys.length - 1];
+        delete order[lastKey][category];
+        localStorage.setItem("order", JSON.stringify(order));
+      }
       console.log(category);
     } else {
       selectCategory(type, category, "black");
@@ -194,7 +224,13 @@ export default function renderDesignerPage(main) {
         if (option === type) {
           setFillColor(element, color);
           if (color === "black") {
-            localStorage.setItem(`coffee_${category}`, type);
+            let order = JSON.parse(localStorage.getItem("order")) || {};
+            let keys = Object.keys(order);
+            if (keys.length > 0) {
+              let lastKey = keys[keys.length - 1];
+              order[lastKey][category] = type;
+              localStorage.setItem("order", JSON.stringify(order));
+            }
           }
         } else {
           setFillColor(element, "#D8D8D8");
@@ -203,35 +239,42 @@ export default function renderDesignerPage(main) {
     });
   }
 
-  roastingLight.addEventListener("click", () =>
-    checkBlack(roastingLight, "light", "coffee_roasting")
-  );
-  roastingMedium.addEventListener("click", () =>
-    checkBlack(roastingMedium, "medium", "coffee_roasting")
-  );
-  roastingStrong.addEventListener("click", () =>
-    checkBlack(roastingStrong, "strong", "coffee_roasting")
-  );
+  roastingLight.addEventListener("click", () => {
+    checkBlack(roastingLight, "light", "coffee_roasting");
+    roastingLight.classList.add("selected");
+  });
+  roastingMedium.addEventListener("click", () => {
+    checkBlack(roastingMedium, "medium", "coffee_roasting");
+    roastingMedium.classList.add("selected");
+  });
+  roastingStrong.addEventListener("click", () => {
+    checkBlack(roastingStrong, "strong", "coffee_roasting");
+    roastingStrong.classList.add("selected");
+  });
 
-  grindingSmall.addEventListener("click", () =>
-    checkBlack(grindingSmall, "small", "coffee_grinding")
-  );
-  grindingBig.addEventListener("click", () =>
-    checkBlack(grindingBig, "big", "coffee_grinding")
-  );
+  grindingSmall.addEventListener("click", () => {
+    checkBlack(grindingSmall, "small", "coffee_grinding");
+    grindingSmall.classList.add("selected");
+  });
+  grindingBig.addEventListener("click", () => {
+    checkBlack(grindingBig, "big", "coffee_grinding");
+    grindingBig.classList.add("selected");
+  });
 
-  iceOne.addEventListener("click", () =>
-    checkBlack(iceOne, "one", "coffee_ice")
-  );
-  iceTwo.addEventListener("click", () =>
-    checkBlack(iceTwo, "two", "coffee_ice")
-  );
-  iceThree.addEventListener("click", () =>
-    checkBlack(iceThree, "three", "coffee_ice")
-  );
+  iceOne.addEventListener("click", () => {
+    checkBlack(iceOne, "one", "coffee_ice");
+    iceOne.classList.add("selected");
+  });
+  iceTwo.addEventListener("click", () => {
+    checkBlack(iceTwo, "two", "coffee_ice");
+    iceTwo.classList.add("selected");
+  });
+  iceThree.addEventListener("click", () => {
+    checkBlack(iceThree, "three", "coffee_ice");
+    iceThree.classList.add("selected");
+  });
 
   //Получение milk_option и syrup_option
-  const cafeAddress = localStorage.getItem("cafe_address");
 
   function showMilkContainer() {
     overlay.classList.remove("none");
@@ -292,7 +335,9 @@ export default function renderDesignerPage(main) {
 
           optionElement.addEventListener("click", function () {
             const milkValue = milkOption;
-            localStorage.setItem("milk_option", milkValue);
+            order[lastKey].milk_option = milkValue;
+            localStorage.setItem("order", JSON.stringify(order));
+            closeMilkSyrupcontainers();
           });
         });
       } else {
@@ -322,7 +367,12 @@ export default function renderDesignerPage(main) {
 
           optionElement.addEventListener("click", function () {
             const syrupValue = syrupOption;
-            localStorage.setItem("syrup_option", syrupValue);
+            order[lastKey].syrup_option = syrupValue;
+            localStorage.setItem("order", JSON.stringify(order));
+            const syrupContainer = document.querySelector(
+              ".designer-modal__syrup-container"
+            );
+            closeMilkSyrupcontainers();
           });
         });
       } else {
@@ -342,11 +392,13 @@ export default function renderDesignerPage(main) {
       const isMilkVisible = !milkContainer.classList.contains("none");
       const isSyrupVisible = !syrupContainer.classList.contains("none");
       if (isMilkVisible) {
-        localStorage.removeItem("milk_option");
+        delete order[lastKey].milk_option;
+        localStorage.setItem("order", JSON.stringify(order));
         console.log("Milk option removed");
       } else if (isSyrupVisible) {
-        localStorage.removeItem("syrup_option");
+        delete order[lastKey].syrup_option;
         console.log("Syrup option removed");
+        localStorage.setItem("order", JSON.stringify(order));
       }
 
       closeMilkSyrupcontainers();
@@ -354,8 +406,8 @@ export default function renderDesignerPage(main) {
   });
 
   //Перезапись order_price
-  let orderPrice = JSON.parse(localStorage.getItem("order_price")).toFixed(2);
-  console.log(orderPrice);
+  let orderPrice = Number(order[lastKey].order_price).toFixed(2);
+  localStorage.setItem("order", JSON.stringify(order));
   totalCount.textContent = orderPrice;
 
   //Маршруты
