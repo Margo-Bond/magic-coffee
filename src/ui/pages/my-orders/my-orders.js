@@ -44,28 +44,6 @@ export default function renderMyOrdersPage(main) {
 
         <div class="myOrders__table2 invisible">
 
-          <div class="myOrders-table2__item">
-              <div class="item__block1">
-                <p class="item-block1__text">24 June | 12:30 PM</p>
-
-                <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
-                  <p class="item-block1__element-text">Americano</p>
-                </div>
-
-                <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./src/assets/images/chosen-store.svg">
-                  <p class="item-block1__element-text">Bradford BD1 1PR</p>
-                </div>
-              </div>
-
-              <div class="item__block2">
-               <h2 class="item-block2__text">BYN 3.00</h2>
-               <button class="item-block2__button">Order</button>
-              </div>
-
-          </div>
-
         </div>
 
       </main>
@@ -113,4 +91,49 @@ export default function renderMyOrdersPage(main) {
     history.classList.add("border");
     onGoing.classList.remove("border");
   });
+
+  //Логика для вкладки History
+  const historyOrders = JSON.parse(localStorage.getItem("order"));
+
+  for (let key in historyOrders) {
+    const orderDate = historyOrders[key].order_date;
+    const orderTime = historyOrders[key].order_time;
+    const coffeeType = historyOrders[key].coffee_type;
+    const cafeAddress = historyOrders[key].cafe_address;
+    const orderPrice = historyOrders[key].order_price;
+
+    const orderContainer = document.createElement("div");
+    orderContainer.classList.add(".myOrders-table2__item");
+    const orderRecap = `
+              <div class="item__block1">
+                <p class="item-block1__text">${orderDate} | ${orderTime}</p>
+
+                <div class="item-block1__element">
+                  <img class="item-block1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
+                  <p class="item-block1__element-text">${coffeeType}</p>
+                </div>
+
+                <div class="item-block1__element">
+                  <img class="item-block1__element-img" src="./src/assets/images/chosen-store.svg">
+                  <p class="item-block1__element-text">${cafeAddress}</p>
+                </div>
+              </div>
+
+              <div class="item__block2">
+               <h2 class="item-block2__text">BYN ${orderPrice}</h2>
+               <button class="item-block2__button">Order</button>
+              </div>
+    `;
+    orderContainer.innerHTML = orderRecap;
+    historyTab.prepend(orderContainer);
+  }
+  /*
+  for (let x = 0; x < Object.keys(historyOrders).length; x++) {
+    console.log(historyOrders[x]);
+  }
+    */
+
+  /*console.log(
+    `My order will be ready at ${order.order_time}, it costs ${order.order_price}. You can pick up the order at ${order.cafe_address} and it's a ${order.coffee_type}`
+  );*/
 }
