@@ -66,8 +66,6 @@ export default async function renderMenuPage(main) {
     </div>
   `;
 
-  const getAddress = localStorage.getItem("cafe_address");
-
   try {
     const data = await getCafes();
     const cafeOne = "Bradford BD1 1PR";
