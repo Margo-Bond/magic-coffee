@@ -1,4 +1,5 @@
 import { getCafes } from "../../../../Services/Get.js";
+const userName = JSON.parse(localStorage.getItem("user"))?.name || "Customer";
 
 export default async function renderMenuPage(main) {
   main.innerHTML = `
@@ -7,7 +8,7 @@ export default async function renderMenuPage(main) {
         <div class="menu__header__title">
           <div class="menu__header__title-text">Welcome!</div>
 
-          <div class="menu__header__title-username"></div>
+          <div class="menu__header__title-username">${userName}</div>
         </div>
 
         <div class="menu__header__button">
@@ -65,28 +66,18 @@ export default async function renderMenuPage(main) {
     </div>
   `;
 
-  const username = document.querySelector(".menu__header__title-username");
-  const getUserName = localStorage.getItem("username"); // Need to put here the right key
-  if (getUserName) {
-    username.textContent = getUserName;
-  } else {
-    console.log("No username is available");
-  }
+  const getAddress = localStorage.getItem("cafe_address");
 
   try {
     const data = await getCafes();
-    const cafeOne = "Bradford BD1 1PR";
-    const cafeTwo = "Bradford BD4 7SJ";
-    const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem("cafe_address");
 
     let selectedCafe = null;
 
-    if (getAddress === cafeOne) {
+    if (getAddress === "Bradford BD1 1PR") {
       selectedCafe = data.cafe_one.coffees;
-    } else if (getAddress === cafeTwo) {
+    } else if (getAddress === "Bradford BD4 7SJ") {
       selectedCafe = data.cafe_two.coffees;
-    } else if (getAddress === cafeThree) {
+    } else if (getAddress === "Bradford BD1 4RN") {
       selectedCafe = data.cafe_three.coffees;
     }
 
