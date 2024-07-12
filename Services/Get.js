@@ -36,8 +36,8 @@ export async function getCafes() {
     });
 }
 
-export async function getCoffeeType(cafe, coffee_type) {
-  return get(child(dbRef, `cafes/${cafe}/coffees/${coffee_type}`))
+export async function getCoffeeType(cafeKey, coffeeKey) {
+  return get(child(dbRef, `cafes/${cafeKey}/coffees/${coffeeKey}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val();

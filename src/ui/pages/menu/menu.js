@@ -65,20 +65,25 @@ export default async function renderMenuPage(main) {
     </div>
   `;
 
-  const username = document.querySelector(".menu__header__title-username");
+  /*const username = document.querySelector(".menu__header__title-username");
   const getUserName = localStorage.getItem("username"); // Need to put here the right key
+
   if (getUserName) {
     username.textContent = getUserName;
   } else {
     console.log("No username is available");
-  }
+  }*/
 
   try {
     const data = await getCafes();
     const cafeOne = "Bradford BD1 1PR";
     const cafeTwo = "Bradford BD4 7SJ";
     const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem("cafe_address");
+
+    let order = JSON.parse(localStorage.getItem("order")) || {};
+    let keys = Object.keys(order);
+    let lastKey = keys[keys.length - 1];
+    const getAddress = order[lastKey].cafe_address;
 
     let selectedCafe = null;
 
@@ -126,7 +131,15 @@ export default async function renderMenuPage(main) {
     btn.addEventListener("click", () => {
       const coffeeBtnText = btn.querySelector(".menu__content__item-name");
       const btnTextValue = coffeeBtnText.textContent;
-      localStorage.setItem("coffee_type", btnTextValue);
+
+      let order = JSON.parse(localStorage.getItem("order")) || {};
+      let keys = Object.keys(order);
+      let lastKey = keys[keys.length - 1];
+      if (lastKey) {
+        order[lastKey].coffee_type = btnTextValue;
+      }
+      localStorage.setItem("order", JSON.stringify(order));
+
       window.location.href = "/order-options";
     });
   });

@@ -13,6 +13,9 @@
     border: none;
     background-color: var(--white-color);
   }
+  .current-header__back-btn:active {
+    width: 20px;
+  }
   .current-header__title {
     font-size: 20px;
     color: var(--text-color-base);
@@ -22,13 +25,12 @@
 
 .current-order {
   display: grid;
-  justify-content: center;
-  gap: 20px;
+  gap: 10px;
   .current-order__item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 0 20px;
     margin: 0 var(--space-s);
     background-color: var(--card-color-background);
     border-radius: 15px;
@@ -73,13 +75,16 @@
   }
 }
 .current__button-next {
+  position: absolute;
+  bottom: 100px;
+  right: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px 20px;
   background-color: var(--accent-color);
   border: none;
-  border-radius: 50%;
+  border-radius: 15px;
   color: var(--white-color);
   font-size: var(--space-m);
   @include poppins(600);
