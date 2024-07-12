@@ -30,19 +30,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: var(--space-m);
     margin: 0 var(--space-s);
     background-color: var(--card-color-background);
     border-radius: 15px;
     border: none;
-    gap: 20px;
+    * {
+      margin: 0;
+    }
     .current-order__item-img {
-      height: 61px;
-      width: auto;
+      width: 33%;
+      max-width: 100%;
     }
     .current-order__item-description {
       display: flex;
       flex-direction: column;
+      align-items: start;
+      width: 50%;
       gap: var(--space-xs);
       .current-order__item-title {
         font-size: 12px;
@@ -63,17 +67,17 @@
     .current-order__item-sum {
       display: flex;
       flex-direction: column;
-      gap: var(--space-xs);
-      .current-order__item-count {
-        .current-order__item-currency {
-          font-size: var(--space-xm);
-          color: var(--text-color-base);
-          @include poppins(500);
-        }
+      align-items: center;
+      width: 23%;
+      .current-order__item-currency {
+        font-size: var(--space-xm);
+        color: var(--text-color-base);
+        @include poppins(500);
       }
     }
   }
 }
+
 .current__button-next {
   position: absolute;
   bottom: 100px;
