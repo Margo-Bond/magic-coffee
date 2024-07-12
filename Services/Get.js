@@ -142,3 +142,37 @@ export async function getAdditives(cafeKey = null) {
       console.error("Error getting additives:", error);
     });
 }
+
+export async function getCoffeeCountry(cafeKey = null) {
+  const dbRef = ref(database);
+  return get(child(dbRef, `cafes/${cafeKey}/coffee_selection`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting additives:", error);
+    });
+}
+
+export async function getCoffees(cafeKey = null) {
+  const dbRef = ref(database);
+  return get(child(dbRef, `cafes/${cafeKey}/coffees`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting additives:", error);
+    });
+}
