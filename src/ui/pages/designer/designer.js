@@ -98,16 +98,30 @@ export default function renderDesignerPage(main) {
   const selectSyrup = document.querySelector(".designer-content__select_syrup");
   const overlay = document.querySelector(".overlay");
   const cancelButtons = document.querySelectorAll(".designer-modal__button");
-  const milkContainer = document.querySelector(".designer-modal__milk-container");
-  const syrupContainer = document.querySelector(".designer-modal__syrup-container");
+  const milkContainer = document.querySelector(
+    ".designer-modal__milk-container"
+  );
+  const syrupContainer = document.querySelector(
+    ".designer-modal__syrup-container"
+  );
   const slider = document.getElementById("type__coffee-slider");
   const sortBtn = document.querySelector(".designer-content-sort");
   const additivesBtn = document.querySelector(".designer-content-additives");
-  const roastingLight = document.querySelector(".designer-content__svg-roasting_light");
-  const roastingMedium = document.querySelector(".designer-content__svg-roasting_medium");
-  const roastingStrong = document.querySelector(".designer-content__svg-roasting_strong");
-  const grindingSmall = document.querySelector(".designer-content__svg-grinding_small");
-  const grindingBig = document.querySelector(".designer-content__svg-grinding_big");
+  const roastingLight = document.querySelector(
+    ".designer-content__svg-roasting_light"
+  );
+  const roastingMedium = document.querySelector(
+    ".designer-content__svg-roasting_medium"
+  );
+  const roastingStrong = document.querySelector(
+    ".designer-content__svg-roasting_strong"
+  );
+  const grindingSmall = document.querySelector(
+    ".designer-content__svg-grinding_small"
+  );
+  const grindingBig = document.querySelector(
+    ".designer-content__svg-grinding_big"
+  );
   const iceOne = document.querySelector(".designer-content__svg-ice_one");
   const iceTwo = document.querySelector(".designer-content__svg-ice_two");
   const iceThree = document.querySelector(".designer-content__svg-ice_three");
@@ -423,5 +437,8 @@ export default function renderDesignerPage(main) {
   cartSvg.addEventListener("click", function () {
     window.location.href = "/current-order";
   });
-  buttonNext.addEventListener("click", () => (window.location.href = "/current-order"));
+  buttonNext.addEventListener(
+    "click",
+    () => (window.location.href = "/current-order")
+  );
 }
