@@ -27,22 +27,20 @@ export default async function renderCoffeeTypePage(main) {
         </div>
   `;
 
+  const coffeeTypeBtns = document.querySelectorAll(".coffeetype-content__wrapper");
   const backBtn = document.querySelector(".back-button");
   const cartBtn = document.querySelector(".cart-button");
-  backBtn.addEventListener("click", () => {
-    window.location.href = "/coffee-country";
-  });
-  cartBtn.addEventListener(
-    "click",
-    () => (window.location.href = "/current-order")
-  );
 
-  const coffeeTypeBtns = document.querySelectorAll(".coffeetype-content__wrapper");
+  backBtn.addEventListener("click", () => { window.location.href = "/coffee-country" });
+  cartBtn.addEventListener("click", () => (window.location.href = "/current-order"));
+
+  let order = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(order);
+  let lastKey = keys[keys.length - 1];
 
   try {
-    const getAddress = localStorage.getItem('cafe_address');
-
-    const getCountry = localStorage.getItem('coffee_country');
+    const getAddress = order[lastKey].cafe_address;
+    const getCountry = order[lastKey].coffee_country;
     const countryKey = getCountry.toLowerCase().replace(/\s+/g, '_');
 
     let cafeKey = null;
@@ -56,7 +54,6 @@ export default async function renderCoffeeTypePage(main) {
     }
 
     const data = await getCoffeeSorts(cafeKey, countryKey);
-    console.log(data);
 
     coffeeTypeBtns.forEach((btn, index) => {
       const coffeeTypeBtnText = btn.querySelector(".coffeetype-content__text");
@@ -75,9 +72,9 @@ export default async function renderCoffeeTypePage(main) {
   coffeeTypeBtns.forEach((btn) => {
     const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
     const btnTextValue = coffeetypeBtnText.textContent;
-    const isSelected = localStorage.getItem("coffee_sort");
+    const getCoffeeSort = order[lastKey].coffee_sort;
 
-    if (isSelected === btnTextValue) {
+    if (getCoffeeSort === btnTextValue) {
       btn.classList.add("selected");
       coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
       const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
@@ -93,18 +90,24 @@ export default async function renderCoffeeTypePage(main) {
         btn.classList.remove("selected");
         const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
         coffeetypeBtnText.style.color = "rgb(0, 24, 51)";
+
         const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
         coffeetypeBtnIcon.style.display = "none";
-        localStorage.removeItem("coffee_sort");
+
+        delete order[lastKey].coffee_sort;
+        localStorage.setItem("order", JSON.stringify(order));
+
       } else {
         resetButtons();
         btn.classList.add("selected");
         const coffeetypeBtnText = btn.querySelector(".coffeetype-content__text");
-        const btnTextValue = coffeetypeBtnText.textContent;
-        localStorage.setItem("coffee_sort", btnTextValue);
         coffeetypeBtnText.style.color = "rgb(10, 132, 255)";
-        const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
 
+        const btnTextValue = coffeetypeBtnText.textContent;
+        order[lastKey].coffee_sort = btnTextValue;
+        localStorage.setItem("order", JSON.stringify(order));
+
+        const coffeetypeBtnIcon = btn.querySelector(".coffeetype-content__icon");
         setTimeout(() => {
           coffeetypeBtnIcon.style.display = "block";
           window.location.href = "/designer";
