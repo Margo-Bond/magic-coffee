@@ -111,6 +111,14 @@ export default function renderCurrentOrderPage(main) {
       coffee_ratio: parseInt(localStorage.getItem("coffee_ratio")) || 0,
       coffee_grinding: localStorage.getItem("coffee_coffee_grinding") || "none",
     };*/
+  // Маршрутизация
+  backBtn.addEventListener("click", () => {
+    window.location.href = "/designer";
+  });
+
+  nextBtn.addEventListener("click", () => {
+    window.location.href = "/order-confirmed";
+  });
 }
 
 /*// Функция для добавления нового заказа
@@ -159,11 +167,4 @@ function displayOrder() {
 // Отображаем заказы при загрузке страницы
 displayOrder();
 
-// Маршрутизация
-backBtn.addEventListener("click", () => {
-  window.location.href = "/designer";
-});
-
-nextBtn.addEventListener("click", () => {
-  window.location.href = "/order-confirmed";
-});*/
+*/
