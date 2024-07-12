@@ -1,12 +1,11 @@
 import {
   order,
   lastKey,
-  cafeAddress,
-  coffeeType,
   cafeOne,
   cafeTwo,
   cafeThree,
 } from "../../../../vars.js";
+import { database, set, ref, get, update } from "../../../../main.js";
 import BackSvg from "@/assets/images/geometric-icons/back.svg";
 import { getCoffeeImage } from "../../../../Services/Get.js";
 
@@ -20,7 +19,8 @@ export default function renderCurrentOrderPage(main) {
     <button class="current__button-next">Order Now</button>
   `;
 
-  // Константы
+  const cafeAddress = order[lastKey].cafe_address;
+  const coffeeType = order[lastKey].coffee_type;
   const backBtn = document.querySelector(".current-header__back-btn");
   const nextBtn = document.querySelector(".current__button-next");
   const currentOrderContainer = document.getElementById(
@@ -32,7 +32,6 @@ export default function renderCurrentOrderPage(main) {
   const coffeeRistretto = order[lastKey].coffee_ristretto || "none";
   const coffeeRoasting = order[lastKey].coffee_roasting || "none";
 
-  // Определение ключа для кафе
   function getCafeKey(address) {
     switch (address) {
       case cafeOne:
@@ -47,7 +46,6 @@ export default function renderCurrentOrderPage(main) {
   }
   const cafeKey = getCafeKey(cafeAddress);
 
-  // Определение ключа для типа кофе
   const coffeeKeys = {
     Americano: "americano",
     Cappuccino: "cappuccino",
@@ -69,7 +67,6 @@ export default function renderCurrentOrderPage(main) {
     console.error("Invalid coffee type:", coffeeType);
   }
 
-  // Функция для отображения заказов
   async function displayOrder(order) {
     currentOrderContainer.innerHTML = ``;
 
@@ -109,12 +106,92 @@ export default function renderCurrentOrderPage(main) {
 
   displayOrder(order);
 
-  // Маршрутизация
+  function sendOrderToDatabase(order, userUid) {
+    const now = new Date();
+    const orderTime = `${now.getFullYear()}-${String(
+      now.getMonth() + 1
+    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(
+      now.getHours()
+    ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
+      now.getSeconds()
+    ).padStart(2, "0")}`;
+
+    const orderRef = ref(database, `users/${userUid}/orders/on-going`);
+
+    const orderWithTime = {
+      ...order,
+      order_time: orderTime,
+    };
+
+    set(orderRef, orderWithTime)
+      .then(() => {
+        console.log("Order saved successfully.");
+        alert("Order has been placed successfully!");
+      })
+      .catch((error) => {
+        console.error("Error saving order: ", error);
+        alert("There was an error placing your order. Please try again.");
+      });
+
+    const orderTimeStored = localStorage.getItem("order_time");
+    const setDeletionTimer = (delay) => {
+      setTimeout(() => {
+        moveOrderToHistory(order, userUid);
+        localStorage.removeItem("order");
+        console.log("Order removed after specified time.");
+        console.log(delay);
+      }, delay);
+      console.log(delay);
+    };
+
+    if (orderTimeStored) {
+      const deletionTime = new Date(orderTimeStored).getTime();
+      const currentTime = now.getTime();
+      const delay = deletionTime - currentTime;
+      if (delay > 0) {
+        setDeletionTimer(delay);
+      } else {
+        moveOrderToHistory(order, userUid);
+        localStorage.removeItem("order");
+        console.log("Order removed as the specified time has already passed.");
+      }
+    } else {
+      setDeletionTimer(30 * 60 * 1000);
+    }
+  }
+
+  function moveOrderToHistory(order, userUid) {
+    const now = new Date();
+    const historyOrderRef = ref(database, `users/${userUid}/orders/history`);
+
+    get(historyOrderRef).then((snapshot) => {
+      const ordersHistory = snapshot.val() || {};
+      const newOrderKey = `${now.getTime()}`;
+      const updatedOrders = { ...ordersHistory, [newOrderKey]: order };
+
+      update(historyOrderRef, updatedOrders)
+        .then(() => {
+          console.log("Order moved to history successfully.");
+        })
+        .catch((error) => {
+          console.error("Error moving order to history: ", error);
+        });
+    });
+  }
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userUid = user ? user.uid : null;
+
   backBtn.addEventListener("click", () => {
     window.location.href = "/designer";
   });
 
   nextBtn.addEventListener("click", () => {
-    window.location.href = "/order-confirmed";
+    if (userUid) {
+      sendOrderToDatabase(order, userUid);
+      window.location.href = "/order-confirmed";
+    } else {
+      alert("User is not authenticated.");
+    }
   });
 }
