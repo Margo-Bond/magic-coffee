@@ -29,16 +29,10 @@ export default async function renderAdditivesPage(main) {
 
   const backBtn = document.querySelector(".back-button");
   const cartBtn = document.querySelector(".cart-button");
-  backBtn.addEventListener("click", () => {
-    window.location.href = "/designer";
-  });
-  cartBtn.addEventListener(
-    "click",
-    () => (window.location.href = "/current-order")
-  );
-
   const additivesBtns = document.querySelectorAll(".additives-content__wrapper");
 
+  backBtn.addEventListener("click", () => { window.location.href = "/designer"; });
+  cartBtn.addEventListener("click", () => (window.location.href = "/current-order"));
 
   let order = JSON.parse(localStorage.getItem("order")) || {};
   let keys = Object.keys(order);
@@ -46,7 +40,6 @@ export default async function renderAdditivesPage(main) {
 
   try {
     const getAddress = order[lastKey].cafe_address;
-    console.log(getAddress);
 
     let cafeKey = null;
 
@@ -59,11 +52,9 @@ export default async function renderAdditivesPage(main) {
     }
 
     const data = await getAdditives(cafeKey);
-    console.log(data);
 
     additivesBtns.forEach((btn, index) => {
       const additivesBtnText = btn.querySelector(".additives-content__text");
-
       const additiveType = data[`additive_type${index + 1}`];
 
       if (additiveType) {
@@ -79,7 +70,7 @@ export default async function renderAdditivesPage(main) {
       console.log("Error additive price wasn't set");
     }
   } catch (error) {
-    console.error("Error fetching additive types data:", error);
+    console.error("Error fetching additives data:", error);
   }
 
   additivesBtns.forEach((btn) => {
@@ -97,9 +88,6 @@ export default async function renderAdditivesPage(main) {
 
   additivesBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      let order = JSON.parse(localStorage.getItem("order")) || {};
-      let keys = Object.keys(order);
-      let lastKey = keys[keys.length - 1];
       const isSelected = btn.classList.contains("selected");
       const getOrderPrice = Number(order[lastKey].order_price);
       const getAdditivePrice = Number(order[lastKey].additive_price);
