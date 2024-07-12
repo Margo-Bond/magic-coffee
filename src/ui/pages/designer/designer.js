@@ -26,7 +26,7 @@ export default function renderDesignerPage(main) {
           </div>
         </div>  
       </div>
-      <div class="designer-content__wrapper">
+      <div class="designer-content__wrapper designer-content-sort">
         <p class="designer-content__text">Coffee sort</p>
         <div class="designer__svg designer-content__svg-sort">${More}</div>
       </div>
@@ -56,7 +56,7 @@ export default function renderDesignerPage(main) {
         <p class="designer-content__text">Syrup</p>
         <p class="designer-content__text designer-content__select designer-content__select_syrup">Select</p>
       </div>
-      <div class="designer-content__wrapper">
+      <div class="designer-content__wrapper designer-content-additives">
         <p class="designer-content__text">Additives</p>
         <div class="designer__svg designer-content__svg-additives">${More}</div>
       </div>
@@ -98,37 +98,22 @@ export default function renderDesignerPage(main) {
   const selectSyrup = document.querySelector(".designer-content__select_syrup");
   const overlay = document.querySelector(".overlay");
   const cancelButtons = document.querySelectorAll(".designer-modal__button");
-  const milkContainer = document.querySelector(
-    ".designer-modal__milk-container"
-  );
-  const syrupContainer = document.querySelector(
-    ".designer-modal__syrup-container"
-  );
+  const milkContainer = document.querySelector(".designer-modal__milk-container");
+  const syrupContainer = document.querySelector(".designer-modal__syrup-container");
   const slider = document.getElementById("type__coffee-slider");
-  const sortSvg = document.querySelector(".designer-content__svg-sort");
-  const additivesSvg = document.querySelector(
-    ".designer-content__svg-additives"
-  );
-  const roastingLight = document.querySelector(
-    ".designer-content__svg-roasting_light"
-  );
-  const roastingMedium = document.querySelector(
-    ".designer-content__svg-roasting_medium"
-  );
-  const roastingStrong = document.querySelector(
-    ".designer-content__svg-roasting_strong"
-  );
-  const grindingSmall = document.querySelector(
-    ".designer-content__svg-grinding_small"
-  );
-  const grindingBig = document.querySelector(
-    ".designer-content__svg-grinding_big"
-  );
+  const sortBtn = document.querySelector(".designer-content-sort");
+  const additivesBtn = document.querySelector(".designer-content-additives");
+  const roastingLight = document.querySelector(".designer-content__svg-roasting_light");
+  const roastingMedium = document.querySelector(".designer-content__svg-roasting_medium");
+  const roastingStrong = document.querySelector(".designer-content__svg-roasting_strong");
+  const grindingSmall = document.querySelector(".designer-content__svg-grinding_small");
+  const grindingBig = document.querySelector(".designer-content__svg-grinding_big");
   const iceOne = document.querySelector(".designer-content__svg-ice_one");
   const iceTwo = document.querySelector(".designer-content__svg-ice_two");
   const iceThree = document.querySelector(".designer-content__svg-ice_three");
   const totalCount = document.querySelector(".designer-footer__count");
   const buttonNext = document.querySelector(".designer-footer__button");
+
   let order = JSON.parse(localStorage.getItem("order")) || {};
   let keys = Object.keys(order);
   let lastKey = keys[keys.length - 1];
@@ -167,26 +152,6 @@ export default function renderDesignerPage(main) {
       svg.setAttribute("stroke", color);
     });
   }
-
-  /*const selectedElements = document.querySelectorAll(".selected");
-  selectedElements.forEach((element) => {
-    element.classList.add("selected");
-
-    const coffeeRoasting = order[lastKey].coffee_roasting;
-    const coffeeGrinding = order[lastKey].coffee_grinding;
-    const coffeeIce = order[lastKey].coffee_ice;
-
-    if (coffeeRoasting) {
-      const roastingElem = document.querySelector(
-        `.designer-content__svg-roasting_${coffeeRoasting}`
-      );
-      roastingElem
-        .querySelectorAll("svg path, svg rect")
-        .some((svg) => svg.getAttribute("fill") === "black");
-    } else {
-      console.log("Не покрасилось");
-    }
-  });*/
 
   function checkBlack(element, type, category) {
     const isBlack = Array.from(
@@ -241,38 +206,70 @@ export default function renderDesignerPage(main) {
 
   roastingLight.addEventListener("click", () => {
     checkBlack(roastingLight, "light", "coffee_roasting");
-    roastingLight.classList.add("selected");
   });
   roastingMedium.addEventListener("click", () => {
     checkBlack(roastingMedium, "medium", "coffee_roasting");
-    roastingMedium.classList.add("selected");
   });
   roastingStrong.addEventListener("click", () => {
     checkBlack(roastingStrong, "strong", "coffee_roasting");
-    roastingStrong.classList.add("selected");
   });
 
   grindingSmall.addEventListener("click", () => {
     checkBlack(grindingSmall, "small", "coffee_grinding");
-    grindingSmall.classList.add("selected");
   });
   grindingBig.addEventListener("click", () => {
     checkBlack(grindingBig, "big", "coffee_grinding");
-    grindingBig.classList.add("selected");
   });
 
   iceOne.addEventListener("click", () => {
     checkBlack(iceOne, "one", "coffee_ice");
-    iceOne.classList.add("selected");
   });
   iceTwo.addEventListener("click", () => {
     checkBlack(iceTwo, "two", "coffee_ice");
-    iceTwo.classList.add("selected");
   });
   iceThree.addEventListener("click", () => {
     checkBlack(iceThree, "three", "coffee_ice");
-    iceThree.classList.add("selected");
   });
+
+  //Saving selection of roasting element (black color)
+
+  const selectedRoasting = order[lastKey].coffee_roasting;
+  if (selectedRoasting) {
+    selectCategory(selectedRoasting, "coffee_roasting", "Black");
+    if (selectedRoasting === "light") {
+      roastingLight.classList.add("selected");
+    } else if (selectedRoasting === "medium") {
+      roastingMedium.classList.add("selected");
+    } else if (selectedRoasting === "strong") {
+      roastingStrong.classList.add("selected");
+    }
+  }
+
+  //Saving selection of grinding element (black color)
+
+  const selectedGrinding = order[lastKey].coffee_grinding;
+  if (selectedGrinding) {
+    selectCategory(selectedGrinding, "coffee_grinding", "Black");
+    if (selectedGrinding === "small") {
+      grindingSmall.classList.add("selected");
+    } else if (selectedGrinding === "big") {
+      grindingBig.classList.add("selected");
+    }
+  }
+
+  //Saving selection of ice element (black color)
+
+  const selectedIce = order[lastKey].coffee_ice;
+  if (selectedIce) {
+    selectCategory(selectedIce, "coffee_ice", "Black");
+    if (selectedIce === "one") {
+      iceOne.classList.add("selected");
+    } else if (selectedIce === "two") {
+      iceTwo.classList.add("selected");
+    } else if (selectedIce === "three") {
+      iceThree.classList.add("selected");
+    }
+  }
 
   //Получение milk_option и syrup_option
 
@@ -411,11 +408,11 @@ export default function renderDesignerPage(main) {
   totalCount.textContent = orderPrice;
 
   //Маршруты
-  sortSvg.addEventListener("click", function () {
+  sortBtn.addEventListener("click", function () {
     window.location.href = "/coffee-country";
   });
 
-  additivesSvg.addEventListener("click", function () {
+  additivesBtn.addEventListener("click", function () {
     window.location.href = "/additives";
   });
 
@@ -426,8 +423,5 @@ export default function renderDesignerPage(main) {
   cartSvg.addEventListener("click", function () {
     window.location.href = "/current-order";
   });
-  buttonNext.addEventListener(
-    "click",
-    () => (window.location.href = "/current-order")
-  );
+  buttonNext.addEventListener("click", () => (window.location.href = "/current-order"));
 }
