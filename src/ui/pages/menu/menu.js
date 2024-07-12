@@ -20,53 +20,21 @@ export default async function renderMenuPage(main) {
         <span class="menu__content__title">Select your coffee</span>
 
         <div class="menu__content">
+          ${Array(6).fill(`
           <div class="menu__content__item">
             <div class="menu__content__item-image">
               <img class="image" src="" alt="">
             </div>
             <p class="menu__content__item-name"></p>
           </div>
-
-          <div class="menu__content__item">
-            <div class="menu__content__item-image">
-              <img class="image" src="" alt="">
-            </div>
-            <p class="menu__content__item-name"></p>
-          </div>
-
-          <div class="menu__content__item">
-            <div class="menu__content__item-image">
-              <img class="image" src="" alt="">
-            </div>
-            <p class="menu__content__item-name"></p>
-          </div>
-          
-          <div class="menu__content__item">
-            <div class="menu__content__item-image">
-              <img class="image" src="" alt="">
-            </div>
-            <p class="menu__content__item-name"></p>
-          </div>
-          
-          <div class="menu__content__item">
-            <div class="menu__content__item-image">
-              <img class="image" src="" alt="">
-            </div>
-            <p class="menu__content__item-name"></p>
-          </div>
-
-          <div class="menu__content__item">
-            <div class="menu__content__item-image">
-              <img class="image" src="" alt="">
-            </div>
-            <p class="menu__content__item-name"></p>
-          </div>
+          `).join('')}
         </div>
       </div>
     </div>
   `;
 
   const menuContentItems = document.querySelectorAll(".menu__content__item");
+
   let order = JSON.parse(localStorage.getItem("order")) || {};
   let keys = Object.keys(order);
   let lastKey = keys[keys.length - 1];
@@ -88,8 +56,8 @@ export default async function renderMenuPage(main) {
     const coffeeKeys = Object.keys(data);
 
     menuContentItems.forEach((btn, index) => {
-      const imageElement = menuItem.querySelector(".image");
-      const itemName = menuItem.querySelector(".menu__content__item-name");
+      const imageElement = btn.querySelector(".image");
+      const itemName = btn.querySelector(".menu__content__item-name");
 
       const coffeeKey = coffeeKeys[index];
       const coffeeItem = data[coffeeKey];
@@ -97,29 +65,25 @@ export default async function renderMenuPage(main) {
       if (coffeeItem) {
         imageElement.src = coffeeItem.image_url;
         imageElement.alt = coffeeItem.coffee_type;
-        itemName.textContent = coffeeData.coffee_type;
+        itemName.textContent = coffeeItem.coffee_type;
       }
     })
   } catch (error) {
     console.error("Error fetching coffee data:", error);
   }
 
-  const coffeeBtns = document.querySelectorAll(".menu__content__item");
-
-  coffeeBtns.forEach((btn) => {
+  menuContentItems.forEach((btn) => {
     btn.addEventListener("click", () => {
       const coffeeBtnText = btn.querySelector(".menu__content__item-name");
       const btnTextValue = coffeeBtnText.textContent;
 
-      let order = JSON.parse(localStorage.getItem("order")) || {};
-      let keys = Object.keys(order);
-      let lastKey = keys[keys.length - 1];
-      if (lastKey) {
-        order[lastKey].coffee_type = btnTextValue;
-      }
+      order[lastKey].coffee_type = btnTextValue;
       localStorage.setItem("order", JSON.stringify(order));
 
       window.location.href = "/order-options";
     });
   });
+
+  const footer = document.querySelector('footer');
+  footer.style.boxShadow = "none";
 }
