@@ -24,7 +24,6 @@ export async function getCafes() {
   return get(child(dbRef, `cafes`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         return snapshot.val();
       } else {
         console.log("No data available");
@@ -100,7 +99,6 @@ export async function getCoffeeSorts(cafeKey = null, countryKey = null) {
   return get(child(dbRef, `cafes/${cafeKey}/coffee_selection/${countryKey}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         return snapshot.val();
       } else {
         console.log("No data available");
@@ -131,7 +129,6 @@ export async function getAdditives(cafeKey = null) {
   return get(child(dbRef, `cafes/${cafeKey}/additives_selection`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         return snapshot.val();
       } else {
         console.log("No data available");
@@ -148,7 +145,6 @@ export async function getCoffeeCountry(cafeKey = null) {
   return get(child(dbRef, `cafes/${cafeKey}/coffee_selection`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         return snapshot.val();
       } else {
         console.log("No data available");
@@ -165,7 +161,6 @@ export async function getCoffees(cafeKey = null) {
   return get(child(dbRef, `cafes/${cafeKey}/coffees`))
     .then((snapshot) => {
       if (snapshot.exists()) {
-        console.log(snapshot.val());
         return snapshot.val();
       } else {
         console.log("No data available");
@@ -174,5 +169,20 @@ export async function getCoffees(cafeKey = null) {
     })
     .catch((error) => {
       console.error("Error getting additives:", error);
+    });
+}
+
+export async function getCoffeeImage(cafeKey, coffeeKey) {
+  return get(child(dbRef, `cafes/${cafeKey}/coffees/${coffeeKey}/image_url`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((err) => {
+      console.error("Error getting image:", err);
     });
 }

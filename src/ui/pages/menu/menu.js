@@ -20,14 +20,18 @@ export default async function renderMenuPage(main) {
         <span class="menu__content__title">Select your coffee</span>
 
         <div class="menu__content">
-          ${Array(6).fill(`
+          ${Array(6)
+            .fill(
+              `
           <div class="menu__content__item">
             <div class="menu__content__item-image">
               <img class="image" src="" alt="">
             </div>
             <p class="menu__content__item-name"></p>
           </div>
-          `).join('')}
+          `
+            )
+            .join("")}
         </div>
       </div>
     </div>
@@ -67,7 +71,7 @@ export default async function renderMenuPage(main) {
         imageElement.alt = coffeeItem.coffee_type;
         itemName.textContent = coffeeItem.coffee_type;
       }
-    })
+    });
   } catch (error) {
     console.error("Error fetching coffee data:", error);
   }
@@ -84,6 +88,6 @@ export default async function renderMenuPage(main) {
     });
   });
 
-  const footer = document.querySelector('footer');
+  const footer = document.querySelector("footer");
   footer.style.boxShadow = "none";
 }
