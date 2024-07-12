@@ -1,4 +1,4 @@
-import { getCafes } from "../../../../Services/Get.js";
+import { getCoffeeCountry } from "../../../../Services/Get.js";
 import Back from "@/assets/images/geometric-icons/back.svg";
 import Cart from "@/assets/images/cart.svg";
 import More from "@/assets/images/geometric-icons/icon-more-grey.svg";
@@ -17,112 +17,63 @@ export default async function renderCoffeeCountryPage(main) {
           </div>
 
           <div class="country-content">
-            <div class="country-content__wrapper item-one">
-              <p class="country-content__text text-one"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
-
-            <div class="country-content__wrapper">
-              <p class="country-content__text"></p>
-              <div class="country-content__icon">${More}</div>
-            </div>
+            ${Array(11).fill(`
+              <div class="country-content__wrapper">
+                <p class="country-content__text"></p>
+                <div class="country-content__icon">${More}</div>
+              </div>
+            `).join('')}
           </div>
         </div>
   `;
 
+  const back = document.querySelector(".country-header__icon-back");
+  const cart = document.querySelector(".country-header__icon-cart");
+  const countryBtns = document.querySelectorAll(".country-content__wrapper");
+
+  back.addEventListener("click", () => (window.location.href = "/designer"));
+  cart.addEventListener("click", () => (window.location.href = "/current-order"));
+
+  let order = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(order);
+  let lastKey = keys[keys.length - 1];
+
   try {
-    const data = await getCafes();
-    const cafeOne = "Bradford BD1 1PR";
-    const cafeTwo = "Bradford BD4 7SJ";
-    const cafeThree = "Bradford BD1 4RN";
-    const getAddress = localStorage.getItem("cafe_address");
+    const getAddress = order[lastKey].cafe_address;
 
-    let selectedCafe = null;
+    let cafeKey = null;
 
-    if (getAddress === cafeOne) {
-      selectedCafe = data.cafe_one.coffee_selection;
-    } else if (getAddress === cafeTwo) {
-      selectedCafe = data.cafe_two.coffee_selection;
-    } else if (getAddress === cafeThree) {
-      selectedCafe = data.cafe_three.coffee_selection;
+    if (getAddress === "Bradford BD1 1PR") {
+      cafeKey = "cafe_one";
+    } else if (getAddress === "Bradford BD4 7SJ") {
+      cafeKey = "cafe_two";
+    } else if (getAddress === "Bradford BD1 4RN") {
+      cafeKey = "cafe_three";
     }
 
-    if (selectedCafe) {
-      const countryOptions = Object.keys(selectedCafe);
-      const countryBtns = document.querySelectorAll(
-        ".country-content__wrapper"
-      );
+    const data = await getCoffeeCountry(cafeKey);
+    const countryKeys = Object.keys(data);
 
-      countryBtns.forEach((countryItem, index) => {
-        if (countryOptions[index]) {
-          const countryOption = countryOptions[index];
-          const countryData = selectedCafe[countryOption];
+    countryBtns.forEach((btn, index) => {
+      const countryBtnText = btn.querySelector(".country-content__text");
+      const countryKey = countryKeys[index];
+      const countryItem = data[countryKey];
 
-          const itemName = countryItem.querySelector(".country-content__text");
-
-          if (itemName) {
-            itemName.textContent = countryData.country;
-          }
-        }
-      });
-    }
+      if (countryItem) {
+        countryBtnText.textContent = countryItem.country;
+      }
+    })
   } catch (error) {
     console.error("Error fetching country data:", error);
   }
 
-  const countryBtns = document.querySelectorAll(".country-content__wrapper");
-
   countryBtns.forEach((btn) => {
     const countryBtnText = btn.querySelector(".country-content__text");
     const btnTextValue = countryBtnText.textContent;
-    const isSelected = localStorage.getItem("coffee_country");
 
-    if (isSelected === btnTextValue) {
+    const getCoffeeCountry = order[lastKey].coffee_country;
+
+    if (getCoffeeCountry === btnTextValue) {
       btn.classList.add("selected");
       countryBtnText.style.color = "rgb(10, 132, 255)";
     }
@@ -133,10 +84,12 @@ export default async function renderCoffeeCountryPage(main) {
       resetButtons();
       btn.classList.add("selected");
       const countryBtnText = btn.querySelector(".country-content__text");
-      const btnTextValue = countryBtnText.textContent;
-      const storedCountry = localStorage.getItem("coffee_country");
-      localStorage.setItem("coffee_country", btnTextValue);
       countryBtnText.style.color = "rgb(10, 132, 255)";
+
+      const btnTextValue = countryBtnText.textContent;
+      order[lastKey].coffee_country = btnTextValue;
+      localStorage.setItem("order", JSON.stringify(order));
+
       setTimeout(() => {
         window.location.href = "/coffee-type";
       }, 700)
@@ -150,13 +103,4 @@ export default async function renderCoffeeCountryPage(main) {
       countryBtnText.style.color = "rgb(0, 24, 51)";
     });
   }
-
-  const back = document.querySelector(".country-header__icon-back");
-  const cart = document.querySelector(".country-header__icon-cart");
-
-  back.addEventListener("click", () => (window.location.href = "/designer"));
-  cart.addEventListener(
-    "click",
-    () => (window.location.href = "/current-order")
-  );
 }
