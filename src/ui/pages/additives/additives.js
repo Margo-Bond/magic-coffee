@@ -39,8 +39,14 @@ export default async function renderAdditivesPage(main) {
 
   const additivesBtns = document.querySelectorAll(".additives-content__wrapper");
 
+
+  let order = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(order);
+  let lastKey = keys[keys.length - 1];
+
   try {
-    const getAddress = localStorage.getItem('cafe_address');
+    const getAddress = order[lastKey].cafe_address;
+    console.log(getAddress);
 
     let cafeKey = null;
 
@@ -67,7 +73,8 @@ export default async function renderAdditivesPage(main) {
 
     const additivesPrice = data.price;
     if (additivesPrice) {
-      localStorage.setItem('additives_price', additivesPrice);
+      order[lastKey].additive_price = additivesPrice;
+      localStorage.setItem("order", JSON.stringify(order));
     } else {
       console.log("Error additive price wasn't set");
     }
@@ -77,43 +84,56 @@ export default async function renderAdditivesPage(main) {
 
   additivesBtns.forEach((btn) => {
     const additivesBtnText = btn.querySelector(".additives-content__text");
+    const additivesBtnIcon = btn.querySelector(".additives-content__icon");
     const btnTextValue = additivesBtnText.textContent;
-    const isSelected = localStorage.getItem("coffee_additives");
+    const getAdditives = order[lastKey].coffee_additives;
 
-    if (isSelected === btnTextValue) {
+    if (getAdditives === btnTextValue) {
       btn.classList.add("selected");
       additivesBtnText.style.color = "rgb(10, 132, 255)";
-      const additivesBtnIcon = btn.querySelector(".additives-content__icon");
       additivesBtnIcon.style.display = "block";
     }
   });
 
   additivesBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
+      let order = JSON.parse(localStorage.getItem("order")) || {};
+      let keys = Object.keys(order);
+      let lastKey = keys[keys.length - 1];
       const isSelected = btn.classList.contains("selected");
-      const getOrderPrice = Number(localStorage.getItem('order_price'));
-      const getAdditivePrice = Number(localStorage.getItem('additives_price'));
+      const getOrderPrice = Number(order[lastKey].order_price);
+      const getAdditivePrice = Number(order[lastKey].additive_price);
 
       if (isSelected) {
         btn.classList.remove("selected");
         const additivesBtnText = btn.querySelector(".additives-content__text");
         additivesBtnText.style.color = "rgb(0, 24, 51)";
+
         const additivesBtnIcon = btn.querySelector(".additives-content__icon");
         additivesBtnIcon.style.display = "none";
-        localStorage.removeItem("coffee_additives");
+
+        delete order[lastKey].coffee_additives;
+        localStorage.setItem("order", JSON.stringify(order));
+
         const originalOrderPrice = getOrderPrice - getAdditivePrice;
-        localStorage.setItem('order_price', originalOrderPrice);
+        order[lastKey].order_price = originalOrderPrice;
+        localStorage.setItem("order", JSON.stringify(order));
       } else {
         resetButtons();
         btn.classList.add("selected");
         const additivesBtnText = btn.querySelector(".additives-content__text");
         const btnTextValue = additivesBtnText.textContent;
-        localStorage.setItem("coffee_additives", btnTextValue);
-        additivesBtnText.style.color = "rgb(10, 132, 255)";
-        const additivesBtnIcon = btn.querySelector(".additives-content__icon");
-        const newOrderPrice = getAdditivePrice + getOrderPrice;
-        localStorage.setItem('order_price', newOrderPrice);
 
+        order[lastKey].coffee_additives = btnTextValue;
+        localStorage.setItem("order", JSON.stringify(order));
+
+        additivesBtnText.style.color = "rgb(10, 132, 255)";
+
+        const newOrderPrice = getAdditivePrice + getOrderPrice;
+        order[lastKey].order_price = newOrderPrice;
+        localStorage.setItem("order", JSON.stringify(order));
+
+        const additivesBtnIcon = btn.querySelector(".additives-content__icon");
         setTimeout(() => {
           additivesBtnIcon.style.display = "block";
         }, 700);
