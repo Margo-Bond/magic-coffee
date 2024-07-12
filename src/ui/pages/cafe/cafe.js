@@ -174,7 +174,18 @@ export default async function renderCafePage(main) {
     btn.addEventListener("click", () => {
       const cafeBtnTitle = btn.querySelector(".cafe-box__button__title");
       const btnTitleValue = cafeBtnTitle.textContent;
-      localStorage.setItem('cafe_address', btnTitleValue);
+
+      let order = JSON.parse(localStorage.getItem("order")) || {};
+
+      const orderKey = `order${Object.keys(order).length + 1}`;
+
+      const orderItem = {
+        cafe_address: btnTitleValue,
+      };
+
+      order[orderKey] = orderItem;
+      localStorage.setItem("order", JSON.stringify(order));
+
       window.location.href = "/menu";
     });
   });

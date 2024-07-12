@@ -31,6 +31,11 @@ if (!getApps().length) {
 const database = getDatabase(app);
 
 export default async function renderOrderOptionPage(main) {
+  let order = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(order);
+  let lastKey = keys[keys.length - 1];
+  const coffeeType = order[lastKey].coffee_type;
+
   main.innerHTML = `
     <div class="order-option">
       <div class="order-option__main">
@@ -41,7 +46,7 @@ export default async function renderOrderOptionPage(main) {
 
       <div class="order-option__coffee-img">
         <div class="coffeeCard">
-          <img id="coffeeImage" src="" alt="Coffee Image">
+          <img id="coffeeImage" src="" alt=${coffeeType}>
         </div>
       </div>
 
@@ -124,8 +129,7 @@ export default async function renderOrderOptionPage(main) {
     </footer>`;
 
   ////
-  const cafeAddress = localStorage.getItem("cafe_address");
-  const coffeeType = localStorage.getItem("coffee_type");
+  const cafeAddress = order[lastKey].cafe_address;
   const cafeOne = "Bradford BD1 1PR";
   const cafeTwo = "Bradford BD4 7SJ";
   const cafeThree = "Bradford BD1 4RN";
@@ -157,6 +161,7 @@ export default async function renderOrderOptionPage(main) {
     Macchiato: "macchiato",
   };
   const coffeeKey = coffeeKeys[coffeeType];
+  console.log(coffeeKey);
 
   if (!cafeKey) {
     console.error("Invalid cafe address:", cafeAddress);
@@ -189,8 +194,8 @@ export default async function renderOrderOptionPage(main) {
           const coffeeData = await getCoffeeType(cafeKey, coffeeKey);
           if (coffeeData && coffeeData.image_url) {
             const coffeeImage = document.getElementById("coffeeImage");
+            //coffeeImage.alt = order[lastKey].coffee_type;
             coffeeImage.src = coffeeData.image_url;
-            coffeeImage.alt = coffeeType;
           } else {
             console.log("No coffee data available");
           }
@@ -210,8 +215,8 @@ export default async function renderOrderOptionPage(main) {
   }
 
   ///
-  const coffeType = document.querySelector(".coffee");
-  coffeType.textContent = localStorage.getItem("coffee_type");
+  const coffeeName = document.querySelector(".coffee");
+  coffeeName.textContent = coffeeType;
   ////
 
   const counter = document.getElementById("buttonCountNumber");
@@ -232,8 +237,12 @@ export default async function renderOrderOptionPage(main) {
 
     if (price) {
       totalAmount.textContent = (count * price).toFixed(2);
-      localStorage.setItem("cup_quantity", count.toString());
-      localStorage.setItem("order_price", totalAmount.textContent);
+
+      if (lastKey) {
+        order[lastKey].cup_quantity = count.toString();
+        order[lastKey].order_price = totalAmount.textContent;
+      }
+      localStorage.setItem("order", JSON.stringify(order));
     } else {
       console.error("Price is not a valid number:", price);
     }
@@ -264,10 +273,8 @@ export default async function renderOrderOptionPage(main) {
       resetButtons();
 
       this.classList.add("active");
-      localStorage.setItem(
-        "coffee_ristretto",
-        this.getAttribute("data-strength")
-      );
+      order[lastKey].coffee_ristretto = this.getAttribute("data-strength");
+      localStorage.setItem("order", JSON.stringify(order));
     });
   });
 
@@ -296,9 +303,14 @@ export default async function renderOrderOptionPage(main) {
 
     if (isBlack) {
       selectCategory(type, category, "#D8D8D8");
-      localStorage.removeItem(
-        category === "where" ? "mug_option" : "cup_volume"
-      );
+
+      if (category === "where") {
+        delete order[lastKey].mug_option;
+      } else if (category === "cup") {
+        delete order[lastKey].cup_volume;
+      }
+
+      localStorage.setItem("order", JSON.stringify(order));
     } else {
       selectCategory(type, category, "black");
     }
@@ -309,7 +321,7 @@ export default async function renderOrderOptionPage(main) {
       where: ["onsite", "takeaway"],
       cup: ["small", "medium", "large"],
     };
-    const storageKey = category === "where" ? "mug_option" : "cup_volume";
+
     options[category].forEach((option) => {
       const elements = document.querySelectorAll(
         `.order-option__svg-${category}_${option}`
@@ -319,7 +331,12 @@ export default async function renderOrderOptionPage(main) {
         if (option === type) {
           setFillColor(element, color);
           if (color === "black") {
-            localStorage.setItem(storageKey, type);
+            if (category === "where") {
+              order[lastKey].mug_option = type;
+            } else if (category === "cup") {
+              order[lastKey].cup_volume = type;
+            }
+            localStorage.setItem("order", JSON.stringify(order));
           }
         } else {
           setFillColor(element, "#D8D8D8");
@@ -327,6 +344,23 @@ export default async function renderOrderOptionPage(main) {
       });
     });
   }
+
+  onsite.addEventListener("click", () =>
+    selectCategory("onsite", "where", "black")
+  );
+  takeaway.addEventListener("click", () =>
+    selectCategory("takeaway", "where", "black")
+  );
+  cupSizeSmall.addEventListener("click", () =>
+    selectCategory("small", "cup", "black")
+  );
+  cupSizeMedium.addEventListener("click", () =>
+    selectCategory("medium", "cup", "black")
+  );
+  cupSizeLarge.addEventListener("click", () =>
+    selectCategory("large", "cup", "black")
+  );
+  /*
   onsite.addEventListener("click", () => checkBlack(onsite, "onsite", "where"));
   takeaway.addEventListener("click", () =>
     checkBlack(takeaway, "takeaway", "where")
@@ -339,7 +373,8 @@ export default async function renderOrderOptionPage(main) {
   );
   cupSizeLarge.addEventListener("click", () =>
     checkBlack(cupSizeLarge, "large", "cup")
-  );
+  );*/
+
   /// Изменение цвета обьема чашек кофе в зависимости от выделения
   document.querySelectorAll(".order-option__cup").forEach((textSize) => {
     textSize.addEventListener("click", function () {
@@ -359,10 +394,16 @@ export default async function renderOrderOptionPage(main) {
   ///Закидываем вермя заказа в ЛС и забираем оттуда данные
   const timeInput = document.getElementById("time");
   timeInput.addEventListener("change", function () {
-    localStorage.setItem("order_time", this.value);
+    if (lastKey) {
+      order[lastKey].order_time = this.value;
+    }
+
+    localStorage.setItem("order", JSON.stringify(order));
   });
-  if (localStorage.getItem("order_time")) {
-    timeInput.value = localStorage.getItem("order_time");
+
+  if (order[lastKey].order_time) {
+    timeInput.value = order[lastKey].order_time;
+    localStorage.setItem("order", JSON.stringify(order));
   }
 
   /// Появление часов для выбора времени заказа после нажания тоглера
@@ -383,27 +424,3 @@ export default async function renderOrderOptionPage(main) {
     window.location.href = "/designer";
   });
 }
-
-/* onAuthStateChanged(auth, (user) => {
-  if (user) {
-    slider.addEventListener("span", (event) => {
-      const value = event.target.value;
-      localStorage.setItem("coffee_type", value);
-    });
-  } else {
-    alert("You should sign in.");
-    console.log("No user is signed in.");
-  }
-}); */
-
-/*ДАША, ТУТ ПОЛУЧАЕМ ЦЕНУ
-  const cafeKey = "cafe_one";
-  const coffeeKey = "americano";
-
-  try {
-    const data = await getCafes(cafe, coffee_type);
-    console.log(data.price);
-  } catch (error) {
-    console.error("Error fetching coffee data:", error);
-  }
-*/
