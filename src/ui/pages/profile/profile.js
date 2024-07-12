@@ -10,7 +10,7 @@ import QrCode from "@/assets/images/qr-code.svg";
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
-  let address = localStorage.getItem("address");
+  let address = localStorage.getItem("cafe_address");
   let userName = localData.name;
   let userPhone = localData.phoneNumber;
   let userEmail = localData.email;
@@ -111,8 +111,10 @@ export default function renderProfilePage(main) {
     const nameRegex = /^[a-zA-Z]{2,30}(?: [a-zA-Z]{2,30})?$/;
     if (nameRegex.test(input.value)) {
       input.style.border = "none";
+      return true;
     } else {
       input.style.border = "1px solid red";
+      return false;
     }
   }
 
@@ -121,8 +123,10 @@ export default function renderProfilePage(main) {
       /^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\d{2,3}) ?)){5,12}\d$/;
     if (numberRegex.test(input.value)) {
       input.style.border = "none";
+      return true;
     } else {
       input.style.border = "1px solid red";
+      return false;
     }
   }
 
@@ -130,18 +134,20 @@ export default function renderProfilePage(main) {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (emailRegex.test(input.value)) {
       input.style.border = "none";
+      return true;
     } else {
       input.style.border = "1px solid red";
+      return false;
     }
   }
 
   function selectValidator(input) {
     if (input.getAttribute("type") === "text") {
-      validateName();
+      validateName(input);
     } else if (input.getAttribute("type") === "number") {
-      validateNumber();
+      validateNumber(input);
     } else {
-      validateEmail();
+      validateEmail(input);
     }
   }
 
@@ -176,7 +182,7 @@ export default function renderProfilePage(main) {
               currentBtn.classList.remove("change-icon");
               const location = document.querySelector(".location");
               location.textContent = locationBtn.value;
-              localStorage.setItem("address", locationBtn.value);
+              localStorage.setItem("cafe_address", locationBtn.value);
               menu.classList.add("invisible");
             });
           } else {
@@ -193,13 +199,6 @@ export default function renderProfilePage(main) {
           if (item.classList.contains(id)) {
             const parent = item.closest("div");
             const input = parent.querySelector(".item-block__input");
-            /*
-            const input = document.createElement("input");
-
-            input.setAttribute("type", id);
-            input.classList.add(".item-block__input");
-            parent.append(input);
-            */
 
             item.classList.add("invisible");
             input.classList.remove("invisible");
@@ -213,73 +212,18 @@ export default function renderProfilePage(main) {
                   input.classList.add("invisible");
                 } else {
                   //if (selectValidator(input)) {
-                  //if (true) {
+
                   item.classList.remove("invisible");
                   item.textContent = input.value;
                   editLocalData(input);
                   input.classList.add("invisible");
-                  //  }
                   //}
                 }
               }
-              /*
-              if (input.value === "") {
-                item.classList.remove("invisible");
-                if (input) {
-                  input.remove();
-                }
-                console.log(input);
-              } else {
-                if (selectValidator(input) === true) {
-                  item.classList.remove("invisible");
-                  item.textContent = input.value;
-                  if (input) {
-                    input.remove();
-                  }
-                  console.log(input);
-                }
-              }
-              */
             });
-            /*
-          currentBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            if (input.value === "") {
-              currentBtn.classList.remove("change-icon");
-            } else {
-              selectValidator();
-              item.textContent = input.value;
-              if (input.getAttribute("type") === "name") {
-                item.setAttribute("type", "text");
-              }
-              item.style.display = "block";
-              input.style.display = "none";
-            }
-          }); */
           }
         }
       }
     });
   }
-
-  //Footer menu - HERE!!!
-  /*
-  const menu = document.getElementById("button-menu");
-  menu.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "/menu";
-  });
-
-  const profilePage = document.getElementById("button-profile");
-  profilePage.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "/profile";
-  });
-
-  const orders = document.getElementById("button-order");
-  orders.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "/my-orders";
-  });
-  */
 }
