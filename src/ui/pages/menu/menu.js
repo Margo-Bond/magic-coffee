@@ -21,8 +21,8 @@ export default async function renderMenuPage(main) {
 
         <div class="menu__content">
           ${Array(6)
-            .fill(
-              `
+      .fill(
+        `
           <div class="menu__content__item">
             <div class="menu__content__item-image">
               <img class="image" src="" alt="">
@@ -30,8 +30,8 @@ export default async function renderMenuPage(main) {
             <p class="menu__content__item-name"></p>
           </div>
           `
-            )
-            .join("")}
+      )
+      .join("")}
         </div>
       </div>
     </div>
@@ -83,6 +83,21 @@ export default async function renderMenuPage(main) {
 
       order[lastKey].coffee_type = btnTextValue;
       localStorage.setItem("order", JSON.stringify(order));
+
+      if (order[lastKey].cup_quantity ||
+        order[lastKey].coffee_ristretto ||
+        order[lastKey].mug_option ||
+        order[lastKey].cup_volume ||
+        order[lastKey].order_time) {
+        delete order[lastKey].cup_quantity;
+        delete order[lastKey].coffee_ristretto;
+        delete order[lastKey].mug_option;
+        delete order[lastKey].cup_volume;
+        delete order[lastKey].order_time
+        localStorage.setItem("order", JSON.stringify(order));
+      } else {
+        console.log("There are no keys from order-option page in Local Storage");
+      }
 
       window.location.href = "/order-options";
     });
