@@ -1,6 +1,13 @@
 import { createHeaderBlack } from "@/ui/components/header/header.js";
+import { getOrders } from "../../../../Services/Get.js";
 
 export default function renderMyOrdersPage(main) {
+  // Сравниваем время и разбиваем заказы по вкладкам
+  const date = new Date();
+  const timeZone = "Europe/London";
+  const localDate = date.toLocaleString("en-US", { timeZone });
+  console.log(localDate);
+
   main.innerHTML = `
   <main class="myOrders">
 
@@ -137,10 +144,16 @@ export default function renderMyOrdersPage(main) {
 
     historyTab.prepend(orderContainer);
 
+    const data = await getOrders();
+    const myOrders = Object.keys(data);
+
+    console.log(data);
+    console.log(myOrders);
+
     // Повторный заказ при нажатии на кнопку Order
     const orderBtn = document.querySelector(".block-item2__button");
     orderBtn.addEventListener("click", (e) => {
-      console.log(orderContainer);
+      console.log(historyOrders[key]);
     });
   }
 }

@@ -92,6 +92,7 @@ export default function renderAuthorizationPage(main) {
       return true;
     } else {
       email.style.border = "1px solid red";
+      alert("Please, check that you've entered your email correctly");
       return false;
     }
   }
@@ -104,6 +105,7 @@ export default function renderAuthorizationPage(main) {
       return true;
     } else {
       password.style.border = "1px solid red";
+      alert("Please, check that you've entered your password correctly");
       return false;
     }
   }
