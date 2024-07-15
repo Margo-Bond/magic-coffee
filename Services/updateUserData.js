@@ -7,7 +7,7 @@ export default function updateUserData(
   nameValue,
   phoneValue,
   emailValue,
-  passwordValue
+  locationValue
 ) {
   const userRef = ref(database, `users/${userUid}`);
 
@@ -15,7 +15,7 @@ export default function updateUserData(
     name: nameValue,
     phone: phoneValue,
     email: emailValue,
-    password: passwordValue,
+    location: locationValue,
   };
 
   return update(userRef, newData)

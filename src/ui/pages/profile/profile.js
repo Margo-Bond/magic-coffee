@@ -1,4 +1,5 @@
 import handleSignOut from "../../../../Services/signOut.js";
+import updateUserData from "../../../../Services/updateUserData.js";
 import Back from "@/assets/images/geometric-icons/back.svg";
 import LogOut from "@/assets/images/geometric-icons/logout.svg";
 import ProfileName from "@/assets/images/user-icons/profile-name.svg";
@@ -224,6 +225,15 @@ export default function renderProfilePage(main) {
           }
         }
       }
+      const newData = JSON.parse(localStorage.getItem("user"));
+
+      updateUserData(
+        newData.uid,
+        newData.name,
+        newData.phoneNumber,
+        newData.email,
+        localStorage.getItem("cafe_address")
+      );
     });
   }
 }

@@ -16,7 +16,7 @@
     padding: 29px 24px 0 31px;
     display: grid;
     grid-template: 1fr / repeat(2, 93px);
-    grid-gap: 75px;
+    grid-gap: calc(100% - (2 * 93px));
     border-bottom: 2px solid #f4f5f7;
 
     .myOrders-nav__item {

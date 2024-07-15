@@ -3,10 +3,12 @@ import { getOrders } from "../../../../Services/Get.js";
 
 export default function renderMyOrdersPage(main) {
   // Сравниваем время и разбиваем заказы по вкладкам
+  /*
   const date = new Date();
   const timeZone = "Europe/London";
   const localDate = date.toLocaleString("en-US", { timeZone });
   console.log(localDate);
+  */
 
   main.innerHTML = `
   <main class="myOrders">
@@ -100,28 +102,49 @@ export default function renderMyOrdersPage(main) {
   });
 
   //Логика для вкладки History
-  const historyOrders = JSON.parse(localStorage.getItem("order"));
+  // Получаем данные on-going из orders в FB
+  const userData = JSON.parse(localStorage.getItem("user"));
 
-  for (let key in historyOrders) {
-    const orderDate = historyOrders[key].order_date;
-    const orderTime = historyOrders[key].order_time;
-    const coffeeType = historyOrders[key].coffee_type;
-    const cafeAddress = historyOrders[key].cafe_address;
-    const orderPrice = historyOrders[key].order_price;
+  getOrders(userData.uid).then((orders) => {
+    //const historyOrders = JSON.parse(localStorage.getItem("order"));
 
-    if (
-      /*orderDate === undefined ||*/
-      orderTime === undefined ||
-      coffeeType === undefined ||
-      cafeAddress === undefined ||
-      orderPrice === undefined
-    ) {
-      return;
-    }
+    //for (let key in historyOrders) {
+    for (let key in orders) {
+      /*
+      const orderDate = historyOrders[key].order_date;
+      const orderTime = historyOrders[key].order_time;
+      const coffeeType = historyOrders[key].coffee_type;
+      const cafeAddress = historyOrders[key].cafe_address;
+      const orderPrice = historyOrders[key].order_price;
+      */
 
-    const orderContainer = document.createElement("div");
-    orderContainer.classList.add("myOrders-table2__block");
-    orderContainer.innerHTML = `
+      const now = Date.parse(new Date());
+      const date = new Date(Date.parse(orders.order_time));
+      const dateX = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+      console.log(dateX); //Если эта дата больше 0, тогда переносим в историю, а если меньше, то в on going
+
+      const month = date.toLocaleString("default", { month: "long" });
+      const day = date.getDate();
+
+      const orderDate = `${day} ${month}`;
+      const orderTime = orders[key].order_time;
+      const coffeeType = orders[key].coffee_type;
+      const cafeAddress = orders[key].cafe_address;
+      const orderPrice = orders[key].order_price;
+
+      if (
+        orderDate === undefined ||
+        orderTime === undefined ||
+        coffeeType === undefined ||
+        cafeAddress === undefined ||
+        orderPrice === undefined
+      ) {
+        return;
+      }
+
+      const orderContainer = document.createElement("div");
+      orderContainer.classList.add("myOrders-table2__block");
+      orderContainer.innerHTML = `
               <div class="block__item1">
                 <p class="block-item1__text">${orderDate} | ${orderTime}</p>
 
@@ -142,18 +165,15 @@ export default function renderMyOrdersPage(main) {
               </div>
     `;
 
-    historyTab.prepend(orderContainer);
+      historyTab.prepend(orderContainer);
+    }
+  });
 
-    const data = await getOrders();
-    const myOrders = Object.keys(data);
-
-    console.log(data);
-    console.log(myOrders);
-
-    // Повторный заказ при нажатии на кнопку Order
+  // Повторный заказ при нажатии на кнопку Order
+  /*
     const orderBtn = document.querySelector(".block-item2__button");
     orderBtn.addEventListener("click", (e) => {
       console.log(historyOrders[key]);
     });
-  }
+    */
 }
