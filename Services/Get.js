@@ -20,6 +20,21 @@ export async function getUserData() {
   }
 }
 
+export async function getOrders(userUid) {
+  return get(child(dbRef, `users/${userUid}/orders/on-going`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting on-going orders:", error);
+    });
+}
+
 export async function getCafes() {
   return get(child(dbRef, `cafes`))
     .then((snapshot) => {

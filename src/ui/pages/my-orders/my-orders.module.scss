@@ -16,7 +16,7 @@
     padding: 29px 24px 0 31px;
     display: grid;
     grid-template: 1fr / repeat(2, 93px);
-    grid-gap: 75px;
+    grid-gap: calc(100% - (2 * 93px));
     border-bottom: 2px solid #f4f5f7;
 
     .myOrders-nav__item {
@@ -89,22 +89,22 @@
     line-height: 16px;
     color: #324a59;
 
-    .myOrders-table2__item {
+    .myOrders-table2__block {
       margin-top: 25px;
       display: grid;
       grid-template: 1fr / repeat(2, auto);
       border-bottom: 1px solid #f4f5f7;
       align-items: baseline;
 
-      .item__block1 {
+      .block__item1 {
         display: grid;
         grid-template: repeat(3, auto) / 100%;
 
-        .item-block1__text {
+        .block-item1__text {
           color: #324a5938;
         }
 
-        .item-block1__element {
+        .block-item1__element {
           display: grid;
           grid-template: 1fr / 14px 1fr;
           gap: 11px;
@@ -112,13 +112,13 @@
         }
       }
 
-      .item__block2 {
+      .block__item2 {
         height: 100%;
         display: grid;
         grid-template: repeat(3, auto) / 1fr;
         justify-items: end;
 
-        .item-block2__text {
+        .block-item2__text {
           font-size: 16px;
           font-weight: 500;
           line-height: 24px;
@@ -126,7 +126,7 @@
           color: rgba(50, 74, 89, 0.6);
         }
 
-        .item-block2__button {
+        .block-item2__button {
           display: grid;
           grid-area: 2 / 1 / 4 / 2;
           height: 32px;

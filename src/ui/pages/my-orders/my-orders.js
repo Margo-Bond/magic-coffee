@@ -1,4 +1,15 @@
+import { createHeaderBlack } from "@/ui/components/header/header.js";
+import { getOrders } from "../../../../Services/Get.js";
+
 export default function renderMyOrdersPage(main) {
+  // Сравниваем время и разбиваем заказы по вкладкам
+  /*
+  const date = new Date();
+  const timeZone = "Europe/London";
+  const localDate = date.toLocaleString("en-US", { timeZone });
+  console.log(localDate);
+  */
+
   main.innerHTML = `
   <main class="myOrders">
 
@@ -41,28 +52,6 @@ export default function renderMyOrdersPage(main) {
         </div>
 
         <div class="myOrders__table2 invisible">
-
-          <div class="myOrders-table2__item">
-              <div class="item__block1">
-                <p class="item-block1__text">24 June | 12:30 PM</p>
-
-                <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
-                  <p class="item-block1__element-text">Americano</p>
-                </div>
-
-                <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./src/assets/images/chosen-store.svg">
-                  <p class="item-block1__element-text">Bradford BD1 1PR</p>
-                </div>
-              </div>
-
-              <div class="item__block2">
-               <h2 class="item-block2__text">BYN 3.00</h2>
-               <button class="item-block2__button">Order</button>
-              </div>
-
-          </div>
 
         </div>
 
@@ -111,4 +100,80 @@ export default function renderMyOrdersPage(main) {
     history.classList.add("border");
     onGoing.classList.remove("border");
   });
+
+  //Логика для вкладки History
+  // Получаем данные on-going из orders в FB
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  getOrders(userData.uid).then((orders) => {
+    //const historyOrders = JSON.parse(localStorage.getItem("order"));
+
+    //for (let key in historyOrders) {
+    for (let key in orders) {
+      /*
+      const orderDate = historyOrders[key].order_date;
+      const orderTime = historyOrders[key].order_time;
+      const coffeeType = historyOrders[key].coffee_type;
+      const cafeAddress = historyOrders[key].cafe_address;
+      const orderPrice = historyOrders[key].order_price;
+      */
+
+      const now = Date.parse(new Date());
+      const date = new Date(Date.parse(orders.order_time));
+      const dateX = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+      console.log(dateX); //Если эта дата больше 0, тогда переносим в историю, а если меньше, то в on going
+
+      const month = date.toLocaleString("default", { month: "long" });
+      const day = date.getDate();
+
+      const orderDate = `${day} ${month}`;
+      const orderTime = orders[key].order_time;
+      const coffeeType = orders[key].coffee_type;
+      const cafeAddress = orders[key].cafe_address;
+      const orderPrice = orders[key].order_price;
+
+      if (
+        orderDate === undefined ||
+        orderTime === undefined ||
+        coffeeType === undefined ||
+        cafeAddress === undefined ||
+        orderPrice === undefined
+      ) {
+        return;
+      }
+
+      const orderContainer = document.createElement("div");
+      orderContainer.classList.add("myOrders-table2__block");
+      orderContainer.innerHTML = `
+              <div class="block__item1">
+                <p class="block-item1__text">${orderDate} | ${orderTime}</p>
+
+                <div class="block-item1__element">
+                  <img class="block-item1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
+                  <p class="block-item1__element-text">${coffeeType}</p>
+                </div>
+
+                <div class="block-item1__element">
+                  <img class="block-item1__element-img" src="./src/assets/images/chosen-store.svg">
+                  <p class="block-item1__element-text">${cafeAddress}</p>
+                </div>
+              </div>
+
+              <div class="block__item2">
+                <h2 class="block-item2__text">BYN ${orderPrice}</h2>
+                <button class="block-item2__button">Order</button>
+              </div>
+    `;
+
+      historyTab.prepend(orderContainer);
+    }
+  });
+
+  // Повторный заказ при нажатии на кнопку Order
+  /*
+    const orderBtn = document.querySelector(".block-item2__button");
+    orderBtn.addEventListener("click", (e) => {
+      console.log(historyOrders[key]);
+    });
+    */
 }

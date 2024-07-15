@@ -96,6 +96,9 @@ export default function renderRegistrationPage(main) {
       return true;
     } else {
       profileName.style.border = "1px solid red";
+      alert(
+        "Your name can contain upper and lower case letters as well as up to 2 spaces"
+      );
       return false;
     }
   }
@@ -109,17 +112,23 @@ export default function renderRegistrationPage(main) {
       return true;
     } else {
       number.style.border = "1px solid red";
+      alert(
+        "Your phone number should start with 0 or +. Phone number cannot be lobger than 14 symbols"
+      );
       return false;
     }
   }
 
   function validateEmail() {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,8}$/;
     if (emailRegex.test(email.value)) {
       email.style.border = "none";
       return true;
     } else {
       email.style.border = "1px solid red";
+      alert(
+        "Your email can consist of upper and lower case letters, numbers, dots, underscore or dash. It must contain @ symbol"
+      );
       return false;
     }
   }
@@ -132,6 +141,9 @@ export default function renderRegistrationPage(main) {
       return true;
     } else {
       password.style.border = "1px solid red";
+      alert(
+        "Password must be between 5 and 25 symbols long. It MUST contain at least 1 uppercase letter, 1 lowercase letter, 1 number and one symbol"
+      );
       return false;
     }
   }
