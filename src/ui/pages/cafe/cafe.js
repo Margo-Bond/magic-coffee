@@ -19,7 +19,9 @@ export default async function renderCafePage(main) {
         <div class="cafe__box-element-wrap">
 
           <div class="cafe__box-element">
-            ${Array(3).fill(`
+            ${Array(3)
+              .fill(
+                `
               <div class="cafe__box-button">
               <div class="cafe__box-button-icon">${Cafe}</div>
     
@@ -27,7 +29,9 @@ export default async function renderCafePage(main) {
     
               <div class="cafe__box-button-arrow">${Forward}</div>
             </div>
-            `).join('')}
+            `
+              )
+              .join("")}
           </div>
         </div>
       </div>
@@ -159,6 +163,7 @@ export default async function renderCafePage(main) {
       const orderItem = { cafe_address: btnTitleValue };
       order[orderKey] = orderItem;
       localStorage.setItem("order", JSON.stringify(order));
+      localStorage.setItem("cafe_address", btnTitleValue);
 
       window.location.href = "/menu";
     });

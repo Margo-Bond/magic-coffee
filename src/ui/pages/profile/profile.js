@@ -1,5 +1,6 @@
 import handleSignOut from "../../../../Services/signOut.js";
 import updateUserData from "../../../../Services/updateUserData.js";
+import getUserInfo from "../../../../Services/Get.js";
 import Back from "@/assets/images/geometric-icons/back.svg";
 import LogOut from "@/assets/images/geometric-icons/logout.svg";
 import ProfileName from "@/assets/images/user-icons/profile-name.svg";
@@ -11,12 +12,14 @@ import QrCode from "@/assets/images/qr-code.svg";
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
-  let address = localStorage.getItem("cafe_address");
-  let userName = localData.name;
-  let userPhone = localData.phoneNumber;
-  let userEmail = localData.email;
 
-  main.innerHTML = `
+  getUserInfo(localData.uid).then((userData) => {
+    let address = userData.location;
+    let userName = userData.name;
+    let userPhone = userData.phone;
+    let userEmail = userData.email;
+
+    main.innerHTML = `
     <div class="profile">
       <div class="profile__main">
         <div class="profile__arrowBack">${Back}</div>
@@ -89,88 +92,101 @@ export default function renderProfilePage(main) {
           </div>
         </div>`;
 
-  // Back button
-  const back = document.querySelector(".profile__arrowBack");
-  back.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "/order-confirmed";
-  });
+    // Back button
+    const back = document.querySelector(".profile__arrowBack");
+    back.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.href = "/order-confirmed";
+    });
 
-  // Log Out button
-  const logOut = document.querySelector(".profile__logOut");
-  logOut.addEventListener("click", (e) => {
-    e.preventDefault();
-    handleSignOut();
-    window.location.href = "/authorization";
-  });
+    // Log Out button
+    const logOut = document.querySelector(".profile__logOut");
+    logOut.addEventListener("click", (e) => {
+      e.preventDefault();
+      handleSignOut();
+      localStorage.clear();
+      window.location.href = "/authorization";
+    });
 
-  // MAIN LOGIC HERE
-  const classes = document.querySelectorAll(".item-block__variable");
-  const buttons = document.querySelectorAll(".profile-table__item-button");
+    // MAIN LOGIC HERE
+    const classes = document.querySelectorAll(".item-block__variable");
+    const buttons = document.querySelectorAll(".profile-table__item-button");
 
-  function validateName(input) {
-    const nameRegex = /^[a-zA-Z]{2,30}(?: [a-zA-Z]{2,30})?$/;
-    if (nameRegex.test(input.value)) {
-      input.style.border = "none";
-      return true;
-    } else {
-      input.style.border = "1px solid red";
-      return false;
+    function validateName(input) {
+      const nameRegex = /^[a-zA-Z]{2,30}(?: [a-zA-Z]{2,30})?$/;
+      if (nameRegex.test(input.value)) {
+        input.style.border = "none";
+        return true;
+      } else {
+        input.style.border = "1px solid red";
+        return false;
+      }
     }
-  }
 
-  function validateNumber(input) {
-    const numberRegex =
-      /^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\d{2,3}) ?)){5,12}\d$/;
-    if (numberRegex.test(input.value)) {
-      input.style.border = "none";
-      return true;
-    } else {
-      input.style.border = "1px solid red";
-      return false;
+    function validateNumber(input) {
+      const numberRegex =
+        /^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\d{2,3}) ?)){5,12}\d$/;
+      if (numberRegex.test(input.value)) {
+        input.style.border = "none";
+        return true;
+      } else {
+        input.style.border = "1px solid red";
+        return false;
+      }
     }
-  }
 
-  function validateEmail(input) {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (emailRegex.test(input.value)) {
-      input.style.border = "none";
-      return true;
-    } else {
-      input.style.border = "1px solid red";
-      return false;
+    function validateEmail(input) {
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (emailRegex.test(input.value)) {
+        input.style.border = "none";
+        return true;
+      } else {
+        input.style.border = "1px solid red";
+        return false;
+      }
     }
-  }
 
-  function selectValidator(input) {
-    if (input.getAttribute("type") === "text") {
-      validateName(input);
-    } else if (input.getAttribute("type") === "number") {
-      validateNumber(input);
-    } else {
-      validateEmail(input);
+    function selectValidator(input) {
+      if (input.getAttribute("type") === "text") {
+        return validateName(input);
+      } else if (input.getAttribute("type") === "number") {
+        return validateNumber(input);
+      } else {
+        return validateEmail(input);
+      }
     }
-  }
 
-  function editLocalData(input) {
-    if (input.getAttribute("type") === "text") {
-      localData.name = input.value;
-    } else if (input.getAttribute("type") === "number") {
-      localData.phoneNumber = input.value;
-    } else {
-      localData.email = input.value;
+    function editLocalData(input) {
+      if (input.getAttribute("type") === "text") {
+        localData.name = input.value;
+      } else if (input.getAttribute("type") === "number") {
+        localData.phoneNumber = input.value;
+      } else {
+        localData.email = input.value;
+      }
+      localStorage.setItem("user", JSON.stringify(localData));
     }
-    localStorage.setItem("user", JSON.stringify(localData));
-  }
 
-  //Перебираем кнопки и отслеживаем, которую нажимаем
-  for (let button of buttons) {
-    button.addEventListener("click", (e) => {
+    function setNewData(input) {
+      if (input.getAttribute("type") === "text") {
+        userName = input.value;
+      } else if (input.getAttribute("type") === "number") {
+        userPhone = input.value;
+      } else {
+        userEmail = input.value;
+      }
+    }
+
+    function updateUserProfile() {
+      const newData = JSON.parse(localStorage.getItem("user"));
+      updateUserData(newData.uid, userName, userPhone, userEmail, address);
+    }
+
+    function handleEditButtonClick(e) {
       const currentBtn = e.target;
       let id = currentBtn.getAttribute("id");
       currentBtn.classList.add("change-icon");
 
-      //Прописываем логику для меню location
       if (id === "location") {
         const menu = document.querySelector(".profile__container");
         menu.classList.remove("invisible");
@@ -184,7 +200,9 @@ export default function renderProfilePage(main) {
               const location = document.querySelector(".location");
               location.textContent = locationBtn.value;
               localStorage.setItem("cafe_address", locationBtn.value);
+              address = locationBtn.value;
               menu.classList.add("invisible");
+              updateUserProfile();
             });
           } else {
             locationBtn.addEventListener("click", (e) => {
@@ -194,7 +212,6 @@ export default function renderProfilePage(main) {
             });
           }
         }
-        //Прописываем логику для остальных кнопок
       } else {
         for (let item of classes) {
           if (item.classList.contains(id)) {
@@ -204,36 +221,47 @@ export default function renderProfilePage(main) {
             item.classList.add("invisible");
             input.classList.remove("invisible");
 
-            currentBtn.addEventListener("click", (e) => {
-              e.preventDefault();
-              currentBtn.classList.remove("change-icon");
-              if (input) {
-                if (input.value === "") {
-                  item.classList.remove("invisible");
-                  input.classList.add("invisible");
-                } else {
-                  //if (selectValidator(input)) {
-
+            function handleSave() {
+              if (input.value === "") {
+                item.classList.remove("invisible");
+                input.classList.add("invisible");
+              } else {
+                if (selectValidator(input)) {
                   item.classList.remove("invisible");
                   item.textContent = input.value;
                   editLocalData(input);
+                  setNewData(input);
                   input.classList.add("invisible");
-                  //}
+                  updateUserProfile();
                 }
+              }
+            }
+
+            currentBtn.addEventListener("click", (e) => {
+              e.preventDefault();
+              handleSave();
+              currentBtn.classList.remove("change-icon");
+            });
+
+            input.addEventListener("blur", (e) => {
+              handleSave();
+              currentBtn.classList.remove("change-icon");
+            });
+
+            input.addEventListener("keypress", (e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSave();
+                currentBtn.classList.remove("change-icon");
               }
             });
           }
         }
       }
-      const newData = JSON.parse(localStorage.getItem("user"));
+    }
 
-      updateUserData(
-        newData.uid,
-        newData.name,
-        newData.phoneNumber,
-        newData.email,
-        localStorage.getItem("cafe_address")
-      );
+    buttons.forEach((button) => {
+      button.addEventListener("click", handleEditButtonClick);
     });
-  }
+  });
 }
