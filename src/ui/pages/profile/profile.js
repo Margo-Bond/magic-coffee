@@ -12,11 +12,15 @@ import QrCode from "@/assets/images/qr-code.svg";
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
+  const localAddress = JSON.parse(localStorage.getItem("order"));
+  let localOrder = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(localOrder);
+  let lastKey = keys[keys.length - 1];
 
   getUserInfo(localData.uid).then((userData) => {
-    let address = userData.location;
+    let address = localOrder[lastKey].cafe_address;
     let userName = userData.name;
-    let userPhone = userData.phone;
+    let userPhone = userData.phoneNumber;
     let userEmail = userData.email;
 
     main.innerHTML = `
