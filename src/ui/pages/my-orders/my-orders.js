@@ -18,30 +18,7 @@ export default function renderMyOrdersPage(main) {
           </div>
         </div>
           
-        <div class="myOrders__table1">
-
-          <div class="myOrders-table1__item">
-              <div class="item__block1">
-                <p class="item-block1__text">24 June | 12:30 | by 18:10</p>
-
-                <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
-                  <p class="item-block1__element-text">Americano</p>
-                </div>
-
-                <div class="item-block1__element">
-                  <img class="item-block1__element-img" src="./src/assets/images/chosen-store.svg">
-                  <p class="item-block1__element-text">Bradford BD1 1PR</p>
-                </div>
-              </div>
-
-              <div class="item__block2">
-               <h2 class="item-block2__text">BYN 3.00</h2>
-              </div>
-
-          </div>
-
-        </div>
+        <div class="myOrders__table1"></div>
 
         <div class="myOrders__table2 invisible"></div>
 
@@ -68,7 +45,7 @@ export default function renderMyOrdersPage(main) {
   );
 
   //Кнопка On Going
-  onGoing.addEventListener("click", (e) => {
+  onGoing.addEventListener("click", () => {
     historyTab.classList.add("invisible");
     onGoingTab.classList.remove("invisible");
 
@@ -80,7 +57,7 @@ export default function renderMyOrdersPage(main) {
   });
 
   //Кнопка History
-  history.addEventListener("click", (e) => {
+  history.addEventListener("click", () => {
     onGoingTab.classList.add("invisible");
     historyTab.classList.remove("invisible");
 
@@ -91,12 +68,57 @@ export default function renderMyOrdersPage(main) {
     onGoing.classList.remove("border");
   });
 
-  //Логика для вкладки History
-  // Получаем данные on-going из orders в FB
-  const userData = JSON.parse(localStorage.getItem("user"));
+  //Логика для вкладки on-going
+  // Получаем данные on-going из orders в LS
+  const newOrders = JSON.parse(localStorage.getItem("order"));
+  //console.log(newOrders);
 
+  for (let list in newOrders) {
+    const newOrderDate = newOrders[item].order_date;
+    const newOrderTime = newOrders[item].order_dateTime;
+    const newOrderReadyTime = newOrders[list].order_time;
+    const newCoffeeType = newOrders[list].coffee_type;
+    const newCafeAddress = newOrders[list].cafe_address;
+    const newOrderPrice = newOrders[list].order_price;
+
+    if (
+      //newOrderDate === undefined ||
+      //newOrderTime === undefined ||
+      newOrderReadyTime === undefined ||
+      newCoffeeType === undefined ||
+      newCafeAddress === undefined ||
+      newOrderPrice === undefined
+    ) {
+      return;
+    }
+
+    const newOrderContainer = document.createElement("div");
+    newOrderContainer.classList.add("myOrders-table1__item");
+    newOrderContainer.innerHTML = `<div class="item__block1">
+    <p class="item-block1__text">${newOrderDate} | ${newOrderTime} | by ${newOrderReadyTime}</p>
+
+    <div class="item-block1__element">
+    <img class="item-block1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
+    <p class="item-block1__element-text">${newCoffeeType}</p>
+    </div>
+
+    <div class="item-block1__element">
+    <img class="item-block1__element-img" src="./src/assets/images/chosen-store.svg">
+    <p class="item-block1__element-text">${newCafeAddress}</p>
+    </div>
+    </div>
+
+    <div class="item__block2">
+    <h2 class="item-block2__text">BYN ${newOrderPrice}</h2>
+    </div> `;
+
+    onGoingTab.prepend(newOrderContainer);
+  }
+
+  const userData = JSON.parse(localStorage.getItem("user"));
   getOrders(userData.uid)
     .then((orders) => {
+      console.log(orders);
       //const historyOrders = JSON.parse(localStorage.getItem("order"));
 
       //for (let key in historyOrders) {
@@ -109,6 +131,7 @@ export default function renderMyOrdersPage(main) {
       const orderPrice = historyOrders[key].order_price;
       */
 
+        /*
         const now = new Date().getTime();
         console.log(now);
         const date = orders[key].order_time;
@@ -118,6 +141,7 @@ export default function renderMyOrdersPage(main) {
         //if (dateDifference < 0) {
         //Если эта дата больше 0, тогда переносим в историю, а если меньше, то в on going
         //}
+        */
 
         const month = date.toLocaleString("default", { month: "long" });
         const day = date.getDate();
@@ -138,9 +162,9 @@ export default function renderMyOrdersPage(main) {
           return;
         }
 
-        const orderContainer = document.createElement("div");
-        orderContainer.classList.add("myOrders-table2__block");
-        orderContainer.innerHTML = `
+        const historyOrderContainer = document.createElement("div");
+        historyOrderContainer.classList.add("myOrders-table2__block");
+        historyOrderContainer.innerHTML = `
               <div class="block__item1">
                 <p class="block-item1__text">${orderDate} | ${orderTime}</p>
 
@@ -161,7 +185,7 @@ export default function renderMyOrdersPage(main) {
               </div>
     `;
 
-        historyTab.prepend(orderContainer);
+        historyTab.prepend(historyOrderContainer);
       }
     })
     .catch((error) => {
