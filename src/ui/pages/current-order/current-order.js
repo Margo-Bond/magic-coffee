@@ -5,7 +5,7 @@ import {
   cafeTwo,
   cafeThree,
 } from "../../../../vars.js";
-import { database, set, ref, get, update } from "../../../../main.js";
+import { database, set, ref, get, push, update } from "../../../../main.js";
 import BackSvg from "@/assets/images/geometric-icons/back.svg";
 import { getCoffeeImage } from "../../../../Services/Get.js";
 
@@ -156,7 +156,8 @@ export default function renderCurrentOrderPage(main) {
         console.log("Order removed as the specified time has already passed.");
       }
     } else {
-      setDeletionTimer(30 * 60 * 1000);
+      //3 СЕКУНДЫ
+      setDeletionTimer(3 * 60 * 1000);
     }
   }
 
@@ -164,19 +165,25 @@ export default function renderCurrentOrderPage(main) {
     const now = new Date();
     const historyOrderRef = ref(database, `users/${userUid}/orders/history`);
 
-    get(historyOrderRef).then((snapshot) => {
-      const ordersHistory = snapshot.val() || {};
-      const newOrderKey = `${now.getTime()}`;
-      const updatedOrders = { ...ordersHistory, [newOrderKey]: order };
+    const newOrderWithTime = {
+      ...order,
+      order_time: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}-${String(now.getDate()).padStart(2, "0")} ${String(
+        now.getHours()
+      ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
+        now.getSeconds()
+      ).padStart(2, "0")}`,
+    };
 
-      update(historyOrderRef, updatedOrders)
-        .then(() => {
-          console.log("Order moved to history successfully.");
-        })
-        .catch((error) => {
-          console.error("Error moving order to history: ", error);
-        });
-    });
+    push(historyOrderRef, newOrderWithTime)
+      .then(() => {
+        console.log("Order moved to history successfully.");
+      })
+      .catch((error) => {
+        console.error("Error moving order to history: ", error);
+      });
   }
 
   const user = JSON.parse(localStorage.getItem("user"));

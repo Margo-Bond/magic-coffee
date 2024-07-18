@@ -19,6 +19,7 @@ export default function renderProfilePage(main) {
     let userPhone = userData.phone;
     let userEmail = userData.email;
 
+    console.log(userPhone);
     main.innerHTML = `
     <div class="profile">
       <div class="profile__main">
@@ -161,8 +162,9 @@ export default function renderProfilePage(main) {
     function editLocalData(input) {
       if (input.getAttribute("type") === "text") {
         localData.name = input.value;
+        console.log(input.value);
       } else if (input.getAttribute("type") === "number") {
-        localData.phoneNumber = input.value;
+        localData.phone = input.value;
       } else {
         localData.email = input.value;
       }
@@ -174,6 +176,7 @@ export default function renderProfilePage(main) {
         userName = input.value;
       } else if (input.getAttribute("type") === "number") {
         userPhone = input.value;
+        console.log(input.value);
       } else {
         userEmail = input.value;
       }

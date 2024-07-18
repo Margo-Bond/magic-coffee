@@ -28,7 +28,7 @@ export default async function authenticateUser(email, password) {
       JSON.stringify({
         uid: user.uid,
         name: userData.name,
-        phoneNumber: userData.phoneNumber,
+        phone: userData.phone,
         email: user.email,
         cart: userData.cart,
         currentOrders: userData.currentOrders,
