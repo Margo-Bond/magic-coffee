@@ -71,11 +71,15 @@ export default function renderMyOrdersPage(main) {
   //Логика для вкладки on-going
   // Получаем данные on-going из orders в LS
   const newOrders = JSON.parse(localStorage.getItem("order"));
-  //console.log(newOrders);
+  console.log(newOrders);
 
+  for (let x in newOrders) {
+    console.log(newOrders[x]);
+  }
+  /*
   for (let list in newOrders) {
-    const newOrderDate = newOrders[item].order_date;
-    const newOrderTime = newOrders[item].order_dateTime;
+    //const newOrderDate = newOrders[item].order_date;
+    //const newOrderTime = newOrders[item].order_dateTime;
     const newOrderReadyTime = newOrders[list].order_time;
     const newCoffeeType = newOrders[list].coffee_type;
     const newCafeAddress = newOrders[list].cafe_address;
@@ -114,34 +118,15 @@ export default function renderMyOrdersPage(main) {
 
     onGoingTab.prepend(newOrderContainer);
   }
+    */
 
+  /*
   const userData = JSON.parse(localStorage.getItem("user"));
   getOrders(userData.uid)
     .then((orders) => {
       console.log(orders);
-      //const historyOrders = JSON.parse(localStorage.getItem("order"));
 
-      //for (let key in historyOrders) {
       for (let key in orders) {
-        /*
-      const orderDate = historyOrders[key].order_date;
-      const orderTime = historyOrders[key].order_time;
-      const coffeeType = historyOrders[key].coffee_type;
-      const cafeAddress = historyOrders[key].cafe_address;
-      const orderPrice = historyOrders[key].order_price;
-      */
-
-        /*
-        const now = new Date().getTime();
-        console.log(now);
-        const date = orders[key].order_time;
-        console.log(date);
-        const dateDifference = Math.floor(date - now); // / (1000 * 60 * 60 * 24));
-        console.log(dateDifference);
-        //if (dateDifference < 0) {
-        //Если эта дата больше 0, тогда переносим в историю, а если меньше, то в on going
-        //}
-        */
 
         const month = date.toLocaleString("default", { month: "long" });
         const day = date.getDate();
@@ -186,18 +171,18 @@ export default function renderMyOrdersPage(main) {
     `;
 
         historyTab.prepend(historyOrderContainer);
+
+        // Повторный заказ при нажатии на кнопку Order
+
+        /*
+  const orderBtn = document.querySelector(".block-item2__button");
+  orderBtn.addEventListener("click", (e) => {
+    console.log(orders[key]);
+  });
       }
     })
     .catch((error) => {
       console.log("An error occured while loading data from server: " + error);
     });
-
-  // Повторный заказ при нажатии на кнопку Order
-
-  /*
-  const orderBtn = document.querySelector(".block-item2__button");
-  orderBtn.addEventListener("click", (e) => {
-    console.log(orders[key]);
-  });
-  */
+    */
 }
