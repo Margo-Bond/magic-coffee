@@ -276,7 +276,6 @@ input:checked+.slider:before {
 }
 
 .order-option-footer {
-  //position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -285,7 +284,7 @@ input:checked+.slider:before {
   gap: var(--space-m);
   left: 0;
   right: 0;
-  bottom: 30px;
+  margin-bottom: 30px;
   width: calc(100% - 2 * var(--space-xl));
   box-sizing: border-box;
 
