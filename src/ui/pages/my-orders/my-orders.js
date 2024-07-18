@@ -71,19 +71,16 @@ export default function renderMyOrdersPage(main) {
   //Логика для вкладки on-going
   // Получаем данные on-going из orders в LS
   const newOrders = JSON.parse(localStorage.getItem("order"));
-  console.log(newOrders);
 
   for (let x in newOrders) {
     console.log(newOrders[x]);
-  }
-  /*
-  for (let list in newOrders) {
-    //const newOrderDate = newOrders[item].order_date;
-    //const newOrderTime = newOrders[item].order_dateTime;
-    const newOrderReadyTime = newOrders[list].order_time;
-    const newCoffeeType = newOrders[list].coffee_type;
-    const newCafeAddress = newOrders[list].cafe_address;
-    const newOrderPrice = newOrders[list].order_price;
+
+    const newOrderDate = newOrders[x].order_date;
+    const newOrderTime = newOrders[x].order_dateTime;
+    const newOrderReadyTime = newOrders[x].order_time;
+    const newCoffeeType = newOrders[x].coffee_type;
+    const newCafeAddress = newOrders[x].cafe_address;
+    const newOrderPrice = newOrders[x].order_price;
 
     if (
       //newOrderDate === undefined ||
@@ -118,38 +115,34 @@ export default function renderMyOrdersPage(main) {
 
     onGoingTab.prepend(newOrderContainer);
   }
-    */
 
-  /*
   const userData = JSON.parse(localStorage.getItem("user"));
-  getOrders(userData.uid)
-    .then((orders) => {
-      console.log(orders);
+  getOrders(userData.uid).then((orders) => {
+    console.log(orders);
 
-      for (let key in orders) {
+    for (let key in orders) {
+      const month = date.toLocaleString("default", { month: "long" });
+      const day = date.getDate();
 
-        const month = date.toLocaleString("default", { month: "long" });
-        const day = date.getDate();
+      const orderDate = `${day} ${month}`;
+      const orderTime = orders[key].order_time;
+      const coffeeType = orders[key].coffee_type;
+      const cafeAddress = orders[key].cafe_address;
+      const orderPrice = orders[key].order_price;
 
-        const orderDate = `${day} ${month}`;
-        const orderTime = orders[key].order_time;
-        const coffeeType = orders[key].coffee_type;
-        const cafeAddress = orders[key].cafe_address;
-        const orderPrice = orders[key].order_price;
+      if (
+        orderDate === undefined ||
+        orderTime === undefined ||
+        coffeeType === undefined ||
+        cafeAddress === undefined ||
+        orderPrice === undefined
+      ) {
+        return;
+      }
 
-        if (
-          orderDate === undefined ||
-          orderTime === undefined ||
-          coffeeType === undefined ||
-          cafeAddress === undefined ||
-          orderPrice === undefined
-        ) {
-          return;
-        }
-
-        const historyOrderContainer = document.createElement("div");
-        historyOrderContainer.classList.add("myOrders-table2__block");
-        historyOrderContainer.innerHTML = `
+      const historyOrderContainer = document.createElement("div");
+      historyOrderContainer.classList.add("myOrders-table2__block");
+      historyOrderContainer.innerHTML = `
               <div class="block__item1">
                 <p class="block-item1__text">${orderDate} | ${orderTime}</p>
 
@@ -170,17 +163,18 @@ export default function renderMyOrdersPage(main) {
               </div>
     `;
 
-        historyTab.prepend(historyOrderContainer);
+      historyTab.prepend(historyOrderContainer);
 
-        // Повторный заказ при нажатии на кнопку Order
+      // Повторный заказ при нажатии на кнопку Order
 
-        /*
+      /*
   const orderBtn = document.querySelector(".block-item2__button");
   orderBtn.addEventListener("click", (e) => {
     console.log(orders[key]);
+  }); */
+    }
   });
-      }
-    })
+  /*
     .catch((error) => {
       console.log("An error occured while loading data from server: " + error);
     });
