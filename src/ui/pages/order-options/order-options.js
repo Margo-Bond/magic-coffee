@@ -143,13 +143,20 @@ export default async function renderOrderOptionPage(main) {
   const buttonPlus = document.getElementById("buttonCountPlus");
   const buttonMinus = document.getElementById("buttonCountMinus");
   const totalAmount = document.getElementById("multipliedValue");
-  let count = 1;
+  const buttonWrap = document.querySelector('.order-optionr__item-quantity');
   const minCount = 1;
+
+  // Получение сохраненного кол-ва кофе из localStorage или установка по умолчанию 1
+  let count = parseInt(order[lastKey].cup_quantity) || 1;
+  counter.textContent = count;
 
   function updateCount(newCount) {
     count = newCount;
     counter.textContent = count;
     calculateTotalAmount(cafeKey, coffeeKey, count);
+    order[lastKey].cup_quantity = count;
+    localStorage.setItem("order", JSON.stringify(order));
+    buttonWrap.classList.add("active");
   }
 
   async function calculateTotalAmount(cafeKey, coffeeKey, count) {
@@ -157,34 +164,31 @@ export default async function renderOrderOptionPage(main) {
 
     if (price) {
       totalAmount.textContent = (count * price).toFixed(2);
-
       order[lastKey].cup_quantity = count.toString();
       order[lastKey].order_price = totalAmount.textContent;
       localStorage.setItem("order", JSON.stringify(order));
     } else {
-      console.error("Price is not a valid number:", price);
+      console.error("Цена не является допустимым числом:", price);
     }
-  }
-
-  const buttonWrap = document.querySelector('.order-optionr__item-quantity');
-  const getCupQuantity = order[lastKey].cup_quantity;
-  if (getCupQuantity) {
-    buttonWrap.classList.add("active");
-  } else {
-    buttonWrap.classList.remove("active");
   }
 
   buttonPlus.addEventListener("click", function () {
     updateCount(count + 1);
-    buttonWrap.classList.add("active");
   });
 
   buttonMinus.addEventListener("click", function () {
-    if (count > minCount) { updateCount(count - 1) };
-    buttonWrap.classList.add("active");
+    if (count > minCount) {
+      updateCount(count - 1);
+    }
   });
 
+  // Расчёт общей суммы на основе сохраненного значения счётчика при загрузке страницы
   calculateTotalAmount(cafeKey, coffeeKey, count);
+
+  // Установить класс "active" при загрузке страницы, если есть сохраненное значение
+  if (count > minCount) {
+    buttonWrap.classList.add("active");
+  }
 
   // Включение/выключение выделения кнопок coffee_ristretto и сохранение выделение при переходе на др страницу
   const buttons = document.querySelectorAll(".order-option__strength");
