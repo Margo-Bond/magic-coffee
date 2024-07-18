@@ -93,11 +93,13 @@ export default function renderProfilePage(main) {
         </div>`;
 
     // Back button
+    /*
     const back = document.querySelector(".profile__arrowBack");
     back.addEventListener("click", (e) => {
       e.preventDefault();
       window.location.href = "/order-confirmed";
     });
+    */
 
     // Log Out button
     const logOut = document.querySelector(".profile__logOut");
