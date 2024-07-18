@@ -20,6 +20,21 @@ export async function getUserData() {
   }
 }
 
+export default async function getUserInfo(userUid) {
+  return get(child(dbRef, `users/${userUid}`))
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val();
+      } else {
+        console.log("No data available");
+        return null;
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting user data from realtime Firebase:", error);
+    });
+}
+
 export async function getOrders(userUid) {
   return get(child(dbRef, `users/${userUid}/orders/on-going`))
     .then((snapshot) => {
