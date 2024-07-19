@@ -163,7 +163,6 @@ export default async function renderCafePage(main) {
       const orderItem = { cafe_address: btnTitleValue };
       order[orderKey] = orderItem;
       localStorage.setItem("order", JSON.stringify(order));
-      localStorage.setItem("cafe_address", btnTitleValue);
 
       window.location.href = "/menu";
     });

@@ -12,7 +12,6 @@ import QrCode from "@/assets/images/qr-code.svg";
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
-  const localAddress = JSON.parse(localStorage.getItem("order"));
   let localOrder = JSON.parse(localStorage.getItem("order")) || {};
   let keys = Object.keys(localOrder);
   let lastKey = keys[keys.length - 1];
@@ -20,7 +19,7 @@ export default function renderProfilePage(main) {
   getUserInfo(localData.uid).then((userData) => {
     let address = localOrder[lastKey].cafe_address;
     let userName = userData.name;
-    let userPhone = userData.phoneNumber;
+    let userPhone = userData.phone;
     let userEmail = userData.email;
 
     console.log(userPhone);
@@ -180,7 +179,6 @@ export default function renderProfilePage(main) {
         userName = input.value;
       } else if (input.getAttribute("type") === "number") {
         userPhone = input.value;
-        console.log(input.value);
       } else {
         userEmail = input.value;
       }

@@ -7,7 +7,7 @@ import {
 } from "../../../../vars.js";
 import { database, set, ref, get, push, update } from "../../../../main.js";
 import BackSvg from "@/assets/images/geometric-icons/back.svg";
-import { getCoffeeImage } from "../../../../Services/Get.js";
+import { getCoffeeImage, getOrders } from "../../../../Services/Get.js";
 
 export default function renderCurrentOrderPage(main) {
   main.innerHTML = `
@@ -106,34 +106,29 @@ export default function renderCurrentOrderPage(main) {
 
   displayOrder(order);
 
-  function sendOrderToDatabase(order, userUid) {
+  async function sendOrderToDatabase(order, userUid) {
     const now = new Date();
     const orderTime = `${now.getFullYear()}-${String(
       now.getMonth() + 1
-    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(
+    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} | ${String(
       now.getHours()
-    ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
-      now.getSeconds()
-    ).padStart(2, "0")}`;
+    ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 
-    const orderRef = ref(database, `users/${userUid}/orders/on-going`);
+    let orderRef = await getOrders(userUid);
+    console.log(orderRef);
 
-    const orderWithTime = {
-      ...order,
-      order_time: orderTime,
-    };
+    orderRef.forEach((key, index) => {
+      set(key[index])
+        .then(() => {
+          console.log("Order saved successfully.");
+          alert("Order has been placed successfully!");
+        })
+        .catch((error) => {
+          console.error("Error saving order: ", error);
+          alert("There was an error placing your order. Please try again.");
+        });
+    });
 
-    set(orderRef, orderWithTime)
-      .then(() => {
-        console.log("Order saved successfully.");
-        alert("Order has been placed successfully!");
-      })
-      .catch((error) => {
-        console.error("Error saving order: ", error);
-        alert("There was an error placing your order. Please try again.");
-      });
-
-    const orderTimeStored = localStorage.getItem("order_time");
     const setDeletionTimer = (delay) => {
       setTimeout(() => {
         moveOrderToHistory(order, userUid);
@@ -144,8 +139,8 @@ export default function renderCurrentOrderPage(main) {
       console.log(delay);
     };
 
-    if (orderTimeStored) {
-      const deletionTime = new Date(orderTimeStored).getTime();
+    if (orderWithTime.order_time) {
+      const deletionTime = new Date(orderWithTime.order_time).getTime();
       const currentTime = now.getTime();
       const delay = deletionTime - currentTime;
       if (delay > 0) {
@@ -156,8 +151,8 @@ export default function renderCurrentOrderPage(main) {
         console.log("Order removed as the specified time has already passed.");
       }
     } else {
-      //3 СЕКУНДЫ
-      setDeletionTimer(3 * 60 * 1000);
+      // 3 СЕКУНДЫ
+      setDeletionTimer(30 * 60 * 1000);
     }
   }
 
@@ -193,10 +188,13 @@ export default function renderCurrentOrderPage(main) {
     window.location.href = "/designer";
   });
 
-  nextBtn.addEventListener("click", () => {
+  nextBtn.addEventListener("click", (e) => {
     if (userUid) {
-      sendOrderToDatabase(order, userUid);
-      window.location.href = "/order-confirmed";
+      e.preventDefault();
+      const orderItem = order[lastKey];
+      console.log(orderItem);
+      sendOrderToDatabase(orderItem, userUid);
+      //window.location.href = "/order-confirmed";
     } else {
       alert("User is not authenticated.");
     }

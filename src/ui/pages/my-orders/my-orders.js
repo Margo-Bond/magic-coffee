@@ -85,7 +85,7 @@ export default function renderMyOrdersPage(main) {
     if (
       //newOrderDate === undefined ||
       //newOrderTime === undefined ||
-      newOrderReadyTime === undefined ||
+      //newOrderReadyTime === undefined ||
       newCoffeeType === undefined ||
       newCafeAddress === undefined ||
       newOrderPrice === undefined
