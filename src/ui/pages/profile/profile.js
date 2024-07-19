@@ -8,13 +8,14 @@ import ProfilePhone from "@/assets/images/user-icons/profile-phone.svg";
 import ProfileEmail from "@/assets/images/user-icons/profile-email.svg";
 import ProfileStore from "@/assets/images/user-icons/profile-store.svg";
 import QrCode from "@/assets/images/qr-code.svg";
+import { order, lastKey } from "../../../../vars.js";
 
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
 
   getUserInfo(localData.uid).then((userData) => {
-    let address = userData.location;
+    let address = order[lastKey].cafe_address;
     let userName = userData.name;
     let userPhone = userData.phone;
     let userEmail = userData.email;

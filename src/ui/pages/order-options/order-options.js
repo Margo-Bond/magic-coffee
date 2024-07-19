@@ -8,7 +8,6 @@ import CupLarge from "@/assets/images/coffee-icons/cup-450.svg";
 import { getCoffeeType, getPrice } from "../../../../Services/Get.js";
 
 export default async function renderOrderOptionPage(main) {
-
   main.innerHTML = `
     <div class="order-option">
       <div class="order-option__main">
@@ -105,8 +104,12 @@ export default async function renderOrderOptionPage(main) {
   const coffeeImage = document.getElementById("coffeeImage");
   const coffeeName = document.querySelector(".coffee");
 
-  back.addEventListener("click", () => { window.location.href = "/menu" });
-  cart.addEventListener("click", () => { window.location.href = "/current-order" });
+  back.addEventListener("click", () => {
+    window.location.href = "/menu";
+  });
+  cart.addEventListener("click", () => {
+    window.location.href = "/current-order";
+  });
 
   let order = JSON.parse(localStorage.getItem("order")) || {};
   let keys = Object.keys(order);
@@ -116,7 +119,7 @@ export default async function renderOrderOptionPage(main) {
   const cafeAddress = order[lastKey].cafe_address;
   const coffeeType = order[lastKey].coffee_type;
 
-  const coffeeKey = coffeeType.toLowerCase().replace(/\s+/g, '_');
+  const coffeeKey = coffeeType.toLowerCase().replace(/\s+/g, "_");
 
   let cafeKey = null;
 
@@ -133,7 +136,6 @@ export default async function renderOrderOptionPage(main) {
     coffeeImage.src = data.image_url;
     coffeeImage.alt = data.coffee_type;
     coffeeName.textContent = data.coffee_type;
-
   } catch (error) {
     console.error("Error fetching coffee data:", error);
   }
@@ -143,13 +145,20 @@ export default async function renderOrderOptionPage(main) {
   const buttonPlus = document.getElementById("buttonCountPlus");
   const buttonMinus = document.getElementById("buttonCountMinus");
   const totalAmount = document.getElementById("multipliedValue");
-  let count = 1;
+  const buttonWrap = document.querySelector(".order-optionr__item-quantity");
   const minCount = 1;
+
+  // Получение сохраненного кол-ва кофе из localStorage или установка по умолчанию 1
+  let count = parseInt(order[lastKey].cup_quantity) || 1;
+  counter.textContent = count;
 
   function updateCount(newCount) {
     count = newCount;
     counter.textContent = count;
     calculateTotalAmount(cafeKey, coffeeKey, count);
+    order[lastKey].cup_quantity = count;
+    localStorage.setItem("order", JSON.stringify(order));
+    buttonWrap.classList.add("active");
   }
 
   async function calculateTotalAmount(cafeKey, coffeeKey, count) {
@@ -157,34 +166,31 @@ export default async function renderOrderOptionPage(main) {
 
     if (price) {
       totalAmount.textContent = (count * price).toFixed(2);
-
       order[lastKey].cup_quantity = count.toString();
       order[lastKey].order_price = totalAmount.textContent;
       localStorage.setItem("order", JSON.stringify(order));
     } else {
-      console.error("Price is not a valid number:", price);
+      console.error("Цена не является допустимым числом:", price);
     }
-  }
-
-  const buttonWrap = document.querySelector('.order-optionr__item-quantity');
-  const getCupQuantity = order[lastKey].cup_quantity;
-  if (getCupQuantity) {
-    buttonWrap.classList.add("active");
-  } else {
-    buttonWrap.classList.remove("active");
   }
 
   buttonPlus.addEventListener("click", function () {
     updateCount(count + 1);
-    buttonWrap.classList.add("active");
   });
 
   buttonMinus.addEventListener("click", function () {
-    if (count > minCount) { updateCount(count - 1) };
-    buttonWrap.classList.add("active");
+    if (count > minCount) {
+      updateCount(count - 1);
+    }
   });
 
+  // Расчёт общей суммы на основе сохраненного значения счётчика при загрузке страницы
   calculateTotalAmount(cafeKey, coffeeKey, count);
+
+  // Установить класс "active" при загрузке страницы, если есть сохраненное значение
+  if (count > minCount) {
+    buttonWrap.classList.add("active");
+  }
 
   // Включение/выключение выделения кнопок coffee_ristretto и сохранение выделение при переходе на др страницу
   const buttons = document.querySelectorAll(".order-option__strength");
@@ -258,15 +264,17 @@ export default async function renderOrderOptionPage(main) {
     };
 
     options[category].forEach((option) => {
-      const elements = document.querySelectorAll(`.order-option__svg-${category}_${option}`);
+      const elements = document.querySelectorAll(
+        `.order-option__svg-${category}_${option}`
+      );
 
       elements.forEach((element) => {
-        const isSelected = element.classList.contains('selected');
+        const isSelected = element.classList.contains("selected");
 
         if (option === type) {
           if (isSelected) {
             setFillColor(element, "#D8D8D8");
-            element.classList.remove('selected');
+            element.classList.remove("selected");
             if (category === "where") {
               delete order[lastKey].mug_option;
             } else if (category === "cup") {
@@ -275,7 +283,7 @@ export default async function renderOrderOptionPage(main) {
           } else {
             setFillColor(element, color);
             if (color === "black") {
-              element.classList.add('selected');
+              element.classList.add("selected");
               if (category === "where") {
                 order[lastKey].mug_option = type;
               } else if (category === "cup") {
@@ -285,7 +293,7 @@ export default async function renderOrderOptionPage(main) {
           }
         } else {
           setFillColor(element, "#D8D8D8");
-          element.classList.remove('selected');
+          element.classList.remove("selected");
         }
       });
     });
@@ -332,9 +340,9 @@ export default async function renderOrderOptionPage(main) {
 
   // Изменение цвета объема чашек кофе в зависимости от выделения и сохранение выделения
   const sizeMapping = {
-    "250": "small",
-    "350": "medium",
-    "450": "large"
+    250: "small",
+    350: "medium",
+    450: "large",
   };
 
   const savedVolume = order[lastKey]?.cup_volume;
@@ -354,9 +362,11 @@ export default async function renderOrderOptionPage(main) {
         delete order[lastKey].cup_volume; // Удаление ключа из localStorage при снятии выделения
         localStorage.setItem("order", JSON.stringify(order));
       } else {
-        document.querySelectorAll(".order-option__text-size").forEach((text) => {
-          text.classList.remove("selected");
-        });
+        document
+          .querySelectorAll(".order-option__text-size")
+          .forEach((text) => {
+            text.classList.remove("selected");
+          });
         currentText.classList.add("selected");
         order[lastKey].cup_volume = sizeMapping[currentText.textContent]; // Сохранение выделенного текста в localStorage
         localStorage.setItem("order", JSON.stringify(order));
@@ -368,24 +378,24 @@ export default async function renderOrderOptionPage(main) {
   const timeInput = document.getElementById("time");
   timeInput.addEventListener("change", function () {
     if (lastKey) {
-      order[lastKey].order_time = this.value;
+      order[lastKey].pickup_time = this.value;
     }
     localStorage.setItem("order", JSON.stringify(order));
   });
 
-  if (order[lastKey].order_time) {
-    timeInput.value = order[lastKey].order_time;
+  if (order[lastKey].pickup_time) {
+    timeInput.value = order[lastKey].pickup_time;
   }
 
   /// Появление часов для выбора времени заказа после нажания тоглера
   const toggle = document.getElementById("togBtn");
   const watch = document.querySelector(".order-option__item-watch");
 
-  if (order[lastKey].order_time) {
-    timeInput.value = order[lastKey].order_time;
+  if (order[lastKey].pickup_time) {
+    timeInput.value = order[lastKey].pickup_time;
   }
 
-  const getWatchData = order[lastKey]?.order_time;
+  const getWatchData = order[lastKey]?.pickup_time;
 
   // Сохранение тоглера нажатым и показывается элемент выбора времени
   if (getWatchData) {
@@ -412,7 +422,7 @@ export default async function renderOrderOptionPage(main) {
     window.location.href = "/designer";
   });
 
-  //Настройка футера 
-  const orderOptionsFooter = document.querySelector('main');
+  //Настройка футера
+  const orderOptionsFooter = document.querySelector("main");
   orderOptionsFooter.style.justifyContent = "space-between";
 }

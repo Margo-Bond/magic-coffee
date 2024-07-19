@@ -225,11 +225,11 @@
   transition: 0.4s;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: #34c759;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   -webkit-transform: translateX(20px);
   -ms-transform: translateX(20px);
   transform: translateX(20px);
@@ -285,7 +285,7 @@ input:checked+.slider:before {
   gap: var(--space-m);
   left: 0;
   right: 0;
-  bottom: 30px;
+  margin-bottom: 30px;
   width: calc(100% - 2 * var(--space-xl));
   box-sizing: border-box;
 

@@ -1,11 +1,5 @@
-import {
-  order,
-  lastKey,
-  cafeOne,
-  cafeTwo,
-  cafeThree,
-} from "../../../../vars.js";
-import { database, set, ref, get, update } from "../../../../main.js";
+import { cafeOne, cafeTwo, cafeThree } from "../../../../vars.js";
+import { database, set, ref, get, remove } from "../../../../main.js";
 import BackSvg from "@/assets/images/geometric-icons/back.svg";
 import { getCoffeeImage } from "../../../../Services/Get.js";
 
@@ -18,6 +12,10 @@ export default function renderCurrentOrderPage(main) {
     <div class="current-order" id="currentOrderContainer"></div>
     <button class="current__button-next">Order Now</button>
   `;
+
+  let order = JSON.parse(localStorage.getItem("order")) || {};
+  let keys = Object.keys(order);
+  let lastKey = keys[keys.length - 1];
 
   const cafeAddress = order[lastKey].cafe_address;
   const coffeeType = order[lastKey].coffee_type;
@@ -106,7 +104,9 @@ export default function renderCurrentOrderPage(main) {
 
   displayOrder(order);
 
-  function sendOrderToDatabase(order, userUid) {
+  const lastOrder = order[lastKey];
+
+  async function sendOrderToDatabase(lastOrder, lastKey, userUid) {
     const now = new Date();
     const orderTime = `${now.getFullYear()}-${String(
       now.getMonth() + 1
@@ -116,67 +116,74 @@ export default function renderCurrentOrderPage(main) {
       now.getSeconds()
     ).padStart(2, "0")}`;
 
-    const orderRef = ref(database, `users/${userUid}/orders/on-going`);
+    lastOrder.order_time = orderTime;
 
-    const orderWithTime = {
-      ...order,
-      order_time: orderTime,
-    };
+    const orderRef = ref(
+      database,
+      `users/${userUid}/orders/on-going/${lastKey}`
+    );
 
-    set(orderRef, orderWithTime)
-      .then(() => {
-        console.log("Order saved successfully.");
-        alert("Order has been placed successfully!");
-      })
-      .catch((error) => {
-        console.error("Error saving order: ", error);
-        alert("There was an error placing your order. Please try again.");
-      });
-
-    const orderTimeStored = localStorage.getItem("order_time");
-    const setDeletionTimer = (delay) => {
-      setTimeout(() => {
-        moveOrderToHistory(order, userUid);
-        localStorage.removeItem("order");
+    function setDeletionTimer(delay) {
+      setTimeout(async () => {
+        await moveOrderToHistory(lastOrder, lastKey, userUid);
+        delete order[lastKey];
+        localStorage.setItem("order", JSON.stringify(order));
         console.log("Order removed after specified time.");
-        console.log(delay);
       }, delay);
-      console.log(delay);
-    };
+    }
 
-    if (orderTimeStored) {
-      const deletionTime = new Date(orderTimeStored).getTime();
-      const currentTime = now.getTime();
-      const delay = deletionTime - currentTime;
-      if (delay > 0) {
-        setDeletionTimer(delay);
+    try {
+      await set(orderRef, lastOrder);
+      console.log("Order saved successfully.");
+      const pickupTime = order[lastKey].pickup_time;
+
+      if (pickupTime) {
+        const [pickupHour, pickupMinute] = pickupTime.split(":").map(Number);
+        const pickupDateTime = new Date(now);
+        pickupDateTime.setHours(pickupHour);
+        pickupDateTime.setMinutes(pickupMinute);
+        pickupDateTime.setSeconds(0);
+        pickupDateTime.setMilliseconds(0);
+
+        const deletionTime = pickupDateTime.getTime();
+        const currentTime = now.getTime();
+        const delay = deletionTime - currentTime;
+        if (deletionTime > currentTime) {
+          setDeletionTimer(delay);
+        } else {
+          alert(
+            "Order pick-up time cannot be set earlier than sending the order for processing."
+          );
+        }
       } else {
-        moveOrderToHistory(order, userUid);
-        localStorage.removeItem("order");
-        console.log("Order removed as the specified time has already passed.");
+        setDeletionTimer(3 * 60 * 1000);
       }
-    } else {
-      setDeletionTimer(30 * 60 * 1000);
+    } catch (error) {
+      console.error("Error saving order: ", error);
+      alert("There was an error placing your order. Please try again.");
+      return;
     }
   }
 
-  function moveOrderToHistory(order, userUid) {
-    const now = new Date();
+  async function moveOrderToHistory(lastOrder, lastKey, userUid) {
     const historyOrderRef = ref(database, `users/${userUid}/orders/history`);
+    const ongoingOrderRef = ref(
+      database,
+      `users/${userUid}/orders/on-going/${lastKey}`
+    );
 
-    get(historyOrderRef).then((snapshot) => {
-      const ordersHistory = snapshot.val() || {};
-      const newOrderKey = `${now.getTime()}`;
-      const updatedOrders = { ...ordersHistory, [newOrderKey]: order };
+    try {
+      const snapshot = await get(historyOrderRef);
+      const history = snapshot.exists() ? snapshot.val() : {};
+      history[lastOrder.order_time] = lastOrder; // Используем уникальный ключ из lastOrder
 
-      update(historyOrderRef, updatedOrders)
-        .then(() => {
-          console.log("Order moved to history successfully.");
-        })
-        .catch((error) => {
-          console.error("Error moving order to history: ", error);
-        });
-    });
+      await set(historyOrderRef, history);
+      console.log("Order moved to history successfully.");
+
+      await remove(ongoingOrderRef);
+    } catch (error) {
+      console.error("Error moving order to history: ", error);
+    }
   }
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -188,7 +195,7 @@ export default function renderCurrentOrderPage(main) {
 
   nextBtn.addEventListener("click", () => {
     if (userUid) {
-      sendOrderToDatabase(order, userUid);
+      sendOrderToDatabase(lastOrder, lastKey, userUid);
       window.location.href = "/order-confirmed";
     } else {
       alert("User is not authenticated.");
