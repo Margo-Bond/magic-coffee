@@ -9,10 +9,15 @@ import ProfileEmail from "@/assets/images/user-icons/profile-email.svg";
 import ProfileStore from "@/assets/images/user-icons/profile-store.svg";
 import QrCode from "@/assets/images/qr-code.svg";
 import { order, lastKey } from "../../../../vars.js";
+import timerManager from "../../../../Services/timerManager.js";
 
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
+  const lastOrder = order[lastKey];
+  const now = Date.now();
+  let user = JSON.parse(localStorage.getItem("user")) || {};
+  const userUid = user ? user.uid : null;
 
   getUserInfo(localData.uid).then((userData) => {
     let address = order[lastKey].cafe_address;
@@ -162,8 +167,9 @@ export default function renderProfilePage(main) {
     function editLocalData(input) {
       if (input.getAttribute("type") === "text") {
         localData.name = input.value;
+        console.log(input.value);
       } else if (input.getAttribute("type") === "number") {
-        localData.phoneNumber = input.value;
+        localData.phone = input.value;
       } else {
         localData.email = input.value;
       }
@@ -267,4 +273,13 @@ export default function renderProfilePage(main) {
       button.addEventListener("click", handleEditButtonClick);
     });
   });
+
+  if (userUid && lastOrder.delete_at) {
+    timerManager.setDeletionTimer(
+      lastOrder.delete_at - now,
+      lastOrder,
+      lastKey,
+      userUid
+    );
+  }
 }

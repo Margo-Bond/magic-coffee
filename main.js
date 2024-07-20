@@ -18,6 +18,7 @@ import {
   remove,
   runTransaction,
   set,
+  push,
 } from "firebase/database";
 
 import "@/ui/routes.js";
@@ -40,6 +41,7 @@ export {
   ref,
   runTransaction,
   set,
+  push,
   remove,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,

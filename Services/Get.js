@@ -35,8 +35,8 @@ export default async function getUserInfo(userUid) {
     });
 }
 
-export async function getOrders(userUid) {
-  return get(child(dbRef, `users/${userUid}/orders/on-going`))
+export async function getOrders(userUid, tab) {
+  return get(child(dbRef, `users/${userUid}/orders/${tab}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val();
@@ -46,7 +46,7 @@ export async function getOrders(userUid) {
       }
     })
     .catch((error) => {
-      console.error("Error getting on-going orders:", error);
+      console.error("Error getting orders:", error);
     });
 }
 

@@ -1,5 +1,3 @@
-//для страниц: #17
-
 import { database, update, ref } from "../main";
 
 export default function updateUserData(
@@ -11,12 +9,12 @@ export default function updateUserData(
 ) {
   const userRef = ref(database, `users/${userUid}`);
 
-  const newData = {
-    name: nameValue,
-    phone: phoneValue,
-    email: emailValue,
-    location: locationValue,
-  };
+  // Создание объекта данных, исключая неопределенные значения
+  const newData = {};
+  if (nameValue !== undefined) newData.name = nameValue;
+  if (phoneValue !== undefined) newData.phone = phoneValue;
+  if (emailValue !== undefined) newData.email = emailValue;
+  if (locationValue !== undefined) newData.location = locationValue;
 
   return update(userRef, newData)
     .then(() => {

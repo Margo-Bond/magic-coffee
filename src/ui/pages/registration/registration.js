@@ -31,7 +31,7 @@ export default function renderRegistrationPage(main) {
             <input
               type="number"
               class="registration-form__item-input input"
-              id="phoneNumber"
+              id="phone"
               placeholder="Mobile Number"
             />
           </div>
@@ -85,7 +85,7 @@ export default function renderRegistrationPage(main) {
   });
 
   const profileName = document.getElementById("username");
-  const number = document.getElementById("phoneNumber");
+  const number = document.getElementById("phone");
   const email = document.getElementById("email");
   const password = document.getElementById("password");
 

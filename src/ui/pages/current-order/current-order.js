@@ -2,8 +2,9 @@ import { cafeOne, cafeTwo, cafeThree } from "../../../../vars.js";
 import { database, set, ref, get, remove } from "../../../../main.js";
 import BackSvg from "@/assets/images/geometric-icons/back.svg";
 import { getCoffeeImage } from "../../../../Services/Get.js";
+import timerManager from "../../../../Services/timerManager.js";
 
-export default function renderCurrentOrderPage(main) {
+export default async function renderCurrentOrderPage(main) {
   main.innerHTML = `
     <div class="current-header">
       <button class="current-header__back-btn">${BackSvg}</button>
@@ -68,20 +69,30 @@ export default function renderCurrentOrderPage(main) {
   async function displayOrder(order) {
     currentOrderContainer.innerHTML = ``;
 
-    for (let key of Object.keys(order)) {
+    if (order[lastKey]) {
       const itemContainer = document.createElement("div");
       itemContainer.classList.add("current-order__item");
 
       itemContainer.innerHTML = `
-        <img class="current-order__item-img" src="" alt="${order[key].coffee_type}"/>
+        <img class="current-order__item-img" src="" alt="${
+          order[lastKey].coffee_type
+        }"/>
         <div class="current-order__item-description">
-          <p class="current-order__item-title">${order[key].coffee_type}</p>
-          <p class="current-order__item-details">${coffeeRistretto} | ${coffeeRoasting} | ${milkOption} | ${syrupOption}</p>
-          <p class="current-order__item-quantity">x ${order[key].cup_quantity}</p>
+          <p class="current-order__item-title">${
+            order[lastKey].coffee_type || ""
+          }</p>
+          <p class="current-order__item-details">${coffeeRistretto || ""} | ${
+        coffeeRoasting || ""
+      } | ${milkOption || ""} | ${syrupOption || ""}</p>
+          <p class="current-order__item-quantity">x ${
+            order[lastKey].cup_quantity || ""
+          }</p>
         </div>
         <div class="current-order__item-sum">
           <p class="current-order__item-currency">BYN</p>
-          <p class="current-order__item-price">${order[key].order_price}</p>
+          <p class="current-order__item-price">${
+            order[lastKey].order_price || ""
+          }</p>
         </div>
       `;
       currentOrderContainer.append(itemContainer);
@@ -89,13 +100,13 @@ export default function renderCurrentOrderPage(main) {
       try {
         const coffeeImage = await getCoffeeImage(
           cafeKey,
-          coffeeKeys[order[key].coffee_type]
+          coffeeKeys[order[lastKey].coffee_type]
         );
         const coffeeImageElement = itemContainer.querySelector(
           ".current-order__item-img"
         );
         coffeeImageElement.src = coffeeImage;
-        coffeeImageElement.alt = order[key].coffee_type;
+        coffeeImageElement.alt = order[lastKey].coffee_type;
       } catch (err) {
         console.error("Error setting coffee image:", err);
       }
@@ -105,16 +116,16 @@ export default function renderCurrentOrderPage(main) {
   displayOrder(order);
 
   const lastOrder = order[lastKey];
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userUid = user ? user.uid : null;
 
   async function sendOrderToDatabase(lastOrder, lastKey, userUid) {
     const now = new Date();
     const orderTime = `${now.getFullYear()}-${String(
       now.getMonth() + 1
-    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(
+    ).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} | ${String(
       now.getHours()
-    ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(
-      now.getSeconds()
-    ).padStart(2, "0")}`;
+    ).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
 
     lastOrder.order_time = orderTime;
 
@@ -123,23 +134,13 @@ export default function renderCurrentOrderPage(main) {
       `users/${userUid}/orders/on-going/${lastKey}`
     );
 
-    function setDeletionTimer(delay) {
-      setTimeout(async () => {
-        await moveOrderToHistory(lastOrder, lastKey, userUid);
-        delete order[lastKey];
-        localStorage.setItem("order", JSON.stringify(order));
-        console.log("Order removed after specified time.");
-      }, delay);
-    }
-
     try {
-      await set(orderRef, lastOrder);
-      console.log("Order saved successfully.");
-      const pickupTime = order[lastKey].pickup_time;
+      let delay = 1 * 60 * 1000;
+      let pickupTime = lastOrder.pickup_time;
 
       if (pickupTime) {
         const [pickupHour, pickupMinute] = pickupTime.split(":").map(Number);
-        const pickupDateTime = new Date(now);
+        const pickupDateTime = new Date();
         pickupDateTime.setHours(pickupHour);
         pickupDateTime.setMinutes(pickupMinute);
         pickupDateTime.setSeconds(0);
@@ -147,47 +148,45 @@ export default function renderCurrentOrderPage(main) {
 
         const deletionTime = pickupDateTime.getTime();
         const currentTime = now.getTime();
-        const delay = deletionTime - currentTime;
-        if (deletionTime > currentTime) {
-          setDeletionTimer(delay);
-        } else {
+        delay = deletionTime - currentTime;
+        if (delay <= 0) {
           alert(
             "Order pick-up time cannot be set earlier than sending the order for processing."
           );
+          return;
         }
       } else {
-        setDeletionTimer(3 * 60 * 1000);
+        let hours = now.getHours();
+        let minutes = now.getMinutes() + 1;
+
+        if (minutes >= 60) {
+          minutes -= 60;
+          hours += 1;
+        }
+
+        // Форматируем часы и минуты в двухзначный формат
+        const formattedHours = hours.toString().padStart(2, "0");
+        const formattedMinutes = minutes.toString().padStart(2, "0");
+
+        let pickupTime2 = `${formattedHours}:${formattedMinutes}`;
+        lastOrder.pickup_time = pickupTime2;
       }
+
+      lastOrder.delete_at = now.getTime() + delay;
+      await set(orderRef, lastOrder);
+      localStorage.setItem("order", JSON.stringify(order));
+
+      timerManager.setDeletionTimer(
+        lastOrder.delete_at - now.getTime(),
+        lastOrder,
+        lastKey,
+        userUid
+      );
     } catch (error) {
       console.error("Error saving order: ", error);
       alert("There was an error placing your order. Please try again.");
-      return;
     }
   }
-
-  async function moveOrderToHistory(lastOrder, lastKey, userUid) {
-    const historyOrderRef = ref(database, `users/${userUid}/orders/history`);
-    const ongoingOrderRef = ref(
-      database,
-      `users/${userUid}/orders/on-going/${lastKey}`
-    );
-
-    try {
-      const snapshot = await get(historyOrderRef);
-      const history = snapshot.exists() ? snapshot.val() : {};
-      history[lastOrder.order_time] = lastOrder; // Используем уникальный ключ из lastOrder
-
-      await set(historyOrderRef, history);
-      console.log("Order moved to history successfully.");
-
-      await remove(ongoingOrderRef);
-    } catch (error) {
-      console.error("Error moving order to history: ", error);
-    }
-  }
-
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userUid = user ? user.uid : null;
 
   backBtn.addEventListener("click", () => {
     window.location.href = "/designer";

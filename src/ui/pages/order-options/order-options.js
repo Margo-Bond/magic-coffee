@@ -159,6 +159,9 @@ export default async function renderOrderOptionPage(main) {
     order[lastKey].cup_quantity = count;
     localStorage.setItem("order", JSON.stringify(order));
     buttonWrap.classList.add("active");
+    order[lastKey].cup_quantity = count;
+    localStorage.setItem("order", JSON.stringify(order));
+    buttonWrap.classList.add("active");
   }
 
   async function calculateTotalAmount(cafeKey, coffeeKey, count) {
@@ -171,6 +174,7 @@ export default async function renderOrderOptionPage(main) {
       localStorage.setItem("order", JSON.stringify(order));
     } else {
       console.error("Цена не является допустимым числом:", price);
+      console.error("Цена не является допустимым числом:", price);
     }
   }
 
@@ -182,10 +186,19 @@ export default async function renderOrderOptionPage(main) {
     if (count > minCount) {
       updateCount(count - 1);
     }
+    if (count > minCount) {
+      updateCount(count - 1);
+    }
   });
 
   // Расчёт общей суммы на основе сохраненного значения счётчика при загрузке страницы
+  // Расчёт общей суммы на основе сохраненного значения счётчика при загрузке страницы
   calculateTotalAmount(cafeKey, coffeeKey, count);
+
+  // Установить класс "active" при загрузке страницы, если есть сохраненное значение
+  if (count > minCount) {
+    buttonWrap.classList.add("active");
+  }
 
   // Установить класс "active" при загрузке страницы, если есть сохраненное значение
   if (count > minCount) {

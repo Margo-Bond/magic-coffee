@@ -31,7 +31,7 @@ export default async function registerUser(
     const userRef = ref(database, "users/" + user.uid);
     await set(userRef, {
       email: user.email,
-      phoneNumber: phoneValue,
+      phone: phoneValue,
       name: nameValue,
     });
 
@@ -41,14 +41,15 @@ export default async function registerUser(
       JSON.stringify({
         uid: user.uid,
         email: user.email,
-        phoneNumber: phoneValue,
+        phone: phoneValue,
         name: nameValue,
       })
     );
 
+    console.log(phoneValue);
+
     return user;
   } catch (error) {
     console.error("Registration failed: ", error);
-    throw new Error("Registration failed: " + error.message);
   }
 }
