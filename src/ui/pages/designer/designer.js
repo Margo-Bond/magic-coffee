@@ -245,8 +245,15 @@ export default function renderDesignerPage(main) {
     checkBlack(iceThree, "three", "coffee_ice");
   });
 
-  //Saving selection of roasting element (black color)
+  //Saving selection of slider element (black color)
+  const selectedRatio = order[lastKey].coffee_ratio;
+  if (selectedRatio) {
+    slider.value = selectedRatio;
+  } else {
+    slider.value = 3;
+  }
 
+  //Saving selection of roasting element (black color)
   const selectedRoasting = order[lastKey].coffee_roasting;
   if (selectedRoasting) {
     selectCategory(selectedRoasting, "coffee_roasting", "Black");
@@ -260,7 +267,6 @@ export default function renderDesignerPage(main) {
   }
 
   //Saving selection of grinding element (black color)
-
   const selectedGrinding = order[lastKey].coffee_grinding;
   if (selectedGrinding) {
     selectCategory(selectedGrinding, "coffee_grinding", "Black");
@@ -272,7 +278,6 @@ export default function renderDesignerPage(main) {
   }
 
   //Saving selection of ice element (black color)
-
   const selectedIce = order[lastKey].coffee_ice;
   if (selectedIce) {
     selectCategory(selectedIce, "coffee_ice", "Black");
@@ -286,7 +291,6 @@ export default function renderDesignerPage(main) {
   }
 
   //Получение milk_option и syrup_option
-
   function showMilkContainer() {
     overlay.classList.remove("none");
     milkContainer.classList.remove("none");

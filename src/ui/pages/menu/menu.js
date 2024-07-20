@@ -1,7 +1,11 @@
+import Cart from "@/assets/images/cart.svg";
 import { getCoffees } from "../../../../Services/Get.js";
-const userName = JSON.parse(localStorage.getItem("user"))?.name || "Customer";
+import { order, lastKey } from "../../../../vars.js";
+import timerManager from "../../../../Services/timerManager.js";
 
 export default async function renderMenuPage(main) {
+  const userName = JSON.parse(localStorage.getItem("user"))?.name || "Customer";
+
   main.innerHTML = `
     <div class="menu">
       <div class="menu__header">
@@ -12,7 +16,7 @@ export default async function renderMenuPage(main) {
         </div>
 
         <div class="menu__header__button">
-          <div class="menu__header__button-icon"></div>
+          <div class="menu__header__button-icon">${Cart}</div>
         </div>
       </div>
 
@@ -21,8 +25,8 @@ export default async function renderMenuPage(main) {
 
         <div class="menu__content">
           ${Array(6)
-      .fill(
-        `
+            .fill(
+              `
           <div class="menu__content__item">
             <div class="menu__content__item-image">
               <img class="image" src="" alt="">
@@ -30,18 +34,24 @@ export default async function renderMenuPage(main) {
             <p class="menu__content__item-name"></p>
           </div>
           `
-      )
-      .join("")}
+            )
+            .join("")}
         </div>
       </div>
     </div>
   `;
 
+  const cartBtn = document.querySelector(".menu__header__button-icon");
   const menuContentItems = document.querySelectorAll(".menu__content__item");
 
-  let order = JSON.parse(localStorage.getItem("order")) || {};
+  /*let order = JSON.parse(localStorage.getItem("order")) || {};
   let keys = Object.keys(order);
-  let lastKey = keys[keys.length - 1];
+  let lastKey = keys[keys.length - 1];*/
+
+  const lastOrder = order[lastKey];
+  const now = Date.now();
+  let user = JSON.parse(localStorage.getItem("user")) || {};
+  const userUid = user ? user.uid : null;
 
   try {
     const getAddress = order[lastKey].cafe_address;
@@ -84,19 +94,23 @@ export default async function renderMenuPage(main) {
       order[lastKey].coffee_type = btnTextValue;
       localStorage.setItem("order", JSON.stringify(order));
 
-      if (order[lastKey].cup_quantity ||
+      if (
+        order[lastKey].cup_quantity ||
         order[lastKey].coffee_ristretto ||
         order[lastKey].mug_option ||
         order[lastKey].cup_volume ||
-        order[lastKey].order_time) {
+        order[lastKey].order_time
+      ) {
         delete order[lastKey].cup_quantity;
         delete order[lastKey].coffee_ristretto;
         delete order[lastKey].mug_option;
         delete order[lastKey].cup_volume;
-        delete order[lastKey].order_time
+        delete order[lastKey].order_time;
         localStorage.setItem("order", JSON.stringify(order));
       } else {
-        console.log("There are no keys from order-option page in Local Storage");
+        console.log(
+          "There are no keys from order-option page in Local Storage"
+        );
       }
 
       window.location.href = "/order-options";
@@ -105,4 +119,17 @@ export default async function renderMenuPage(main) {
 
   const footer = document.querySelector("footer");
   footer.style.boxShadow = "none";
+  cartBtn.addEventListener(
+    "click",
+    () => (window.location.href = "/current-order")
+  );
+
+  if (userUid && lastOrder.delete_at) {
+    timerManager.setDeletionTimer(
+      lastOrder.delete_at - now,
+      lastOrder,
+      lastKey,
+      userUid
+    );
+  }
 }

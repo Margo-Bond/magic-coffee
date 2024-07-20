@@ -8,21 +8,23 @@ import ProfilePhone from "@/assets/images/user-icons/profile-phone.svg";
 import ProfileEmail from "@/assets/images/user-icons/profile-email.svg";
 import ProfileStore from "@/assets/images/user-icons/profile-store.svg";
 import QrCode from "@/assets/images/qr-code.svg";
+import { order, lastKey } from "../../../../vars.js";
+import timerManager from "../../../../Services/timerManager.js";
 
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
-  let localOrder = JSON.parse(localStorage.getItem("order")) || {};
-  let keys = Object.keys(localOrder);
-  let lastKey = keys[keys.length - 1];
+  const lastOrder = order[lastKey];
+  const now = Date.now();
+  let user = JSON.parse(localStorage.getItem("user")) || {};
+  const userUid = user ? user.uid : null;
 
   getUserInfo(localData.uid).then((userData) => {
-    let address = localOrder[lastKey].cafe_address;
+    let address = order[lastKey].cafe_address;
     let userName = userData.name;
     let userPhone = userData.phone;
     let userEmail = userData.email;
 
-    console.log(userPhone);
     main.innerHTML = `
     <div class="profile">
       <div class="profile__main">
@@ -271,4 +273,13 @@ export default function renderProfilePage(main) {
       button.addEventListener("click", handleEditButtonClick);
     });
   });
+
+  if (userUid && lastOrder.delete_at) {
+    timerManager.setDeletionTimer(
+      lastOrder.delete_at - now,
+      lastOrder,
+      lastKey,
+      userUid
+    );
+  }
 }

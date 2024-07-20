@@ -1,10 +1,14 @@
 import OrderedSvg from "@/assets/images/ordered.svg";
+import timerManager from "../../../../Services/timerManager.js";
 
 export default async function renderOrderConfirmedPage(main) {
   let order = JSON.parse(localStorage.getItem("order")) || {};
   let user = JSON.parse(localStorage.getItem("user")) || {};
   let keys = Object.keys(order);
   let lastKey = keys[keys.length - 1];
+  const lastOrder = order[lastKey];
+  const now = Date.now();
+  const userUid = user ? user.uid : null;
 
   const nameUser = user.name || "Customer";
   const timeOrder = order[lastKey].order_time;
@@ -38,8 +42,17 @@ export default async function renderOrderConfirmedPage(main) {
 
   if (!timeOrder) {
     const resultDiv = document.querySelector(".order-confirmed__result");
-    if ((!timeOrder, "00:00")) {
+    if (timeOrder === "00:00") {
       resultDiv.innerHTML = `The order will be ready today in 30 minutes at the ${adressUser} address.`;
     }
+  }
+
+  if (userUid && lastOrder.delete_at) {
+    timerManager.setDeletionTimer(
+      lastOrder.delete_at - now,
+      lastOrder,
+      lastKey,
+      userUid
+    );
   }
 }
