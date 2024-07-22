@@ -12,7 +12,6 @@ import QrCode from "@/assets/images/qr-code.svg";
 export default function renderProfilePage(main) {
   // LOCAL STORAGE
   const localData = JSON.parse(localStorage.getItem("user"));
-  const localAddress = JSON.parse(localStorage.getItem("order"));
   let localOrder = JSON.parse(localStorage.getItem("order")) || {};
   let keys = Object.keys(localOrder);
   let lastKey = keys[keys.length - 1];
@@ -97,13 +96,12 @@ export default function renderProfilePage(main) {
         </div>`;
 
     // Back button
-    /*
+
     const back = document.querySelector(".profile__arrowBack");
     back.addEventListener("click", (e) => {
       e.preventDefault();
-      window.location.href = "/order-confirmed";
+      window.location.href = "/current-order";
     });
-    */
 
     // Log Out button
     const logOut = document.querySelector(".profile__logOut");

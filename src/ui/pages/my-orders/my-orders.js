@@ -73,8 +73,6 @@ export default function renderMyOrdersPage(main) {
   const newOrders = JSON.parse(localStorage.getItem("order"));
 
   for (let x in newOrders) {
-    console.log(newOrders[x]);
-
     const newOrderDate = newOrders[x].order_date;
     const newOrderTime = newOrders[x].order_dateTime;
     const newOrderReadyTime = newOrders[x].order_time;
@@ -85,7 +83,7 @@ export default function renderMyOrdersPage(main) {
     if (
       //newOrderDate === undefined ||
       //newOrderTime === undefined ||
-      newOrderReadyTime === undefined ||
+      //newOrderReadyTime === undefined ||
       newCoffeeType === undefined ||
       newCafeAddress === undefined ||
       newOrderPrice === undefined
@@ -118,20 +116,21 @@ export default function renderMyOrdersPage(main) {
 
   const userData = JSON.parse(localStorage.getItem("user"));
   getOrders(userData.uid).then((orders) => {
-    console.log(orders);
-
     for (let key in orders) {
-      const month = date.toLocaleString("default", { month: "long" });
+      /*
+      const date = orders.order_time;
       const day = date.getDate();
+      const month = date.toLocaleString("default", { month: "long" });
 
       const orderDate = `${day} ${month}`;
+      */
       const orderTime = orders[key].order_time;
       const coffeeType = orders[key].coffee_type;
       const cafeAddress = orders[key].cafe_address;
       const orderPrice = orders[key].order_price;
 
       if (
-        orderDate === undefined ||
+        //orderDate === undefined ||
         orderTime === undefined ||
         coffeeType === undefined ||
         cafeAddress === undefined ||
@@ -144,7 +143,7 @@ export default function renderMyOrdersPage(main) {
       historyOrderContainer.classList.add("myOrders-table2__block");
       historyOrderContainer.innerHTML = `
               <div class="block__item1">
-                <p class="block-item1__text">${orderDate} | ${orderTime}</p>
+                <p class="block-item1__text"> orderDate | ${orderTime}</p>
 
                 <div class="block-item1__element">
                   <img class="block-item1__element-img" src="./src/assets/images/coffee-icons/chosen-beverage.svg">
