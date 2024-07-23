@@ -1,4 +1,3 @@
-import { createHeaderBlack } from "@/ui/components/header/header.js";
 import Logo from "@/assets/images/logo.svg";
 
 export default function renderWelcomePage(main) {

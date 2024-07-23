@@ -10,78 +10,80 @@ import { auth, onAuthStateChanged } from "../../../../main.js";
 
 export default function renderDesignerPage(main) {
   main.innerHTML = `
-    <div class="designer-header">
-      <div class="designer__svg designer-header__svg-back">${Back}</div>
-      <p class="designer-header__title">Coffee lover assemblage</p>
-      <div class="designer__svg designer-header__svg-cart">${Cart}</div>
-    </div>
-    <div class="designer-content">
-      <div class="designer-content__wrapper type">
-        <label for="type__coffee-slider" class="designer-content__text type__slider-label">Coffee type</label>
-        <div class="type__slider">
-          <input type="range" id="type__coffee-slider" class="type__range" min="1" max="5" step="1">
-          <div class="type__slider-values">
-            <p id="value-1" class="type__slider-value">Arabica</p>
-            <p id="value-5" class="type__slider-value">Robusta</p>
+    <div class="designer">
+      <div class="designer-header">
+        <div class="designer__svg designer-header__svg-back">${Back}</div>
+        <p class="designer-header__title">Coffee lover assemblage</p>
+        <div class="designer__svg designer-header__svg-cart">${Cart}</div>
+      </div>
+      <div class="designer-content">
+        <div class="designer-content__wrapper type">
+          <label for="type__coffee-slider" class="designer-content__text type__slider-label">Coffee type</label>
+          <div class="type__slider">
+            <input type="range" id="type__coffee-slider" class="type__range" min="1" max="5" step="1">
+            <div class="type__slider-values">
+              <p id="value-1" class="type__slider-value">Arabica</p>
+              <p id="value-5" class="type__slider-value">Robusta</p>
+            </div>
+          </div>  
+        </div>
+        <div class="designer-content__wrapper designer-content-sort">
+          <p class="designer-content__text">Coffee sort</p>
+          <div class="designer__svg designer-content__svg-sort">${More}</div>
+        </div>
+        <div class="designer-content__wrapper">
+          <p class="designer-content__text">Roasting</p>
+          <div class="roasting">
+            <div class="designer__svg designer-content__svg-roasting_light roasting_row ">${Roasting}</div>
+            <div class="designer__svg designer-content__svg-roasting_medium roasting_row">${Roasting}${Roasting}</div>
+            <div class="roasting_column designer-content__svg-roasting_strong">
+              <div class="designer__svg roasting_below">${Roasting}</div>
+              <div class="designer__svg roasting_below">${Roasting}${Roasting}</div>
+            </div>
           </div>
-        </div>  
-      </div>
-      <div class="designer-content__wrapper designer-content-sort">
-        <p class="designer-content__text">Coffee sort</p>
-        <div class="designer__svg designer-content__svg-sort">${More}</div>
-      </div>
-      <div class="designer-content__wrapper">
-        <p class="designer-content__text">Roasting</p>
-        <div class="roasting">
-          <div class="designer__svg designer-content__svg-roasting_light roasting_row ">${Roasting}</div>
-          <div class="designer__svg designer-content__svg-roasting_medium roasting_row">${Roasting}${Roasting}</div>
-          <div class="roasting_column designer-content__svg-roasting_strong">
-            <div class="designer__svg roasting_below">${Roasting}</div>
-            <div class="designer__svg roasting_below">${Roasting}${Roasting}</div>
+        </div>
+        <div class="designer-content__wrapper">
+          <p class="designer-content__text">Grinding</p>
+          <div class="grinding">
+            <div class="designer__svg designer-content__svg-grinding_small">${SmallGrinding}</div>
+            <div class="designer__svg designer-content__svg-grinding_big">${BigGrinding}</div>
+          </div>
+        </div>
+        <div class="designer-content__wrapper">
+          <p class="designer-content__text">Milk</p>
+          <p class="designer-content__text designer-content__select designer-content__select_milk">Select</p>
+        </div>
+        <div class="designer-content__wrapper">
+          <p class="designer-content__text">Syrup</p>
+          <p class="designer-content__text designer-content__select designer-content__select_syrup">Select</p>
+        </div>
+        <div class="designer-content__wrapper designer-content-additives">
+          <p class="designer-content__text">Additives</p>
+          <div class="designer__svg designer-content__svg-additives">${More}</div>
+        </div>
+        <div class="designer-content__wrapper">
+          <p class="designer-content__text-muted">Ice</p>
+          <div class="ice">
+            <div class="designer__svg designer-content__svg-ice_one ice_row">${Ice}</div>
+            <div class="designer__svg designer-content__svg-ice_two ice_row">${Ice}${Ice}</div>
+            <div class="ice_column designer-content__svg-ice_three">
+              <div class="designer__svg ice_below">${Ice}</div>
+              <div class="designer__svg ice_below">${Ice}${Ice}</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="designer-content__wrapper">
-        <p class="designer-content__text">Grinding</p>
-        <div class="grinding">
-          <div class="designer__svg designer-content__svg-grinding_small">${SmallGrinding}</div>
-          <div class="designer__svg designer-content__svg-grinding_big">${BigGrinding}</div>
-        </div>
+      <div class="overlay none"></div>
+      <div class="designer-modal__milk-container none">
+        <div class="designer-modal__milk-question">What type of milk do you prefer?</div>
+        <div class="designer-modal__milk-options"></div>
+        <button class="designer-modal__button">Cancel</button>
       </div>
-      <div class="designer-content__wrapper">
-        <p class="designer-content__text">Milk</p>
-        <p class="designer-content__text designer-content__select designer-content__select_milk">Select</p>
+      <div class="designer-modal__syrup-container none">
+        <div class="designer-modal__syrup-question">What flavor of syrup do you prefer?</div>
+        <div class="designer-modal__syrup-options"></div>
+        <button class="designer-modal__button">Cancel</button>
       </div>
-      <div class="designer-content__wrapper">
-        <p class="designer-content__text">Syrup</p>
-        <p class="designer-content__text designer-content__select designer-content__select_syrup">Select</p>
-      </div>
-      <div class="designer-content__wrapper designer-content-additives">
-        <p class="designer-content__text">Additives</p>
-        <div class="designer__svg designer-content__svg-additives">${More}</div>
-      </div>
-      <div class="designer-content__wrapper">
-        <p class="designer-content__text-muted">Ice</p>
-        <div class="ice">
-          <div class="designer__svg designer-content__svg-ice_one ice_row">${Ice}</div>
-          <div class="designer__svg designer-content__svg-ice_two ice_row">${Ice}${Ice}</div>
-          <div class="ice_column designer-content__svg-ice_three">
-            <div class="designer__svg ice_below">${Ice}</div>
-            <div class="designer__svg ice_below">${Ice}${Ice}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="overlay none"></div>
-    <div class="designer-modal__milk-container none">
-      <div class="designer-modal__milk-question">What type of milk do you prefer?</div>
-      <div class="designer-modal__milk-options"></div>
-      <button class="designer-modal__button">Cancel</button>
-    </div>
-    <div class="designer-modal__syrup-container none">
-      <div class="designer-modal__syrup-question">What flavor of syrup do you prefer?</div>
-      <div class="designer-modal__syrup-options"></div>
-      <button class="designer-modal__button">Cancel</button>
     </div>
     <footer class="designer-footer">
       <div class="designer-footer__count-container">
@@ -89,7 +91,7 @@ export default function renderDesignerPage(main) {
         <p class="designer-footer__count-currency">BYN<span class="designer-footer__count"></span></p>
       </div>
       <button class="designer-footer__button">Next</button>
-    </footer>
+    </footer>  
   `;
 
   const cartSvg = document.querySelector(".designer-header__svg-cart");
@@ -132,6 +134,9 @@ export default function renderDesignerPage(main) {
   let keys = Object.keys(order);
   let lastKey = keys[keys.length - 1];
   const cafeAddress = order[lastKey].cafe_address;
+
+  const mainContainer = document.getElementById("main");
+  mainContainer.classList.add("main");
 
   // Получение значения ползунка на coffee_ratio
   slider.addEventListener("input", (event) => {

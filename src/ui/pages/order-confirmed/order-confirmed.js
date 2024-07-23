@@ -12,6 +12,7 @@ export default async function renderOrderConfirmedPage(main) {
 
   const nameUser = user.name || "Customer";
   const timeOrder = order[lastKey].order_time;
+  const pickupTime = order[lastKey].pickup_time;
   const adressUser = order[lastKey].cafe_address || "specified";
   const qr = "/profile";
 
@@ -28,7 +29,7 @@ export default async function renderOrderConfirmedPage(main) {
       <div class="order-confirmed__item">
         <div class="order-confirmed__greeting">${nameUser}, your order has been successfully placed.</div>
         <div class="order-confirmed__result">
-          The order will be ready today at ${timeOrder} at the address ${adressUser}
+          The order will be ready today at ${pickupTime} at the address ${adressUser}
         </div>
         <div class="order-confirmed__submit">
           Submit your personal <a href="${qr}">QR</a> code at a coffee shop to receive an order.

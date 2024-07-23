@@ -104,6 +104,10 @@ export default async function renderOrderOptionPage(main) {
   const coffeeImage = document.getElementById("coffeeImage");
   const coffeeName = document.querySelector(".coffee");
 
+  //Настройка футера
+  const orderOptionsFooter = document.querySelector("#main");
+  orderOptionsFooter.classList.add("main");
+
   back.addEventListener("click", () => {
     window.location.href = "/menu";
   });
@@ -434,8 +438,4 @@ export default async function renderOrderOptionPage(main) {
   next.addEventListener("click", () => {
     window.location.href = "/designer";
   });
-
-  //Настройка футера
-  const orderOptionsFooter = document.querySelector("main");
-  orderOptionsFooter.style.justifyContent = "space-between";
 }
