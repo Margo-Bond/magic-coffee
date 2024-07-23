@@ -5,19 +5,17 @@ export default async function renderMyOrdersPage(main) {
   main.innerHTML = `
   <main class="myOrders">
 
-          <h1 class="myOrders__header">My orders</h1>
-
-        <div class="myOrders__nav">
-          <div class="myOrders-nav__item">
-            <button type="button" class="myOrders-nav__item-button border" id="onGoing">On going</button>
-            <span class="myOrders-nav__item-element"></span>
-          </div> 
-          <div class="myOrders-nav__item">
-            <button type="button" class="myOrders-nav__item-button" id="history">History</button>
-            <span class="myOrders-nav__item-element invisible"></span>
+        <h1 class="myOrders__header">My orders</h1>
+          <div class="myOrders__nav">
+            <div class="myOrders-nav__item">
+              <button type="button" class="myOrders-nav__item-button border" id="onGoing">On going</button>
+              <span class="myOrders-nav__item-element"></span>
+            </div> 
+            <div class="myOrders-nav__item">
+              <button type="button" class="myOrders-nav__item-button" id="history">History</button>
+              <span class="myOrders-nav__item-element invisible"></span>
+            </div>
           </div>
-        </div>
-          
         <div class="myOrders__table1"></div>
 
         <div class="myOrders__table2 invisible"></div>

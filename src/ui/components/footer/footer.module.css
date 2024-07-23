@@ -1,0 +1,63 @@
+:root {
+  --accent-color: rgb(50, 74, 89);
+  --white-color: rgb(255, 255, 255);
+  --black-color: rgb(0, 0, 0);
+  --purple-color: rgb(197, 139, 242);
+  --pink-color: rgb(255, 229, 229);
+  --red-color: rgb(255, 48, 48);
+  --green-color: rgb(52, 199, 89);
+  --blue-color: rgb(10, 132, 255);
+  --softcream-color: rgb(228, 213, 201);
+  --sky-color: rgb(162, 205, 233);
+  --yellow-color: rgb(255, 153, 0);
+  --slider-color: rgb(0, 122, 255);
+  --line-color: rgb(244, 245, 247);
+  --text-color-title: rgb(24, 29, 45);
+  --text-color-base: rgb(0, 24, 51);
+  --text-color-muted: rgb(170, 170, 170);
+  --text-color-data: rgb(193, 199, 208);
+  --text-color-options: rgb(117, 117, 117);
+  --text-color-barista: rgb(9, 5, 28);
+  --text-color-status-barisra: rgb(59, 59, 59);
+  --text-color-question: rgba(60, 60, 67, 0.6);
+  --svg-color-muted: rgb(216, 216, 216);
+  --card-color-background: rgb(247, 248, 251);
+  --time-color-background: rgb(118, 118, 128);
+  --button-color-gradient: linear-gradient(to right, #f8a5c2, #a29bfe);
+  --button-color-highlight: rgb(19, 15, 38);
+  --space-xs: 10px;
+  --space-s: 12px;
+  --space-m: 14px;
+  --space-xm: 16px;
+  --space-l: 18px;
+  --space-xl: 30px;
+  --space-xxl: 40px;
+  --magic-coffee: 64px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 50px;
+  width: 330px;
+  background-color: var(--white-color);
+  border-radius: calc(2 * var(--space-xs));
+  box-shadow: 0 0 14px var(--svg-color-muted);
+}
+.footer .footer__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 21px;
+  height: auto;
+}
+.footer .footer__icon svg {
+  width: 100%;
+  height: 100%;
+  transition: fill 0.3s ease;
+}/*# sourceMappingURL=footer.module.css.map */

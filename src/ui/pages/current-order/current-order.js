@@ -119,7 +119,42 @@ export default async function renderCurrentOrderPage(main) {
   const user = JSON.parse(localStorage.getItem("user"));
   const userUid = user ? user.uid : null;
 
-  async function sendOrderToDatabase(lastOrder, lastKey, userUid) {
+  function calculateDelay(lastOrder, now) {
+    let delay = 2 * 60 * 1000;
+    let pickupTime = lastOrder.pickup_time;
+
+    if (pickupTime) {
+      const [pickupHour, pickupMinute] = pickupTime.split(":").map(Number);
+      const pickupDateTime = new Date();
+      pickupDateTime.setHours(pickupHour);
+      pickupDateTime.setMinutes(pickupMinute);
+      pickupDateTime.setSeconds(0);
+      pickupDateTime.setMilliseconds(0);
+
+      const deletionTime = pickupDateTime.getTime();
+      const currentTime = now.getTime();
+      delay = deletionTime - currentTime;
+    } else {
+      let hours = now.getHours();
+      let minutes = now.getMinutes() + 1;
+
+      if (minutes >= 60) {
+        minutes -= 60;
+        hours += 1;
+      }
+
+      // Форматируем часы и минуты в двухзначный формат
+      const formattedHours = hours.toString().padStart(2, "0");
+      const formattedMinutes = minutes.toString().padStart(2, "0");
+
+      let pickupTime2 = `${formattedHours}:${formattedMinutes}`;
+      lastOrder.pickup_time = pickupTime2;
+    }
+
+    return delay;
+  }
+
+  async function sendOrderToDatabase(lastOrder, lastKey, userUid, delay) {
     const now = new Date();
     const orderTime = `${now.getFullYear()}-${String(
       now.getMonth() + 1
@@ -135,43 +170,6 @@ export default async function renderCurrentOrderPage(main) {
     );
 
     try {
-      let delay = 1 * 60 * 1000;
-      let pickupTime = lastOrder.pickup_time;
-
-      if (pickupTime) {
-        const [pickupHour, pickupMinute] = pickupTime.split(":").map(Number);
-        const pickupDateTime = new Date();
-        pickupDateTime.setHours(pickupHour);
-        pickupDateTime.setMinutes(pickupMinute);
-        pickupDateTime.setSeconds(0);
-        pickupDateTime.setMilliseconds(0);
-
-        const deletionTime = pickupDateTime.getTime();
-        const currentTime = now.getTime();
-        delay = deletionTime - currentTime;
-        if (delay <= 0) {
-          alert(
-            "Order pick-up time cannot be set earlier than sending the order for processing."
-          );
-          return;
-        }
-      } else {
-        let hours = now.getHours();
-        let minutes = now.getMinutes() + 1;
-
-        if (minutes >= 60) {
-          minutes -= 60;
-          hours += 1;
-        }
-
-        // Форматируем часы и минуты в двухзначный формат
-        const formattedHours = hours.toString().padStart(2, "0");
-        const formattedMinutes = minutes.toString().padStart(2, "0");
-
-        let pickupTime2 = `${formattedHours}:${formattedMinutes}`;
-        lastOrder.pickup_time = pickupTime2;
-      }
-
       lastOrder.delete_at = now.getTime() + delay;
       await set(orderRef, lastOrder);
       localStorage.setItem("order", JSON.stringify(order));
@@ -192,12 +190,22 @@ export default async function renderCurrentOrderPage(main) {
     window.location.href = "/designer";
   });
 
-  nextBtn.addEventListener("click", () => {
-    if (userUid) {
-      sendOrderToDatabase(lastOrder, lastKey, userUid);
-      window.location.href = "/order-confirmed";
+  nextBtn.addEventListener("click", async () => {
+    const now = new Date();
+    const delay = calculateDelay(lastOrder, now);
+
+    if (delay <= 0) {
+      alert(
+        "Order pick-up time cannot be set earlier than sending the order for processing."
+      );
+      window.location.href = "/order-options";
     } else {
-      alert("User is not authenticated.");
+      if (userUid) {
+        await sendOrderToDatabase(lastOrder, lastKey, userUid, delay);
+        window.location.href = "/order-confirmed";
+      } else {
+        alert("User is not authenticated.");
+      }
     }
   });
 }

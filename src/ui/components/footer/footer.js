@@ -42,7 +42,7 @@ export default async function createFooter() {
   }
 
   cafeBtn.addEventListener("click", () => {
-    window.location.href = "/menu";
+    window.location.href = "/cafe";
   });
 
   profileBtn.addEventListener("click", () => {
